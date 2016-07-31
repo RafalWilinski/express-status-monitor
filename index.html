@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+</head>
+<body>
+<div style="width: 400px; margin: auto">
+<canvas id="myChart" width="400" height="200"></canvas>
+</div>
+<script>
+    var socket = io('http://localhost:41338');
+    var labels = [0];
+    var dataset = [{
+        label: 'CPU Usage in %',
+        data: [0],
+        lineTension: 0,
+        pointRadius: 0
+    }];
+
+    var ctx = document.getElementById("myChart");
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: dataset,
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }],
+            },
+            tooltips: {
+                enabled: false
+            }
+        }
+    });
+
+    socket.on('stats', function (data) {
+        console.log(data);
+        labels = data.osStats.map((point) => point.timestamp);
+        dataset[0].data = data.osStats.map((point) => point.cpu);
+
+        myChart.data.datasets[0].data.push(data.osStats[data.osStats.length - 1].cpu);
+        myChart.data.labels.push(data.osStats[data.osStats.length - 1].timestamp);
+        myChart.update();
+    });
+</script>
+</body>
+</html>
