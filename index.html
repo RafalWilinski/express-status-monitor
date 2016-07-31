@@ -3,50 +3,147 @@
 <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+    <style>
+        * {
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #222222;
+            margin: 0;
+        }
+
+        h5 {
+            margin: 0;
+            color: #888888;
+        }
+
+        p {
+            font-size: 0.7em;
+            color: #888888;
+        }
+
+        .stats-column {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-content: center;
+            margin-right: 3em;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            margin: auto;
+        }
+
+        .footer {
+            position: fixed;
+            margin: auto;
+            text-align: center;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+    </style>
 </head>
 <body>
 <div style="width: 400px; margin: auto">
-<canvas id="myChart" width="400" height="200"></canvas>
+    <h3>Express Status</h3>
+    <div class="container">
+        <div class="stats-column">
+            <h5>CPU Usage</h5>
+            <h1 id="cpuStat">0.03%</h1>
+        </div>
+        <canvas id="cpuChart" width="400" height="100"></canvas>
+    </div>
+    <div class="container">
+        <div class="stats-column">
+            <h5>Memory Usage</h5>
+            <h1 id="memStat">0.03%</h1>
+        </div>
+        <canvas id="memChart" width="400" height="100"></canvas>
+    </div>
+    <div class="footer">
+        <p>Powered by Socket.io</p>
+    </div>
 </div>
 <script>
-    var socket = io('http://localhost:41338');
-    var labels = [0];
-    var dataset = [{
-        label: 'CPU Usage in %',
-        data: [0],
-        lineTension: 0,
-        pointRadius: 0
-    }];
+    Chart.defaults.global.defaultFontSize = 8;
+    Chart.defaults.global.animation.duration = 500;
+    Chart.defaults.global.legend.display = false;
+    Chart.defaults.global.elements.line.backgroundColor = "rgba(0,0,0,0)";
+    Chart.defaults.global.elements.line.borderColor = "rgba(0,0,0,0.9)";
+    Chart.defaults.global.elements.line.borderWidth = 2;
 
-    var ctx = document.getElementById("myChart");
-    var myChart = new Chart(ctx, {
+    var socket = io('http://localhost:41338');
+    var labels = [];
+    var cpuDataset = [{
+        label: 'CPU Usage in %',
+        data: [],
+        lineTension: 0.3,
+        pointRadius: 0,
+    }];
+    var memDataset = [{
+        label: 'Memory Usage in MB',
+        data: [],
+        lineTension: 0.6,
+        pointRadius: 0,
+    }];
+    var defaultOptions = {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }],
+            xAxes: [{
+                type: 'time',
+                time: {
+                    unitStepSize: 30
+                },
+                gridLines: {
+                    display: false
+                }
+            }]
+        },
+        tooltips: {
+            enabled: false
+        }
+    };
+
+    var cpuStat = document.getElementById('cpuStat');
+    var cpuChartCtx = document.getElementById("cpuChart");
+    var memChartCtx = document.getElementById("memChart");
+    var cpuChart = new Chart(cpuChartCtx, {
         type: 'line',
         data: {
             labels: labels,
-            datasets: dataset,
+            datasets: cpuDataset,
         },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }],
-            },
-            tooltips: {
-                enabled: false
-            }
-        }
+        options: defaultOptions
+    });
+
+    var memChart = new Chart(memChartCtx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: memDataset,
+        },
+        options: defaultOptions
     });
 
     socket.on('stats', function (data) {
-        console.log(data);
-        labels = data.osStats.map((point) => point.timestamp);
-        dataset[0].data = data.osStats.map((point) => point.cpu);
+        cpuStat.textContent = data.osStats[data.osStats.length - 1].cpu.toFixed(1) + '%';
+        cpuChart.data.datasets[0].data = data.osStats.map((point) => point.cpu);
+        cpuChart.data.labels = data.osStats.map((point) => point.timestamp);
+        cpuChart.update();
 
-        myChart.data.datasets[0].data.push(data.osStats[data.osStats.length - 1].cpu);
-        myChart.data.labels.push(data.osStats[data.osStats.length - 1].timestamp);
-        myChart.update();
+        memStat.textContent = (data.osStats[data.osStats.length - 1].memory / 1024 / 1024).toFixed(1) + 'MB';
+        memChart.data.datasets[0].data = data.osStats.map((point) => point.memory);
+        memChart.data.labels = data.osStats.map((point) => point.timestamp);
+        memChart.update();
     });
 </script>
 </body>

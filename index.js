@@ -11,7 +11,7 @@
     socketPort: 41338,
     path: '/status',
     interval: 1,
-    retention: 30,
+    retention: 100,
   };
 
   const gatherOsMetrics = (io) => {
