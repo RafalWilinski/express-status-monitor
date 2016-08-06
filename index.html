@@ -25,17 +25,13 @@
         }
 
         .stats-column {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-content: center;
-            margin-right: 3em;
+            flex: 0 0 200px;
         }
 
         .container {
             display: flex;
             flex-direction: row;
-            margin: auto;
+            margin-top: 20px;
         }
 
         .footer {
@@ -64,6 +60,20 @@
             <h1 id="memStat">0.03%</h1>
         </div>
         <canvas id="memChart" width="400" height="100"></canvas>
+    </div>
+    <div class="container">
+        <div class="stats-column">
+            <h5>Requests per second</h5>
+            <h1 id="rpsStat">1.45</h1>
+        </div>
+        <canvas id="rpsChart" width="400" height="100"></canvas>
+    </div>
+    <div class="Status Codes">
+        <div class="stats-column">
+            <h5>Response status codes</h5>
+            <h1 id="codeStat">OK</h1>
+        </div>
+        <canvas id="codeChart" width="400" height="100"></canvas>
     </div>
     <div class="footer">
         <p>Powered by Socket.io</p>
@@ -135,12 +145,13 @@
     });
 
     socket.on('stats', function (data) {
+        console.log(data);
         cpuStat.textContent = data.osStats[data.osStats.length - 1].cpu.toFixed(1) + '%';
         cpuChart.data.datasets[0].data = data.osStats.map((point) => point.cpu);
         cpuChart.data.labels = data.osStats.map((point) => point.timestamp);
         cpuChart.update();
 
-        memStat.textContent = (data.osStats[data.osStats.length - 1].memory / 1024 / 1024).toFixed(1) + 'MB';
+        memStat.textContent = data.osStats[data.osStats.length - 1].memory.toFixed(1) + 'MB';
         memChart.data.datasets[0].data = data.osStats.map((point) => point.memory);
         memChart.data.labels = data.osStats.map((point) => point.timestamp);
         memChart.update();

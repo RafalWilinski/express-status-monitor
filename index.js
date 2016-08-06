@@ -14,19 +14,22 @@
     retention: 100,
   };
 
-  const gatherOsMetrics = (io) => {
+  const gatherOsMetrics = (io, config) => {
     pidusage.stat(process.pid, (err, stat) => {
       stat.timestamp = Date.now();
+      // Convert from B to MB
+      stat.memory = stat.memory / 1024 / 1024;
+
       osStats.push(stat);
+      if (osStats.length >= config.retention) osStats.shift();
+
       sendMetrics(io);
     });
   };
 
   const sendMetrics = (io) => {
-     osStats.slice(Math.max(osStats.length - defaultConfig.retention, 1));
-
     io.emit('stats', {
-      osStats: osStats.slice(Math.max(osStats.length - defaultConfig.retention, 1)),
+      osStats,
       responseTimes
     });
   };
@@ -50,11 +53,7 @@
 
     const io = require('socket.io')(config.socketPort);
 
-    setInterval(() => gatherOsMetrics(io), config.interval * 1000);
-
-    io.on('connection', (socket) => {
-
-    });
+    setInterval(() => gatherOsMetrics(io, config), config.interval * 1000);
 
     return (req, res, next) => {
       const startTime = process.hrtime();
@@ -70,7 +69,6 @@
             responseTime,
             timestamp: Date.now()
           });
-
         });
 
         next();
