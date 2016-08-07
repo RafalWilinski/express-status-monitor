@@ -2,6 +2,7 @@
   'use strict';
 
   const path = require('path');
+  const os = require('os');
   const onHeaders = require('on-headers');
   const pidusage = require('pidusage');
 
@@ -20,10 +21,11 @@
 
       // Convert from B to MB
       stat.memory = stat.memory / 1024 / 1024;
+      stat.load = os.loadavg();
 
-      span.osStats.push(stat);
-      if (span.osStats.length >= span.retention) span.osStats.shift();
-      if (span.responses[0] && span.responses[0].timestamp + (span.interval * span.retention * 1000) < Date.now()) span.responses.shift();
+      span.os.push(stat);
+
+      if (span.os.length >= span.retention) span.os.shift();
 
       sendMetrics(io, span);
     });
@@ -31,7 +33,7 @@
 
   const sendMetrics = (io, span) => {
     io.emit('stats', {
-      osStats: span.osStats,
+      os: span.os,
       responses: span.responses,
     });
   };
@@ -60,7 +62,7 @@
     });
 
     config.spans.forEach((span) => {
-      span.osStats = [];
+      span.os = [];
       span.responses = [];
       setInterval(() => gatherOsMetrics(io, span), span.interval * 1000);
     });
@@ -76,9 +78,11 @@
           const category = Math.floor(res.statusCode / 100);
 
           config.spans.forEach((span) => {
-            if (span.responses[span.responses.length - 1] !== undefined &&
+            const last = span.responses[span.responses.length - 1];
+            if (last !== undefined &&
               span.responses[span.responses.length - 1].timestamp / 1000 + span.interval > Date.now() / 1000) {
               span.responses[span.responses.length - 1][category]++;
+              span.responses[span.responses.length - 1].mean = responseTime;
               span.responses[span.responses.length - 1].count++;
             } else {
               span.responses.push({
