@@ -50,33 +50,40 @@
     <div class="container">
         <div class="stats-column">
             <h5>CPU Usage</h5>
-            <h1 id="cpuStat">0.03%</h1>
+            <h1 id="cpuStat">- %</h1>
         </div>
         <canvas id="cpuChart" width="400" height="100"></canvas>
     </div>
     <div class="container">
         <div class="stats-column">
             <h5>Memory Usage</h5>
-            <h1 id="memStat">0.03%</h1>
+            <h1 id="memStat">- %</h1>
         </div>
         <canvas id="memChart" width="400" height="100"></canvas>
     </div>
     <div class="container">
         <div class="stats-column">
             <h5>Requests per second</h5>
-            <h1 id="rpsStat">1.45</h1>
+            <h1 id="rpsStat">-</h1>
         </div>
         <canvas id="rpsChart" width="400" height="100"></canvas>
     </div>
-    <div class="Status Codes">
+    <div class="container">
+        <div class="stats-column">
+            <h5>Response Time Mean</h5>
+            <h1 id="responseTimeStat">- ms</h1>
+        </div>
+        <canvas id="responseTimeChart" width="400" height="100"></canvas>
+    </div>
+    <div class="container">
         <div class="stats-column">
             <h5>Response status codes</h5>
-            <h1 id="codeStat">OK</h1>
+            <h1 id="statusCodeStat">-</h1>
         </div>
-        <canvas id="codeChart" width="400" height="100"></canvas>
+        <canvas id="statusCodeChart" width="400" height="100"></canvas>
     </div>
     <div class="footer">
-        <p>Powered by Socket.io</p>
+        <p>Powered by Socket.io & Chart.js</p>
     </div>
 </div>
 <script>
@@ -95,12 +102,35 @@
         lineTension: 0.3,
         pointRadius: 0,
     }];
+
     var memDataset = [{
         label: 'Memory Usage in MB',
         data: [],
         lineTension: 0.6,
         pointRadius: 0,
     }];
+
+    var responseTimeDataset = [{
+        label: 'Mean Response time',
+        data: [],
+        lineTension: 0.6,
+        pointRadius: 0,
+    }];
+
+    var rpsDataset = [{
+        label: 'Requests per second',
+        data: [],
+        lineTension: 0.6,
+        pointRadius: 0,
+    }];
+
+    var statusCodesDataset = [{
+        label: 'Memory Usage in MB',
+        data: [],
+        lineTension: 0.6,
+        pointRadius: 0,
+    }];
+
     var defaultOptions = {
         scales: {
             yAxes: [{
@@ -124,8 +154,14 @@
     };
 
     var cpuStat = document.getElementById('cpuStat');
+    var memStat = document.getElementById('memStat');
+    var responseTimeStat = document.getElementById('responseTimeStat');
+    var rpsStat = document.getElementById('rpsStat');
     var cpuChartCtx = document.getElementById("cpuChart");
     var memChartCtx = document.getElementById("memChart");
+    var rpsChartCtx = document.getElementById("rpsChart");
+    var responseTimeChartCtx = document.getElementById("responseTimeChart");
+    var statusCodeChartCtx = document.getElementById("statusCodeChart");
     var cpuChart = new Chart(cpuChartCtx, {
         type: 'line',
         data: {
@@ -144,17 +180,55 @@
         options: defaultOptions
     });
 
+    var rpsChart = new Chart(rpsChartCtx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: responseTimeDataset,
+        },
+        options: defaultOptions
+    });
+
+    var responseTimeChart = new Chart(responseTimeChartCtx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: responseTimeDataset,
+        },
+        options: defaultOptions
+    });
+
+    var statusCodeChart = new Chart(statusCodeChartCtx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: statusCodesDataset,
+        },
+        options: defaultOptions
+    });
+
     socket.on('stats', function (data) {
         console.log(data);
         cpuStat.textContent = data.osStats[data.osStats.length - 1].cpu.toFixed(1) + '%';
-        cpuChart.data.datasets[0].data = data.osStats.map((point) => point.cpu);
-        cpuChart.data.labels = data.osStats.map((point) => point.timestamp);
+        cpuChart.data.datasets[0].data = data.osStats.map(function(point) { return point.cpu; });
+        cpuChart.data.labels = data.osStats.map(function(point) { return point.timestamp; });
         cpuChart.update();
 
         memStat.textContent = data.osStats[data.osStats.length - 1].memory.toFixed(1) + 'MB';
-        memChart.data.datasets[0].data = data.osStats.map((point) => point.memory);
-        memChart.data.labels = data.osStats.map((point) => point.timestamp);
+        memChart.data.datasets[0].data = data.osStats.map(function(point) { return point.memory; });
+        memChart.data.labels = data.osStats.map(function(point) { return point.timestamp; });
         memChart.update();
+
+        if (data.responses.length > 0) {
+            responseTimeStat.textContent = data.responses[data.responses.length - 1].mean.toFixed(1) + 'ms';
+            responseTimeChart.data.datasets[0].data = data.responses.map(function (point) {
+                return point.mean;
+            });
+            responseTimeChart.data.labels = data.responses.map(function (point) {
+                return point.timestamp;
+            });
+            responseTimeChart.update();
+        }
     });
 </script>
 </body>
