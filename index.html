@@ -231,7 +231,6 @@
     socket.on('start', function(data) {
         // Remove last element of Array because it contains malformed responses data.
         // To keep consistency we also remove os data.
-        console.log(data);
         data[0].responses.pop();
         data[0].os.pop();
 
@@ -265,34 +264,40 @@
     });
 
     socket.on('stats', function (data) {
-        // Remove last element of Array because it contains malformed responses data.
-        // To keep consistency we also remove os data.
-        console.log(data);
-
         cpuStat.textContent = data.os.cpu.toFixed(1) + '%';
         cpuChart.data.datasets[0].data.push(data.os.cpu);
         cpuChart.data.labels.push(data.os.timestamp);
+        cpuChart.data.datasets[0].data.shift();
+        cpuChart.data.labels.shift();
         cpuChart.update();
 
         memStat.textContent = data.os.memory.toFixed(1) + 'MB';
         memChart.data.datasets[0].data.push(data.os.memory);
         memChart.data.labels.push(data.os.timestamp);
+        memChart.data.datasets[0].data.shift();
+        memChart.data.labels.shift();
         memChart.update();
 
         loadStat.textContent = data.os.load[0].toFixed(2);
         loadChart.data.datasets[0].data.push(data.os.load[0]);
         loadChart.data.labels.push(data.os.timestamp);
+        loadChart.data.datasets[0].data.shift();
+        loadChart.data.labels.shift();
         loadChart.update();
 
         responseTimeStat.textContent = data.responses.mean.toFixed(2) + 'ms';
         responseTimeChart.data.datasets[0].data.push(data.responses.mean);
         responseTimeChart.data.labels.push(data.responses.timestamp);
+        responseTimeChart.data.datasets[0].data.shift();
+        responseTimeChart.data.labels.shift();
         responseTimeChart.update();
 
         var deltaTime = data.responses.timestamp - rpsChart.data.labels[rpsChart.data.labels.length - 1];
         rpsStat.textContent = (data.responses.count / deltaTime * 1000).toFixed(2);
         rpsChart.data.datasets[0].data.push(data.responses.count / deltaTime * 1000);
         rpsChart.data.labels.push(data.responses.timestamp);
+        rpsChart.data.datasets[0].data.shift();
+        rpsChart.data.labels.shift();
         rpsChart.update();
     });
 </script>
