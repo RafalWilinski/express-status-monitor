@@ -41,7 +41,7 @@
       if (!span.responses[0] || span.responses.last().timestamp + (span.interval * 1000) < Date.now()) span.responses.push(defaultResponse);
 
       if (span.os.length >= span.retention) span.os.shift();
-      if (span.responses[0] && span.responses.length >= span.retention) span.responses.shift();
+      if (span.responses[0] && span.responses.length > span.retention) span.responses.shift();
 
       sendMetrics(io, span);
     });
