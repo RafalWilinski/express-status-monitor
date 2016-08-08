@@ -24,6 +24,19 @@
             color: #888888;
         }
 
+        span {
+            cursor: pointer;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .active {
+            text-decoration: underline;
+        }
+
         .stats-column {
             flex: 0 0 200px;
         }
@@ -47,22 +60,13 @@
         .span-controls {
             float: right;
         }
-
-        canvas {
-            width: 100%;
-            height: 100%;
-        }
     </style>
 </head>
 <body>
 <div style="width: 400px; margin: auto">
     <div class="header">
         <span><b>Express Status</b></span>
-        <div class="span-controls">
-            <span>1M</span>
-            <span>15M</span>
-            <span>1H</span>
-            <span>24H</span>
+        <div id="span-controls" class="span-controls">
         </div>
     </div>
     <div class="container">
@@ -114,6 +118,7 @@
 
     var socket = io('http://localhost:41338');
     var labels = [];
+    var defaultSpan = 0;
     var cpuDataset = [{
         label: 'CPU Usage in %',
         data: [],
@@ -228,39 +233,59 @@
         options: defaultOptions
     });
 
+    var onSpanChange = function(e) {
+        e.target.classList.add('active');
+        defaultSpan = Integer.parseInt(e.target.id);
+
+        var otherSpans = document.getElementsByTagName('span');
+        for (var i = 0; i < otherSpans.length; i++) {
+            if (otherSpans[i] !== e.target) otherSpans[i].classList.remove('remove');
+        }
+    };
+
     socket.on('start', function(data) {
         // Remove last element of Array because it contains malformed responses data.
         // To keep consistency we also remove os data.
-        data[0].responses.pop();
-        data[0].os.pop();
+        data[defaultSpan].responses.pop();
+        data[defaultSpan].os.pop();
 
-        cpuStat.textContent = data[0].os[data[0].os.length - 1].cpu.toFixed(1) + '%';
-        cpuChart.data.datasets[0].data = data[0].os.map(function(point) { return point.cpu; });
-        cpuChart.data.labels = data[0].os.map(function(point) { return point.timestamp; });
+        cpuStat.textContent = data[defaultSpan].os[data[defaultSpan].os.length - 1].cpu.toFixed(1) + '%';
+        cpuChart.data.datasets[defaultSpan].data = data[defaultSpan].os.map(function(point) { return point.cpu; });
+        cpuChart.data.labels = data[defaultSpan].os.map(function(point) { return point.timestamp; });
         cpuChart.update();
 
-        memStat.textContent = data[0].os[data[0].os.length - 1].memory.toFixed(1) + 'MB';
-        memChart.data.datasets[0].data = data[0].os.map(function(point) { return point.memory; });
-        memChart.data.labels = data[0].os.map(function(point) { return point.timestamp; });
+        memStat.textContent = data[defaultSpan].os[data[defaultSpan].os.length - 1].memory.toFixed(1) + 'MB';
+        memChart.data.datasets[defaultSpan].data = data[defaultSpan].os.map(function(point) { return point.memory; });
+        memChart.data.labels = data[defaultSpan].os.map(function(point) { return point.timestamp; });
         memChart.update();
 
-        loadStat.textContent = data[0].os[data[0].os.length - 1].load[0].toFixed(2);
-        loadChart.data.datasets[0].data = data[0].os.map(function(point) { return point.load[0]; });
-        loadChart.data.labels = data[0].os.map(function(point) { return point.timestamp; });
+        loadStat.textContent = data[defaultSpan].os[data[defaultSpan].os.length - 1].load[defaultSpan].toFixed(2);
+        loadChart.data.datasets[defaultSpan].data = data[defaultSpan].os.map(function(point) { return point.load[defaultSpan]; });
+        loadChart.data.labels = data[defaultSpan].os.map(function(point) { return point.timestamp; });
         loadChart.update();
 
-        responseTimeStat.textContent = data[0].responses[data[0].responses.length - 1].mean.toFixed(2) + 'ms';
-        responseTimeChart.data.datasets[0].data = data[0].responses.map(function(point) { return point.mean; });
-        responseTimeChart.data.labels = data[0].responses.map(function(point) { return point.timestamp; });
+        responseTimeStat.textContent = data[defaultSpan].responses[data[defaultSpan].responses.length - 1].mean.toFixed(2) + 'ms';
+        responseTimeChart.data.datasets[defaultSpan].data = data[defaultSpan].responses.map(function(point) { return point.mean; });
+        responseTimeChart.data.labels = data[defaultSpan].responses.map(function(point) { return point.timestamp; });
         responseTimeChart.update();
 
-        if (data[0].responses.length >= 2) {
-            var deltaTime = data[0].responses[data[0].responses.length - 1].timestamp - data[0].responses[data[0].responses.length - 2].timestamp;
-            rpsStat.textContent = (data[0].responses[data[0].responses.length - 1].count / deltaTime * 1000).toFixed(2);
-            rpsChart.data.datasets[0].data = data[0].responses.map(function(point) { return point.count / deltaTime * 1000; });
-            rpsChart.data.labels = data[0].responses.map(function(point) { return point.timestamp; });
+        if (data[defaultSpan].responses.length >= 2) {
+            var deltaTime = data[defaultSpan].responses[data[defaultSpan].responses.length - 1].timestamp - data[defaultSpan].responses[data[defaultSpan].responses.length - 2].timestamp;
+            rpsStat.textContent = (data[defaultSpan].responses[data[defaultSpan].responses.length - 1].count / deltaTime * 1000).toFixed(2);
+            rpsChart.data.datasets[defaultSpan].data = data[defaultSpan].responses.map(function(point) { return point.count / deltaTime * 1000; });
+            rpsChart.data.labels = data[defaultSpan].responses.map(function(point) { return point.timestamp; });
             rpsChart.update();
         }
+
+        var spanControls = document.getElementById('span-controls');
+        data.forEach(function(span, index) {
+            var spanNode = document.createElement('span');
+            var textNode = document.createTextNode((span.retention * span.interval) / 60 + "M");
+            spanNode.appendChild(textNode);
+            spanNode.setAttribute('id', index);
+            spanNode.onclick = onSpanChange;
+            spanControls.appendChild(spanNode);
+        });
     });
 
     socket.on('stats', function (data) {
