@@ -49,8 +49,8 @@
 
   const sendMetrics = (io, span) => {
     io.emit('stats', {
-      os: span.os,
-      responses: span.responses,
+      os: span.os[span.os.length - 2],
+      responses: span.responses[span.responses.length - 2],
     });
   };
 
@@ -74,7 +74,7 @@
     const io = require('socket.io')(config.socketPort);
 
     io.on('connection', (socket) => {
-      console.log('User connected! ' + socket);
+      socket.emit('start', config.spans);
     });
 
     config.spans.forEach((span) => {
@@ -98,8 +98,8 @@
             if (last !== undefined &&
               span.responses.last().timestamp / 1000 + span.interval > Date.now() / 1000) {
               span.responses.last()[category]++;
-              span.responses.last().mean = responseTime;
               span.responses.last().count++;
+              span.responses.last().mean = span.responses.last().mean + ((responseTime - span.responses.last().mean) / span.responses.last().count);
             } else {
               span.responses.push({
                 '2': category === 2 ? 1 : 0,

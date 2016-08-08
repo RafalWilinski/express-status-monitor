@@ -228,39 +228,72 @@
         options: defaultOptions
     });
 
+    socket.on('start', function(data) {
+        // Remove last element of Array because it contains malformed responses data.
+        // To keep consistency we also remove os data.
+        console.log(data);
+        data[0].responses.pop();
+        data[0].os.pop();
+
+        cpuStat.textContent = data[0].os[data[0].os.length - 1].cpu.toFixed(1) + '%';
+        cpuChart.data.datasets[0].data = data[0].os.map(function(point) { return point.cpu; });
+        cpuChart.data.labels = data[0].os.map(function(point) { return point.timestamp; });
+        cpuChart.update();
+
+        memStat.textContent = data[0].os[data[0].os.length - 1].memory.toFixed(1) + 'MB';
+        memChart.data.datasets[0].data = data[0].os.map(function(point) { return point.memory; });
+        memChart.data.labels = data[0].os.map(function(point) { return point.timestamp; });
+        memChart.update();
+
+        loadStat.textContent = data[0].os[data[0].os.length - 1].load[0].toFixed(2);
+        loadChart.data.datasets[0].data = data[0].os.map(function(point) { return point.load[0]; });
+        loadChart.data.labels = data[0].os.map(function(point) { return point.timestamp; });
+        loadChart.update();
+
+        responseTimeStat.textContent = data[0].responses[data[0].responses.length - 1].mean.toFixed(2) + 'ms';
+        responseTimeChart.data.datasets[0].data = data[0].responses.map(function(point) { return point.mean; });
+        responseTimeChart.data.labels = data[0].responses.map(function(point) { return point.timestamp; });
+        responseTimeChart.update();
+
+        if (data[0].responses.length >= 2) {
+            var deltaTime = data[0].responses[data[0].responses.length - 1].timestamp - data[0].responses[data[0].responses.length - 2].timestamp;
+            rpsStat.textContent = (data[0].responses[data[0].responses.length - 1].count / deltaTime * 1000).toFixed(2);
+            rpsChart.data.datasets[0].data = data[0].responses.map(function(point) { return point.count / deltaTime * 1000; });
+            rpsChart.data.labels = data[0].responses.map(function(point) { return point.timestamp; });
+            rpsChart.update();
+        }
+    });
+
     socket.on('stats', function (data) {
         // Remove last element of Array because it contains malformed responses data.
         // To keep consistency we also remove os data.
-        data.responses.pop();
-        data.os.pop();
+        console.log(data);
 
-        cpuStat.textContent = data.os[data.os.length - 1].cpu.toFixed(1) + '%';
-        cpuChart.data.datasets[0].data = data.os.map(function(point) { return point.cpu; });
-        cpuChart.data.labels = data.os.map(function(point) { return point.timestamp; });
+        cpuStat.textContent = data.os.cpu.toFixed(1) + '%';
+        cpuChart.data.datasets[0].data.push(data.os.cpu);
+        cpuChart.data.labels.push(data.os.timestamp);
         cpuChart.update();
 
-        memStat.textContent = data.os[data.os.length - 1].memory.toFixed(1) + 'MB';
-        memChart.data.datasets[0].data = data.os.map(function(point) { return point.memory; });
-        memChart.data.labels = data.os.map(function(point) { return point.timestamp; });
+        memStat.textContent = data.os.memory.toFixed(1) + 'MB';
+        memChart.data.datasets[0].data.push(data.os.memory);
+        memChart.data.labels.push(data.os.timestamp);
         memChart.update();
 
-        loadStat.textContent = data.os[data.os.length - 1].load[0].toFixed(2);
-        loadChart.data.datasets[0].data = data.os.map(function(point) { return point.load[0]; });
-        loadChart.data.labels = data.os.map(function(point) { return point.timestamp; });
+        loadStat.textContent = data.os.load[0].toFixed(2);
+        loadChart.data.datasets[0].data.push(data.os.load[0]);
+        loadChart.data.labels.push(data.os.timestamp);
         loadChart.update();
 
-        responseTimeStat.textContent = data.responses[data.responses.length - 1].mean.toFixed(2) + 'ms';
-        responseTimeChart.data.datasets[0].data = data.responses.map(function(point) { return point.mean; });
-        responseTimeChart.data.labels = data.responses.map(function(point) { return point.timestamp; });
+        responseTimeStat.textContent = data.responses.mean.toFixed(2) + 'ms';
+        responseTimeChart.data.datasets[0].data.push(data.responses.mean);
+        responseTimeChart.data.labels.push(data.responses.timestamp);
         responseTimeChart.update();
 
-        if (data.responses.length >= 2) {
-            var deltaTime = data.responses[data.responses.length - 1].timestamp - data.responses[data.responses.length - 2].timestamp;
-            rpsStat.textContent = (data.responses[data.responses.length - 1].count / deltaTime * 1000).toFixed(2);
-            rpsChart.data.datasets[0].data = data.responses.map(function(point) { return point.count / deltaTime * 1000; });
-            rpsChart.data.labels = data.responses.map(function(point) { return point.timestamp; });
-            rpsChart.update();
-        }
+        var deltaTime = data.responses.timestamp - rpsChart.data.labels[rpsChart.data.labels.length - 1];
+        rpsStat.textContent = (data.responses.count / deltaTime * 1000).toFixed(2);
+        rpsChart.data.datasets[0].data.push(data.responses.count / deltaTime * 1000);
+        rpsChart.data.labels.push(data.responses.timestamp);
+        rpsChart.update();
     });
 </script>
 </body>
