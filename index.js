@@ -15,17 +15,33 @@
     }]
   };
 
+  Array.prototype.last = function() {
+    return this[this.length - 1];
+  };
+
   const gatherOsMetrics = (io, span) => {
+    const defaultResponse = {
+      '2': 0,
+      '3': 0,
+      '4': 0,
+      '5': 0,
+      count: 0,
+      mean: 0,
+      timestamp: Date.now()
+    };
+
     pidusage.stat(process.pid, (err, stat) => {
-      stat.timestamp = Date.now();
 
       // Convert from B to MB
       stat.memory = stat.memory / 1024 / 1024;
       stat.load = os.loadavg();
+      stat.timestamp = Date.now();
 
       span.os.push(stat);
+      if (!span.responses[0] || span.responses.last().timestamp + (span.interval * 1000) < Date.now()) span.responses.push(defaultResponse);
 
       if (span.os.length >= span.retention) span.os.shift();
+      if (span.responses[0] && span.responses.length >= span.retention) span.responses.shift();
 
       sendMetrics(io, span);
     });
@@ -80,10 +96,10 @@
           config.spans.forEach((span) => {
             const last = span.responses[span.responses.length - 1];
             if (last !== undefined &&
-              span.responses[span.responses.length - 1].timestamp / 1000 + span.interval > Date.now() / 1000) {
-              span.responses[span.responses.length - 1][category]++;
-              span.responses[span.responses.length - 1].mean = responseTime;
-              span.responses[span.responses.length - 1].count++;
+              span.responses.last().timestamp / 1000 + span.interval > Date.now() / 1000) {
+              span.responses.last()[category]++;
+              span.responses.last().mean = responseTime;
+              span.responses.last().count++;
             } else {
               span.responses.push({
                 '2': category === 2 ? 1 : 0,

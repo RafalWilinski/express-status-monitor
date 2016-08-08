@@ -32,6 +32,7 @@
             display: flex;
             flex-direction: row;
             margin-top: 20px;
+            height: 100px;
         }
 
         .footer {
@@ -42,11 +43,28 @@
             right: 0;
             bottom: 0;
         }
+
+        .span-controls {
+            float: right;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
     </style>
 </head>
 <body>
 <div style="width: 400px; margin: auto">
-    <h3>Express Status</h3>
+    <div class="header">
+        <span><b>Express Status</b></span>
+        <div class="span-controls">
+            <span>1M</span>
+            <span>15M</span>
+            <span>1H</span>
+            <span>24H</span>
+        </div>
+    </div>
     <div class="container">
         <div class="stats-column">
             <h5>CPU Usage</h5>
@@ -67,6 +85,13 @@
             <h1 id="loadStat">-</h1>
         </div>
         <canvas id="loadChart" width="400" height="100"></canvas>
+    </div>
+    <div class="container">
+        <div class="stats-column">
+            <h5>Response Time</h5>
+            <h1 id="responseTimeStat">-</h1>
+        </div>
+        <canvas id="responseTimeChart" width="400" height="100"></canvas>
     </div>
     <div class="footer">
         <p>Made with &#9829; with Socket.io & Chart.js</p>
@@ -103,6 +128,13 @@
         pointRadius: 0,
     }];
 
+    var responseTimeDataset = [{
+        label: 'Response Time',
+        data: [],
+        lineTension: 0.2,
+        pointRadius: 0,
+    }];
+
     var defaultOptions = {
         scales: {
             yAxes: [{
@@ -128,10 +160,12 @@
     var cpuStat = document.getElementById('cpuStat');
     var memStat = document.getElementById('memStat');
     var loadStat = document.getElementById('loadStat');
+    var responseTimeStat = document.getElementById('responseTimeStat');
 
     var cpuChartCtx = document.getElementById("cpuChart");
     var memChartCtx = document.getElementById("memChart");
     var loadChartCtx = document.getElementById("loadChart");
+    var responseTimeChartCtx = document.getElementById("responseTimeChart");
 
     var cpuChart = new Chart(cpuChartCtx, {
         type: 'line',
@@ -160,6 +194,14 @@
         options: defaultOptions
     });
 
+    var responseTimeChart = new Chart(responseTimeChartCtx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: responseTimeDataset,
+        },
+        options: defaultOptions
+    });
 
     socket.on('stats', function (data) {
         console.log(data);
@@ -177,6 +219,11 @@
         loadChart.data.datasets[0].data = data.os.map(function(point) { return point.load[0]; });
         loadChart.data.labels = data.os.map(function(point) { return point.timestamp; });
         loadChart.update();
+
+        responseTimeStat.textContent = data.responses[data.responses.length - 1].mean.toFixed(2) + 'ms';
+        responseTimeChart.data.datasets[0].data = data.responses.map(function(point) { return point.mean; });
+        responseTimeChart.data.labels = data.responses.map(function(point) { return point.timestamp; });
+        responseTimeChart.update();
     });
 </script>
 </body>
