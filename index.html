@@ -29,8 +29,8 @@
     }
 
     canvas {
-      width: 100%;
-      height: 100%;
+      width: 400px;
+      height: 100px;
     }
 
     .active {
@@ -45,6 +45,11 @@
       display: flex;
       flex-direction: row;
       margin-top: 20px;
+      height: 100px;
+    }
+
+    .chart-container {
+      width: 400px;
       height: 100px;
     }
 
@@ -63,7 +68,7 @@
   </style>
 </head>
 <body>
-<div style="width: 400px; margin: auto">
+<div style="width: 600px; margin: auto">
   <div class="header">
     <span><b>Express Status</b></span>
     <div id="span-controls" class="span-controls">
@@ -74,35 +79,45 @@
       <h5>CPU Usage</h5>
       <h1 id="cpuStat">- %</h1>
     </div>
-    <canvas id="cpuChart" width="400" height="100"></canvas>
+    <div class="chart-container">
+      <canvas id="cpuChart" width="400" height="100"></canvas>
+    </div>
   </div>
   <div class="container">
     <div class="stats-column">
       <h5>Memory Usage</h5>
       <h1 id="memStat">- %</h1>
     </div>
-    <canvas id="memChart" width="400" height="100"></canvas>
+    <div class="chart-container">
+      <canvas id="memChart" width="200" height="100"></canvas>
+    </div>
   </div>
   <div class="container">
     <div class="stats-column">
       <h5>One Minute Load Avg</h5>
       <h1 id="loadStat">-</h1>
     </div>
-    <canvas id="loadChart" width="400" height="100"></canvas>
+    <div class="chart-container">
+      <canvas id="loadChart" width="200" height="100"></canvas>
+    </div>
   </div>
   <div class="container">
     <div class="stats-column">
       <h5>Response Time</h5>
       <h1 id="responseTimeStat">-</h1>
     </div>
-    <canvas id="responseTimeChart" width="400" height="100"></canvas>
+    <div class="chart-container">
+      <canvas id="responseTimeChart" width="200" height="100"></canvas>
+    </div>
   </div>
   <div class="container">
     <div class="stats-column">
       <h5>Requests per Second</h5>
       <h1 id="rpsStat">-</h1>
     </div>
-    <canvas id="rpsChart" width="400" height="100"></canvas>
+    <div class="chart-container">
+      <canvas id="rpsChart" width="200" height="100"></canvas>
+    </div>
   </div>
   <div class="footer">
     <p>Made with &#9829; with Socket.io & Chart.js</p>
@@ -145,7 +160,9 @@
     },
     tooltips: {
       enabled: false
-    }
+    },
+    responsive: true,
+    maintainAspectRatio: false
   };
 
   var createChart = function (ctx, dataset) {
