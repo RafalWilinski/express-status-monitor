@@ -117,15 +117,14 @@
   Chart.defaults.global.elements.line.borderWidth = 2;
 
   var socket = io('http://localhost:41338');
-  var labels = [];
   var defaultSpan = 0;
 
-  var defaultDataset = [{
+  var defaultDataset = {
     label: '',
     data: [],
     lineTension: 0.2,
     pointRadius: 0
-  }];
+  };
 
   var defaultOptions = {
     scales: {
@@ -157,14 +156,18 @@
         datasets: dataset
       },
       options: defaultOptions
-    })
+    });
   };
 
-  var cpuDataset = Object.create(defaultDataset);
-  var memDataset = Object.create(defaultDataset);
-  var loadDataset = Object.create(defaultDataset);
-  var responseTimeDataset = Object.create(defaultDataset);
-  var rpsDataset = Object.create(defaultDataset);
+  var addTimestamp = function(point) {
+    return point.timestamp;
+  };
+
+  var cpuDataset = [Object.create(defaultDataset)];
+  var memDataset = [Object.create(defaultDataset)];
+  var loadDataset = [Object.create(defaultDataset)];
+  var responseTimeDataset = [Object.create(defaultDataset)];
+  var rpsDataset = [Object.create(defaultDataset)];
 
   var cpuStat = document.getElementById('cpuStat');
   var memStat = document.getElementById('memStat');
@@ -183,6 +186,8 @@
   var loadChart = createChart(loadChartCtx, loadDataset);
   var responseTimeChart = createChart(responseTimeChartCtx, responseTimeDataset);
   var rpsChart = createChart(rpsChartCtx, rpsDataset);
+
+  var charts = [cpuChart, memChart, loadChart, responseTimeChart, rpsChart];
 
   var onSpanChange = function (e) {
     e.target.classList.add('active');
@@ -204,37 +209,25 @@
     cpuChart.data.datasets[defaultSpan].data = data[defaultSpan].os.map(function (point) {
       return point.cpu;
     });
-    cpuChart.data.labels = data[defaultSpan].os.map(function (point) {
-      return point.timestamp;
-    });
-    cpuChart.update();
+    cpuChart.data.labels = data[defaultSpan].os.map(addTimestamp);
 
     memStat.textContent = data[defaultSpan].os[data[defaultSpan].os.length - 1].memory.toFixed(1) + 'MB';
     memChart.data.datasets[defaultSpan].data = data[defaultSpan].os.map(function (point) {
       return point.memory;
     });
-    memChart.data.labels = data[defaultSpan].os.map(function (point) {
-      return point.timestamp;
-    });
-    memChart.update();
+    memChart.data.labels = data[defaultSpan].os.map(addTimestamp);
 
     loadStat.textContent = data[defaultSpan].os[data[defaultSpan].os.length - 1].load[defaultSpan].toFixed(2);
     loadChart.data.datasets[defaultSpan].data = data[defaultSpan].os.map(function (point) {
       return point.load[defaultSpan];
     });
-    loadChart.data.labels = data[defaultSpan].os.map(function (point) {
-      return point.timestamp;
-    });
-    loadChart.update();
+    loadChart.data.labels = data[defaultSpan].os.map(addTimestamp);
 
     responseTimeStat.textContent = data[defaultSpan].responses[data[defaultSpan].responses.length - 1].mean.toFixed(2) + 'ms';
     responseTimeChart.data.datasets[defaultSpan].data = data[defaultSpan].responses.map(function (point) {
       return point.mean;
     });
-    responseTimeChart.data.labels = data[defaultSpan].responses.map(function (point) {
-      return point.timestamp;
-    });
-    responseTimeChart.update();
+    responseTimeChart.data.labels = data[defaultSpan].responses.map(addTimestamp);
 
     if (data[defaultSpan].responses.length >= 2) {
       var deltaTime = data[defaultSpan].responses[data[defaultSpan].responses.length - 1].timestamp - data[defaultSpan].responses[data[defaultSpan].responses.length - 2].timestamp;
@@ -242,11 +235,12 @@
       rpsChart.data.datasets[defaultSpan].data = data[defaultSpan].responses.map(function (point) {
         return point.count / deltaTime * 1000;
       });
-      rpsChart.data.labels = data[defaultSpan].responses.map(function (point) {
-        return point.timestamp;
-      });
-      rpsChart.update();
+      rpsChart.data.labels = data[defaultSpan].responses.map(addTimestamp);
     }
+
+    charts.forEach(function(chart) {
+      chart.update();
+    });
 
     var spanControls = document.getElementById('span-controls');
     data.forEach(function (span, index) {
@@ -263,38 +257,29 @@
     cpuStat.textContent = data.os.cpu.toFixed(1) + '%';
     cpuChart.data.datasets[0].data.push(data.os.cpu);
     cpuChart.data.labels.push(data.os.timestamp);
-    cpuChart.data.datasets[0].data.shift();
-    cpuChart.data.labels.shift();
-    cpuChart.update();
 
     memStat.textContent = data.os.memory.toFixed(1) + 'MB';
     memChart.data.datasets[0].data.push(data.os.memory);
     memChart.data.labels.push(data.os.timestamp);
-    memChart.data.datasets[0].data.shift();
-    memChart.data.labels.shift();
-    memChart.update();
 
     loadStat.textContent = data.os.load[0].toFixed(2);
     loadChart.data.datasets[0].data.push(data.os.load[0]);
     loadChart.data.labels.push(data.os.timestamp);
-    loadChart.data.datasets[0].data.shift();
-    loadChart.data.labels.shift();
-    loadChart.update();
 
     responseTimeStat.textContent = data.responses.mean.toFixed(2) + 'ms';
     responseTimeChart.data.datasets[0].data.push(data.responses.mean);
     responseTimeChart.data.labels.push(data.responses.timestamp);
-    responseTimeChart.data.datasets[0].data.shift();
-    responseTimeChart.data.labels.shift();
-    responseTimeChart.update();
 
     var deltaTime = data.responses.timestamp - rpsChart.data.labels[rpsChart.data.labels.length - 1];
     rpsStat.textContent = (data.responses.count / deltaTime * 1000).toFixed(2);
     rpsChart.data.datasets[0].data.push(data.responses.count / deltaTime * 1000);
     rpsChart.data.labels.push(data.responses.timestamp);
-    rpsChart.data.datasets[0].data.shift();
-    rpsChart.data.labels.shift();
-    rpsChart.update();
+
+    charts.forEach(function(chart) {
+      chart.data.datasets[0].data.shift();
+      chart.data.labels.shift();
+      chart.update();
+    });
   });
 </script>
 </body>
