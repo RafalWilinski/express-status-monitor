@@ -133,6 +133,7 @@
 
   var socket = io('http://localhost:41338');
   var defaultSpan = 0;
+  var spans = [];
 
   var defaultDataset = {
     label: '',
@@ -162,7 +163,8 @@
       enabled: false
     },
     responsive: true,
-    maintainAspectRatio: false
+    maintainAspectRatio: false,
+    animation: false
   };
 
   var createChart = function (ctx, dataset) {
@@ -208,11 +210,11 @@
 
   var onSpanChange = function (e) {
     e.target.classList.add('active');
-    defaultSpan = Integer.parseInt(e.target.id);
+    defaultSpan = parseInt(e.target.id);
 
     var otherSpans = document.getElementsByTagName('span');
     for (var i = 0; i < otherSpans.length; i++) {
-      if (otherSpans[i] !== e.target) otherSpans[i].classList.remove('remove');
+      if (otherSpans[i] !== e.target) otherSpans[i].classList.remove('active');
     }
   };
 
@@ -261,6 +263,11 @@
 
     var spanControls = document.getElementById('span-controls');
     data.forEach(function (span, index) {
+      spans.push({
+        retention: span.retention,
+        interval: span.interval
+      });
+
       var spanNode = document.createElement('span');
       var textNode = document.createTextNode((span.retention * span.interval) / 60 + "M");
       spanNode.appendChild(textNode);
@@ -271,32 +278,37 @@
   });
 
   socket.on('stats', function (data) {
-    cpuStat.textContent = data.os.cpu.toFixed(1) + '%';
-    cpuChart.data.datasets[0].data.push(data.os.cpu);
-    cpuChart.data.labels.push(data.os.timestamp);
+    if (data.retention === spans[defaultSpan].retention && data.interval === spans[defaultSpan].interval) {
+      cpuStat.textContent = data.os.cpu.toFixed(1) + '%';
+      cpuChart.data.datasets[0].data.push(data.os.cpu);
+      cpuChart.data.labels.push(data.os.timestamp);
 
-    memStat.textContent = data.os.memory.toFixed(1) + 'MB';
-    memChart.data.datasets[0].data.push(data.os.memory);
-    memChart.data.labels.push(data.os.timestamp);
+      memStat.textContent = data.os.memory.toFixed(1) + 'MB';
+      memChart.data.datasets[0].data.push(data.os.memory);
+      memChart.data.labels.push(data.os.timestamp);
 
-    loadStat.textContent = data.os.load[0].toFixed(2);
-    loadChart.data.datasets[0].data.push(data.os.load[0]);
-    loadChart.data.labels.push(data.os.timestamp);
+      loadStat.textContent = data.os.load[0].toFixed(2);
+      loadChart.data.datasets[0].data.push(data.os.load[0]);
+      loadChart.data.labels.push(data.os.timestamp);
 
-    responseTimeStat.textContent = data.responses.mean.toFixed(2) + 'ms';
-    responseTimeChart.data.datasets[0].data.push(data.responses.mean);
-    responseTimeChart.data.labels.push(data.responses.timestamp);
+      responseTimeStat.textContent = data.responses.mean.toFixed(2) + 'ms';
+      responseTimeChart.data.datasets[0].data.push(data.responses.mean);
+      responseTimeChart.data.labels.push(data.responses.timestamp);
 
-    var deltaTime = data.responses.timestamp - rpsChart.data.labels[rpsChart.data.labels.length - 1];
-    rpsStat.textContent = (data.responses.count / deltaTime * 1000).toFixed(2);
-    rpsChart.data.datasets[0].data.push(data.responses.count / deltaTime * 1000);
-    rpsChart.data.labels.push(data.responses.timestamp);
+      var deltaTime = data.responses.timestamp - rpsChart.data.labels[rpsChart.data.labels.length - 1];
+      rpsStat.textContent = (data.responses.count / deltaTime * 1000).toFixed(2);
+      rpsChart.data.datasets[0].data.push(data.responses.count / deltaTime * 1000);
+      rpsChart.data.labels.push(data.responses.timestamp);
 
-    charts.forEach(function(chart) {
-      chart.data.datasets[0].data.shift();
-      chart.data.labels.shift();
-      chart.update();
-    });
+      charts.forEach(function (chart) {
+        if (spans[defaultSpan].retention < chart.data.labels.length) {
+          chart.data.datasets[0].data.shift();
+          chart.data.labels.shift();
+        }
+
+        chart.update();
+      });
+    }
   });
 </script>
 </body>
