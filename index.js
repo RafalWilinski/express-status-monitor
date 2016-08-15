@@ -12,6 +12,12 @@
     spans: [{
       interval: 1,
       retention: 60
+    }, {
+      interval: 5,
+      retention: 60
+    }, {
+      interval: 15,
+      retention: 60
     }]
   };
 
@@ -51,6 +57,8 @@
     io.emit('stats', {
       os: span.os[span.os.length - 2],
       responses: span.responses[span.responses.length - 2],
+      interval: span.interval,
+      retention: span.retention
     });
   };
 
