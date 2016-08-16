@@ -83,6 +83,8 @@
 
     io.on('connection', (socket) => {
       socket.emit('start', config.spans);
+
+      socket.on('change', function() { socket.emit('start', config.spans); });
     });
 
     config.spans.forEach((span) => {

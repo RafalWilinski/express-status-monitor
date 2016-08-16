@@ -216,6 +216,8 @@
     for (var i = 0; i < otherSpans.length; i++) {
       if (otherSpans[i] !== e.target) otherSpans[i].classList.remove('active');
     }
+
+    socket.emit('change');
   };
 
   socket.on('start', function (data) {
@@ -225,25 +227,25 @@
     data[defaultSpan].os.pop();
 
     cpuStat.textContent = data[defaultSpan].os[data[defaultSpan].os.length - 1].cpu.toFixed(1) + '%';
-    cpuChart.data.datasets[defaultSpan].data = data[defaultSpan].os.map(function (point) {
+    cpuChart.data.datasets[0].data = data[defaultSpan].os.map(function (point) {
       return point.cpu;
     });
     cpuChart.data.labels = data[defaultSpan].os.map(addTimestamp);
 
     memStat.textContent = data[defaultSpan].os[data[defaultSpan].os.length - 1].memory.toFixed(1) + 'MB';
-    memChart.data.datasets[defaultSpan].data = data[defaultSpan].os.map(function (point) {
+    memChart.data.datasets[0].data = data[defaultSpan].os.map(function (point) {
       return point.memory;
     });
     memChart.data.labels = data[defaultSpan].os.map(addTimestamp);
 
     loadStat.textContent = data[defaultSpan].os[data[defaultSpan].os.length - 1].load[defaultSpan].toFixed(2);
-    loadChart.data.datasets[defaultSpan].data = data[defaultSpan].os.map(function (point) {
-      return point.load[defaultSpan];
+    loadChart.data.datasets[0].data = data[defaultSpan].os.map(function (point) {
+      return point.load[0];
     });
     loadChart.data.labels = data[defaultSpan].os.map(addTimestamp);
 
     responseTimeStat.textContent = data[defaultSpan].responses[data[defaultSpan].responses.length - 1].mean.toFixed(2) + 'ms';
-    responseTimeChart.data.datasets[defaultSpan].data = data[defaultSpan].responses.map(function (point) {
+    responseTimeChart.data.datasets[0].data = data[defaultSpan].responses.map(function (point) {
       return point.mean;
     });
     responseTimeChart.data.labels = data[defaultSpan].responses.map(addTimestamp);
@@ -251,7 +253,7 @@
     if (data[defaultSpan].responses.length >= 2) {
       var deltaTime = data[defaultSpan].responses[data[defaultSpan].responses.length - 1].timestamp - data[defaultSpan].responses[data[defaultSpan].responses.length - 2].timestamp;
       rpsStat.textContent = (data[defaultSpan].responses[data[defaultSpan].responses.length - 1].count / deltaTime * 1000).toFixed(2);
-      rpsChart.data.datasets[defaultSpan].data = data[defaultSpan].responses.map(function (point) {
+      rpsChart.data.datasets[0].data = data[defaultSpan].responses.map(function (point) {
         return point.count / deltaTime * 1000;
       });
       rpsChart.data.labels = data[defaultSpan].responses.map(addTimestamp);
@@ -262,19 +264,21 @@
     });
 
     var spanControls = document.getElementById('span-controls');
-    data.forEach(function (span, index) {
-      spans.push({
-        retention: span.retention,
-        interval: span.interval
-      });
+    if (data.length !== spans.length) {
+      data.forEach(function (span, index) {
+        spans.push({
+          retention: span.retention,
+          interval: span.interval
+        });
 
-      var spanNode = document.createElement('span');
-      var textNode = document.createTextNode((span.retention * span.interval) / 60 + "M");
-      spanNode.appendChild(textNode);
-      spanNode.setAttribute('id', index);
-      spanNode.onclick = onSpanChange;
-      spanControls.appendChild(spanNode);
-    });
+        var spanNode = document.createElement('span');
+        var textNode = document.createTextNode((span.retention * span.interval) / 60 + "M");
+        spanNode.appendChild(textNode);
+        spanNode.setAttribute('id', index);
+        spanNode.onclick = onSpanChange;
+        spanControls.appendChild(spanNode);
+      });
+    }
   });
 
   socket.on('stats', function (data) {
