@@ -26,6 +26,10 @@
 
     span {
       cursor: pointer;
+      font-size: 10px;
+      margin-left: 5px;
+      border: 1px solid #DDD;
+      padding: 3px 10px 4px 10px;
     }
 
     canvas {
@@ -34,7 +38,7 @@
     }
 
     .active {
-      text-decoration: underline;
+      background: #eeeeee;
     }
 
     .stats-column {
@@ -70,7 +74,7 @@
 <body>
 <div style="width: 600px; margin: auto">
   <div class="header">
-    <span><b>Express Status</b></span>
+    <b>Express Status</b>
     <div id="span-controls" class="span-controls">
     </div>
   </div>
@@ -278,6 +282,7 @@
         spanNode.onclick = onSpanChange;
         spanControls.appendChild(spanNode);
       });
+      document.getElementsByTagName('span')[0].classList.add('active');
     }
   });
 
