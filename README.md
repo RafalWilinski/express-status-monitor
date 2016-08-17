@@ -1,7 +1,7 @@
 # express-status-monitor
 A module based on Socket.io and Chart.js to report realtime server metrics for Express-based node servers. More Node frameworks coming soon.
 
-![Monitoring Page](/out.gif?raw=true "Monitoring Page")
+![Monitoring Page](http://imgur.com/AHizEWq "Monitoring Page")
 
 ## Installation & setup
 1. Run `npm install express-status-monitor --save`
