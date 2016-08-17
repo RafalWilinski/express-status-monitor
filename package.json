@@ -1,18 +1,15 @@
 {
-  "name": "node-monitor-status",
-  "version": "1.0.0",
+  "name": "express-monitor",
+  "version": "0.0.1",
   "description": "Node Monitoring module.",
   "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [
     "node",
     "status",
     "monitoring"
   ],
-  "author": "Rafal Wilinski",
-  "license": "ISC",
+  "author": "Rafal Wilinski raf.wilinski@gmail.com",
+  "license": "MIT",
   "dependencies": {
     "on-headers": "^1.0.1",
     "pidusage": "^1.0.4",
