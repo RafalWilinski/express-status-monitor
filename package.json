@@ -1,6 +1,6 @@
 {
   "name": "express-status-monitor",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Monitoring for Express-based Node applications",
   "main": "app.js",
   "keywords": [
