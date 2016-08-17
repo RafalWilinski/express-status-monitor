@@ -1,6 +1,7 @@
 (function () {
   'use strict';
 
+  const fs = require('fs');
   const path = require('path');
   const os = require('os');
   const onHeaders = require('on-headers');
@@ -81,6 +82,16 @@
 
     const io = require('socket.io')(config.socketPort);
 
+    fs.readFile(path.join(__dirname, 'index.html'), 'utf8', (err,data) => {
+      if (err) throw new Error(err);
+    
+      var result = data.replace(/{{port}}/g, config.socketPort);
+
+      fs.writeFile(path.join(__dirname, 'index.rendered.html'), result, 'utf8', (err) => {
+        if (err) throw new Error(err);
+      });
+    });
+
     io.on('connection', (socket) => {
       socket.emit('start', config.spans);
 
@@ -96,7 +107,7 @@
     return (req, res, next) => {
       const startTime = process.hrtime();
       if (req.path === config.path) {
-        res.sendFile(path.join(__dirname + '/index.html'));
+        res.sendFile(path.join(__dirname + '/index.rendered.html'));
       } else {
         onHeaders(res, () => {
           const diff = process.hrtime(startTime);
