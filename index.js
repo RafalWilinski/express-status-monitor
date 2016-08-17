@@ -63,7 +63,7 @@
   };
 
   const middlewareWrapper = (config) => {
-    if (config === null || config === {} || config === undefined) {
+    if (config === null || config === undefined) {
       config = defaultConfig;
     }
 
