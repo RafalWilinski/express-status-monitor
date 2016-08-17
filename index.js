@@ -77,7 +77,7 @@
     }
 
     if (config.spans === undefined || !config instanceof Array) {
-      config.spans = path;
+      config.spans = defaultConfig.spans;
     }
 
     const io = require('socket.io')(config.socketPort);
