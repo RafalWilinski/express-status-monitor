@@ -3,10 +3,10 @@ A module based on Socket.io and Chart.js to report realtime server metrics for E
 
 ![Monitoring Page](/out.gif?raw=true "Monitoring Page")
 
-## How to use it (in progress)
-1. Add this as a dependency (will be on NPM soon)
+## Installation & setup
+1. Run `npm install express-status-monitor --save`
 2. Before any other middleware or router add following line: 
-`app.use(expressMonitor());`
+`app.use(require('express-status-monitor')());`
 3. Run server and to go `/status`
 
 ## Options
