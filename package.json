@@ -1,12 +1,14 @@
 {
-  "name": "express-monitor",
+  "name": "express-status-monitor",
   "version": "0.0.1",
-  "description": "Node Monitoring module.",
+  "description": "Monitoring for Express-based Node applications",
   "main": "app.js",
   "keywords": [
     "node",
     "status",
-    "monitoring"
+    "monitoring",
+    "express",
+    "charts"
   ],
   "author": "Rafal Wilinski raf.wilinski@gmail.com",
   "license": "MIT",
