@@ -1,4 +1,4 @@
-# express-monitor
+# express-status-monitor
 A module based on Socket.io and Chart.js to report realtime server metrics for Express-based node servers. More Node frameworks coming soon.
 
 ![Monitoring Page](/out.gif?raw=true "Monitoring Page")
