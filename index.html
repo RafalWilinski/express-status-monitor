@@ -136,7 +136,7 @@
   Chart.defaults.global.elements.line.borderColor = "rgba(0,0,0,0.9)";
   Chart.defaults.global.elements.line.borderWidth = 2;
 
-  var socket = io('{{protocol}}'+ '://' + window.location.hostname + ':{{port}}');
+  var socket = io(location.protocol + '//' + location.hostname + ':' + location.port);
   var defaultSpan = 0;
   var spans = [];
 

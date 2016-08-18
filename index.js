@@ -6,11 +6,10 @@
   const os = require('os');
   const onHeaders = require('on-headers');
   const pidusage = require('pidusage');
+  let io;
 
   const defaultConfig = {
-    socketPort: 41338,
     path: '/status',
-    useHttps: false,
     spans: [{
       interval: 1,
       retention: 60
@@ -73,42 +72,30 @@
       config.path = defaultConfig.path;
     }
 
-    if (config.socketPort === undefined || !config instanceof Number) {
-      config.socketPort = defaultConfig.socketPort;
-    }
-
     if (config.spans === undefined || !config instanceof Array) {
       config.spans = defaultConfig.spans;
     }
 
-    const io = require('socket.io')(config.socketPort);
-
-    fs.readFile(path.join(__dirname, 'index.html'), 'utf8', (err,data) => {
-      if (err) throw new Error(err);
-    
-      var result = data.replace(/{{port}}/g, config.socketPort).replace(/{{protocol}}/g, config.useHttps ? 'https' : 'http');
-
-      fs.writeFile(path.join(__dirname, 'index.rendered.html'), result, 'utf8', (err) => {
-        if (err) throw new Error(err);
-      });
-    });
-
-    io.on('connection', (socket) => {
-      socket.emit('start', config.spans);
-
-      socket.on('change', function() { socket.emit('start', config.spans); });
-    });
-
-    config.spans.forEach((span) => {
-      span.os = [];
-      span.responses = [];
-      setInterval(() => gatherOsMetrics(io, span), span.interval * 1000);
-    });
-
     return (req, res, next) => {
+      if (io === null || io === undefined) {
+        
+        io = require('socket.io')(req.socket.server);
+
+        io.on('connection', (socket) => {
+          socket.emit('start', config.spans);
+          socket.on('change', function() { socket.emit('start', config.spans); });
+        });
+
+        config.spans.forEach((span) => {
+          span.os = [];
+          span.responses = [];
+          setInterval(() => gatherOsMetrics(io, span), span.interval * 1000);
+        });
+      }
+
       const startTime = process.hrtime();
       if (req.path === config.path) {
-        res.sendFile(path.join(__dirname + '/index.rendered.html'));
+        res.sendFile(path.join(__dirname + '/index.html'));
       } else {
         onHeaders(res, () => {
           const diff = process.hrtime(startTime);
