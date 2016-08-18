@@ -78,7 +78,7 @@
 
     return (req, res, next) => {
       if (io === null || io === undefined) {
-        
+
         io = require('socket.io')(req.socket.server);
 
         io.on('connection', (socket) => {
@@ -94,7 +94,9 @@
       }
 
       const startTime = process.hrtime();
-      if (req.path === config.path) {
+      const pathname = require('url').parse(req.originalUrl).pathname
+
+      if (pathname === config.path) {
         res.sendFile(path.join(__dirname + '/index.html'));
       } else {
         onHeaders(res, () => {
