@@ -10,6 +10,7 @@
   const defaultConfig = {
     socketPort: 41338,
     path: '/status',
+    useHttps: false,
     spans: [{
       interval: 1,
       retention: 60
@@ -85,7 +86,7 @@
     fs.readFile(path.join(__dirname, 'index.html'), 'utf8', (err,data) => {
       if (err) throw new Error(err);
     
-      var result = data.replace(/{{port}}/g, config.socketPort);
+      var result = data.replace(/{{port}}/g, config.socketPort).replace(/{{protocol}}/g, config.useHttps ? 'https' : 'http');
 
       fs.writeFile(path.join(__dirname, 'index.rendered.html'), result, 'utf8', (err) => {
         if (err) throw new Error(err);

@@ -16,7 +16,8 @@ Monitor can be configured by passing options object into `expressMonitor` constr
 Default config:
 ```
 path: '/status',
-socketPort: 41338, // Port for Socket.io communication
+socketPort: 41338, // Port for Socket.io communication,
+useHttps: false,   // Force HTTPS protocol instead of HTTP
 spans: [{
   interval: 1,     // Every second
   retention: 60    // Keep 60 datapoints in memory
