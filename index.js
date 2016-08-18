@@ -22,10 +22,6 @@
     }]
   };
 
-  Array.prototype.last = function() {
-    return this[this.length - 1];
-  };
-
   const gatherOsMetrics = (io, span) => {
     const defaultResponse = {
       '2': 0,
@@ -38,14 +34,14 @@
     };
 
     pidusage.stat(process.pid, (err, stat) => {
-
+      const last = span.responses[span.responses.length - 1];
       // Convert from B to MB
       stat.memory = stat.memory / 1024 / 1024;
       stat.load = os.loadavg();
       stat.timestamp = Date.now();
 
       span.os.push(stat);
-      if (!span.responses[0] || span.responses.last().timestamp + (span.interval * 1000) < Date.now()) span.responses.push(defaultResponse);
+      if (!span.responses[0] || last.timestamp + (span.interval * 1000) < Date.now()) span.responses.push(defaultResponse);
 
       if (span.os.length >= span.retention) span.os.shift();
       if (span.responses[0] && span.responses.length > span.retention) span.responses.shift();
@@ -78,7 +74,7 @@
 
     return (req, res, next) => {
       if (io === null || io === undefined) {
-        
+
         io = require('socket.io')(req.socket.server);
 
         io.on('connection', (socket) => {
@@ -105,10 +101,10 @@
           config.spans.forEach((span) => {
             const last = span.responses[span.responses.length - 1];
             if (last !== undefined &&
-              span.responses.last().timestamp / 1000 + span.interval > Date.now() / 1000) {
-              span.responses.last()[category]++;
-              span.responses.last().count++;
-              span.responses.last().mean = span.responses.last().mean + ((responseTime - span.responses.last().mean) / span.responses.last().count);
+              last.timestamp / 1000 + span.interval > Date.now() / 1000) {
+              last[category]++;
+              last.count++;
+              last.mean = last.mean + ((responseTime - last.mean) / last.count);
             } else {
               span.responses.push({
                 '2': category === 2 ? 1 : 0,
