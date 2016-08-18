@@ -8,7 +8,7 @@ Simple, self-hosted module based on Socket.io and Chart.js to report realtime se
 1. Run `npm install express-status-monitor --save`
 2. Before any other middleware or router add following line: 
 `app.use(require('express-status-monitor')());`
-3. Run server and to go `/status`
+3. Run server and go to `/status`
 
 ## Options
 
