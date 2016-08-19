@@ -11,6 +11,13 @@
     "charts"
   ],
   "author": "Rafal Wilinski raf.wilinski@gmail.com",
+  "contributors": [
+    {
+      "name": "Julien Breux",
+      "email": "julien.breux@gmail.com",
+      "url": "https://github.com/JulienBreux/"
+    }
+  ],
   "license": "MIT",
   "dependencies": {
     "on-headers": "^1.0.1",
