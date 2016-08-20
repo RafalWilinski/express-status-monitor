@@ -73,6 +73,15 @@
       config.spans = defaultConfig.spans;
     }
 
+    if (config.title === undefined || !config instanceof String) {
+      config.title = 'Express Status';
+    }
+
+    let renderedHtml;
+    fs.readFile(path.join(__dirname, '/index.html'), function(err, html){
+      renderedHtml = html.toString().replace(/{{title}}/g, config.title);
+    });
+
     return (req, res, next) => {
       if (io === null || io === undefined) {
 
@@ -92,12 +101,7 @@
 
       const startTime = process.hrtime();
       if (req.path === config.path) {
-        fs.readFile(path.join(__dirname + '/index.html'), function(err, content) {
-          content = content.toString().replace(new RegExp(defaultConfig.title, 'g'), config.title);
-          res.writeHead(200, {'Content-Type': 'text/html'});
-          res.write(content);
-          res.end();
-        });
+        res.send(renderedHtml);
       } else {
         onHeaders(res, () => {
           const diff = process.hrtime(startTime);
