@@ -9,6 +9,7 @@
   let io;
 
   const defaultConfig = {
+    title: 'Express Status',
     path: '/status',
     spans: [{
       interval: 1,
@@ -91,7 +92,12 @@
 
       const startTime = process.hrtime();
       if (req.path === config.path) {
-        res.sendFile(path.join(__dirname + '/index.html'));
+        fs.readFile(path.join(__dirname + '/index.html'), function(err, content) {
+          content = content.toString().replace(new RegExp(defaultConfig.title, 'g'), config.title);
+          res.writeHead(200, {'Content-Type': 'text/html'});
+          res.write(content);
+          res.end();
+        });
       } else {
         onHeaders(res, () => {
           const diff = process.hrtime(startTime);

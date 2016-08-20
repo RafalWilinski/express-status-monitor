@@ -1,15 +1,8 @@
 {
-  "name": "express-status-monitor",
-  "version": "0.0.9",
-  "description": "Monitoring for Express-based Node applications",
-  "main": "app.js",
-  "keywords": [
-    "node",
-    "status",
-    "monitoring",
-    "express",
-    "charts"
-  ],
+  "name": "express-status-monitor-example",
+  "version": "0.0.1",
+  "description": "Examples",
+  "main": "index.js",
   "author": "Rafal Wilinski raf.wilinski@gmail.com",
   "contributors": [
     {
@@ -20,6 +13,7 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "express": "^4.14.0",
     "on-headers": "^1.0.1",
     "pidusage": "^1.0.4",
     "socket.io": "^1.4.8"
