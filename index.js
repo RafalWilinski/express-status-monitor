@@ -99,12 +99,6 @@
     });
 
     return (req, res, next) => {
-      if (config.auth) {
-        var user = basicAuth(req);
-        if (!user || !user.name || !user.pass) return unauthorized(res);
-        if (user.name !== config.auth.username || user.pass !== config.auth.password) return unauthorized(res);
-      }
-
       if (io === null || io === undefined) {
 
         io = require('socket.io')(req.socket.server);
@@ -123,6 +117,11 @@
 
       const startTime = process.hrtime();
       if (req.path === config.path) {
+        if (config.auth) {
+          var user = basicAuth(req);
+          if (!user || !user.name || !user.pass) return unauthorized(res);
+          if (user.name !== config.auth.username || user.pass !== config.auth.password) return unauthorized(res);
+        }
         res.send(renderedHtml);
       } else {
         onHeaders(res, () => {
