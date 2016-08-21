@@ -65,15 +65,15 @@
       config = defaultConfig;
     }
 
-    if (config.path === undefined || !config instanceof String) {
+    if (config.path === undefined || !config.path instanceof String) {
       config.path = defaultConfig.path;
     }
 
-    if (config.spans === undefined || !config instanceof Array) {
+    if (config.spans === undefined || !config.spans instanceof Array) {
       config.spans = defaultConfig.spans;
     }
 
-    if (config.title === undefined || !config instanceof String) {
+    if (config.title === undefined || !config.title instanceof String) {
       config.title = 'Express Status';
     }
 
