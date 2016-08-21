@@ -1,6 +1,6 @@
 {
   "name": "express-status-monitor",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Monitoring for Express-based Node applications",
   "main": "app.js",
   "keywords": [
@@ -16,6 +16,11 @@
       "name": "Julien Breux",
       "email": "julien.breux@gmail.com",
       "url": "https://github.com/JulienBreux/"
+    },
+    {
+      "name": "Ferdinand Mütsch",
+      "email": "mail@ferdinand-muetsch.de",
+      "url": "https://github.com/n1try/"
     }
   ],
   "license": "MIT",
