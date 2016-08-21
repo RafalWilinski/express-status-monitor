@@ -32,7 +32,7 @@ path: '/status',
 auth: {
   // No authentication at all
   username: '',
-  password: ''. 
+  password: '' 
 },
 spans: [{
   interval: 1,            // Every second
