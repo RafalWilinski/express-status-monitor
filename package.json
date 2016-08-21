@@ -1,7 +1,7 @@
 {
   "name": "express-status-monitor",
   "version": "0.0.10",
-  "description": "Monitoring for Express-based Node applications",
+  "description": "Realtime Monitoring for Express-based Node applications",
   "main": "app.js",
   "keywords": [
     "node",
@@ -10,7 +10,7 @@
     "express",
     "charts"
   ],
-  "author": "Rafal Wilinski raf.wilinski@gmail.com",
+  "author": "Rafal Wilinski <raf.wilinski@gmail.com> (http://rwilinski.me)",
   "contributors": [
     {
       "name": "Julien Breux",
@@ -18,6 +18,10 @@
       "url": "https://github.com/JulienBreux/"
     }
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RafalWilinski/express-status-monitor.git"
+  },
   "license": "MIT",
   "dependencies": {
     "on-headers": "^1.0.1",
