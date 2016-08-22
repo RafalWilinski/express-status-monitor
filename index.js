@@ -94,7 +94,10 @@ const middlewareWrapper = (config) => {
 
   let renderedHtml;
   fs.readFile(path.join(__dirname, '/index.html'), function (err, html) {
-    renderedHtml = html.toString().replace(/{{title}}/g, config.title);
+    renderedHtml = html.toString()
+      .replace(/{{title}}/g, config.title)
+      .replace(/{{script}}/g, fs.readFileSync(path.join(__dirname, '/app.js')))
+      .replace(/{{style}}/g, fs.readFileSync(path.join(__dirname, '/style.css')));
   });
 
   return (req, res, next) => {

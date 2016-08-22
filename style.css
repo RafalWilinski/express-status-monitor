@@ -1,0 +1,65 @@
+* {
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+
+h1 {
+    font-size: 3em;
+    color: #222222;
+    margin: 0;
+}
+
+h5 {
+    margin: 0;
+    color: #888888;
+}
+
+p {
+    font-size: 0.7em;
+    color: #888888;
+}
+
+span {
+    cursor: pointer;
+    font-size: 10px;
+    margin-left: 5px;
+    border: 1px solid #DDD;
+    padding: 3px 10px 4px 10px;
+}
+
+canvas {
+    width: 400px;
+    height: 100px;
+}
+
+.active {
+    background: #eeeeee;
+}
+
+.stats-column {
+    flex: 0 0 200px;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    height: 100px;
+}
+
+.chart-container {
+    width: 400px;
+    height: 100px;
+}
+
+.footer {
+    position: fixed;
+    margin: auto;
+    text-align: center;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.span-controls {
+    float: right;
+}
