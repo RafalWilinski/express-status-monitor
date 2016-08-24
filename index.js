@@ -11,10 +11,7 @@ let io;
 const defaultConfig = {
   title: 'Express Status',
   path: '/status',
-  auth: {
-    username: '',
-    password: ''
-  },
+  auth: false,
   spans: [{
     interval: 1,
     retention: 60
@@ -66,7 +63,7 @@ const sendMetrics = (io, span) => {
 
 const unauthorized = (res) => {
   res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
-  return res.send(401);
+  return res.sendStatus(401);
 };
 
 const middlewareWrapper = (config) => {
@@ -86,10 +83,22 @@ const middlewareWrapper = (config) => {
     config.title = 'Express Status';
   }
 
-  if (config.auth === undefined || !config.auth instanceof Object
-      || config.auth.username === undefined || !config.auth.username instanceof String || config.auth.username === ''
-      || config.auth.password === undefined || !config.auth.password instanceof String || config.auth.password === '') {
-    config.auth = false;
+
+  //create the auth middleware, if not provided or using simple username/password
+  if (config.auth && (typeof config.auth === 'object')) {
+    // console.log(`[${config.title}] Using username/password`)
+    const name = config.auth.username;
+    const password = config.auth.password;
+    config.auth = (req, res, next) => {
+      var user = basicAuth(req);
+      if (!user || !user.name || !user.pass || !name || !password || user.name !== name || user.pass !== password) return unauthorized(res);
+      next();
+    }
+  } else if (typeof config.auth !== 'function') {
+    // console.log(`[${config.title}] No auth`)
+    config.auth = (req, res, next) => next();
+  } else {
+    // console.log(`[${config.title}] Using Middleware`)
   }
 
   let renderedHtml;
@@ -121,12 +130,10 @@ const middlewareWrapper = (config) => {
 
     const startTime = process.hrtime();
     if (req.path === config.path) {
-      if (config.auth) {
-        var user = basicAuth(req);
-        if (!user || !user.name || !user.pass) return unauthorized(res);
-        if (user.name !== config.auth.username || user.pass !== config.auth.password) return unauthorized(res);
-      }
-      res.send(renderedHtml);
+      config.auth(req, res, () => {
+        res.send(renderedHtml);
+    })
+
     } else {
       onHeaders(res, () => {
         const diff = process.hrtime(startTime);
