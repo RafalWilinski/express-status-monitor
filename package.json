@@ -1,6 +1,6 @@
 {
   "name": "express-status-monitor",
-  "version": "0.0.11",
+  "version": "0.1.0",
   "description": "Realtime Monitoring for Express-based Node applications",
   "main": "index.js",
   "keywords": [
@@ -29,7 +29,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "basic-auth": "^1.0.4",
     "on-headers": "^1.0.1",
     "pidusage": "^1.0.4",
     "socket.io": "^1.4.8"

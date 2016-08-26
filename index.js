@@ -5,16 +5,11 @@ const path = require('path');
 const os = require('os');
 const onHeaders = require('on-headers');
 const pidusage = require('pidusage');
-const basicAuth = require('basic-auth');
 let io;
 
 const defaultConfig = {
   title: 'Express Status',
   path: '/status',
-  auth: {
-    username: '',
-    password: ''
-  },
   spans: [{
     interval: 1,
     retention: 60
@@ -64,11 +59,6 @@ const sendMetrics = (io, span) => {
   });
 };
 
-const unauthorized = (res) => {
-  res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
-  return res.send(401);
-};
-
 const middlewareWrapper = (config) => {
   if (config === null || config === undefined) {
     config = defaultConfig;
@@ -84,12 +74,6 @@ const middlewareWrapper = (config) => {
 
   if (config.title === undefined || !config.title instanceof String) {
     config.title = 'Express Status';
-  }
-
-  if (config.auth === undefined || !config.auth instanceof Object
-      || config.auth.username === undefined || !config.auth.username instanceof String || config.auth.username === ''
-      || config.auth.password === undefined || !config.auth.password instanceof String || config.auth.password === '') {
-    config.auth = false;
   }
 
   let renderedHtml;
@@ -121,11 +105,6 @@ const middlewareWrapper = (config) => {
 
     const startTime = process.hrtime();
     if (req.path === config.path) {
-      if (config.auth) {
-        var user = basicAuth(req);
-        if (!user || !user.name || !user.pass) return unauthorized(res);
-        if (user.name !== config.auth.username || user.pass !== config.auth.password) return unauthorized(res);
-      }
       res.send(renderedHtml);
     } else {
       onHeaders(res, () => {

@@ -29,11 +29,6 @@ Default config:
 ```
 title: 'Express Status',  // Default title
 path: '/status',
-auth: {
-  // No authentication at all
-  username: '',
-  password: '' 
-},
 spans: [{
   interval: 1,            // Every second
   retention: 60           // Keep 60 datapoints in memory

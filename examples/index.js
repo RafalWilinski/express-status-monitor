@@ -19,5 +19,5 @@ const config = {
 app.use(require('../index')(config));
 
 app.listen(3000, () => {
-  console.log('🌏  http://0.0.0.0:3000');
+  console.log('Listening on http://0.0.0.0:3000');
 });
