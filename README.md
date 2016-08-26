@@ -1,4 +1,3 @@
-### Issues with HTTPS (including Heroku) has been resolved, module is working again
 # express-status-monitor
 Simple, self-hosted module based on Socket.io and Chart.js to report realtime server metrics for Express-based node servers. 
 
@@ -41,6 +40,17 @@ spans: [{
 }]
 
 ```
+
+## Securing endpoint
+
+Example using https://www.npmjs.com/package/connect-ensure-login
+```
+const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn()
+
+app.get('/status', ensureLoggedIn, require('express-status-monitor')())
+```
+
+Credits to [@mattiaerre](https://github.com/mattiaerre)
 
 ## License
 
