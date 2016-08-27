@@ -32,5 +32,14 @@
     "on-headers": "^1.0.1",
     "pidusage": "^1.0.4",
     "socket.io": "^1.4.8"
+  },
+  "scripts": {
+    "coverage": "istanbul cover _mocha test/index.spec.js",
+    "test": "mocha"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.0.2",
+    "sinon": "^1.17.5"
   }
 }

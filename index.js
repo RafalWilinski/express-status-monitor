@@ -14,12 +14,12 @@ const defaultConfig = {
     interval: 1,
     retention: 60
   }, {
-    interval: 5,
-    retention: 60
-  }, {
-    interval: 15,
-    retention: 60
-  }]
+      interval: 5,
+      retention: 60
+    }, {
+      interval: 15,
+      retention: 60
+    }]
 };
 
 const gatherOsMetrics = (io, span) => {
@@ -76,13 +76,12 @@ const middlewareWrapper = (config) => {
     config.title = 'Express Status';
   }
 
-  let renderedHtml;
-  fs.readFile(path.join(__dirname, '/index.html'), function (err, html) {
-    renderedHtml = html.toString()
+  let renderedHtml =
+    fs.readFileSync(path.join(__dirname, '/index.html'))
+      .toString()
       .replace(/{{title}}/g, config.title)
       .replace(/{{script}}/g, fs.readFileSync(path.join(__dirname, '/app.js')))
       .replace(/{{style}}/g, fs.readFileSync(path.join(__dirname, '/style.css')));
-  });
 
   return (req, res, next) => {
     if (io === null || io === undefined) {
@@ -115,7 +114,7 @@ const middlewareWrapper = (config) => {
         config.spans.forEach((span) => {
           const last = span.responses[span.responses.length - 1];
           if (last !== undefined &&
-              last.timestamp / 1000 + span.interval > Date.now() / 1000) {
+            last.timestamp / 1000 + span.interval > Date.now() / 1000) {
             last[category]++;
             last.count++;
             last.mean = last.mean + ((responseTime - last.mean) / last.count);
