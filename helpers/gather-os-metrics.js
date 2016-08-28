@@ -1,3 +1,5 @@
+/* eslint no-console: "off" */
+
 const pidusage = require('pidusage');
 const os = require('os');
 const sendMetrics = require('./send-metrics');
@@ -14,6 +16,11 @@ module.exports = (io, span) => {
   };
 
   pidusage.stat(process.pid, (err, stat) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+
     const last = span.responses[span.responses.length - 1];
     // Convert from B to MB
     stat.memory = stat.memory / 1024 / 1024;
