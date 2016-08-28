@@ -1,5 +1,5 @@
 const chai = require('chai');
-const sinon = require('sinon');
+
 chai.should();
 
 const defaultConfig = require('../helpers/default-config');

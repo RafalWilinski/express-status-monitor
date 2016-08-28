@@ -12,4 +12,4 @@ module.exports = (config) => {
   config.spans = (typeof config.spans === 'object') ? config.spans : defaultConfig.spans;
 
   return config;
-}
+};

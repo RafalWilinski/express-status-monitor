@@ -1,11 +1,10 @@
-'use strict';
-
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const onHeaders = require('on-headers');
 const pidusage = require('pidusage');
 const validate = require('./helpers/validate');
+
 let io;
 
 const gatherOsMetrics = (io, span) => {
@@ -48,7 +47,7 @@ const sendMetrics = (io, span) => {
 const middlewareWrapper = (config) => {
   config = validate(config);
 
-  let renderedHtml =
+  const renderedHtml =
     fs.readFileSync(path.join(__dirname, '/index.html'))
       .toString()
       .replace(/{{title}}/g, config.title)
