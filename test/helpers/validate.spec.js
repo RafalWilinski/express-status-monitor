@@ -55,5 +55,5 @@ describe('helpers', () => {
         config.spans.should.equal(customConfig.spans);
       });
     });
-  })
+  });
 });

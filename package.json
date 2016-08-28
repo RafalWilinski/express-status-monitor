@@ -34,7 +34,7 @@
     "socket.io": "^1.4.8"
   },
   "scripts": {
-    "coverage": "istanbul cover _mocha test",
+    "coverage": "istanbul cover _mocha test --  --recursive",
     "test": "mocha --recursive"
   },
   "devDependencies": {
