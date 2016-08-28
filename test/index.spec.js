@@ -2,13 +2,14 @@ const chai = require('chai');
 const sinon = require('sinon');
 chai.should();
 
-describe('given express-status-monitor', () => {
-  const expresStatusMonitor = require('../index.js');
-  describe('when initialised', () => {
-    const config = { path: '/status' };
-    const middleware = expresStatusMonitor(config);
+const expresStatusMonitor = require('../index.js');
+const defaultConfig = require('../helpers/default-config');
 
-    it('then it should be an instance of function', () => {
+describe('express-status-monitor', () => {
+  describe('when initialised', () => {
+    const middleware = expresStatusMonitor();
+
+    it('then it should be an instance of Function', () => {
       middleware.should.be.an.instanceof(Function);
     });
 
@@ -18,17 +19,16 @@ describe('given express-status-monitor', () => {
 
     describe('when invoked', () => {
       beforeEach(() => {
-        req.path = config.path;
+        req.path = defaultConfig.path;
         res.send.reset();
       });
 
-      it('and req.path === config.path, then res.send called', () => {
-        req.path = config.path;
+      it(`and req.path === ${defaultConfig.path}, then res.send called`, () => {
         middleware(req, res, next);
         sinon.assert.called(res.send)
       });
 
-      it('and req.path !== config.path, then res.send not called', () => {
+      it(`and req.path !== ${defaultConfig.path}, then res.send not called`, () => {
         req.path = '/another-path';
         middleware(req, res, next);
         sinon.assert.notCalled(res.send)

@@ -5,22 +5,8 @@ const path = require('path');
 const os = require('os');
 const onHeaders = require('on-headers');
 const pidusage = require('pidusage');
+const validate = require('./helpers/validate');
 let io;
-
-const defaultConfig = {
-  title: 'Express Status',
-  path: '/status',
-  spans: [{
-    interval: 1,
-    retention: 60
-  }, {
-      interval: 5,
-      retention: 60
-    }, {
-      interval: 15,
-      retention: 60
-    }]
-};
 
 const gatherOsMetrics = (io, span) => {
   const defaultResponse = {
@@ -60,21 +46,7 @@ const sendMetrics = (io, span) => {
 };
 
 const middlewareWrapper = (config) => {
-  if (config === null || config === undefined) {
-    config = defaultConfig;
-  }
-
-  if (config.path === undefined || !config.path instanceof String) {
-    config.path = defaultConfig.path;
-  }
-
-  if (config.spans === undefined || !config.spans instanceof Array) {
-    config.spans = defaultConfig.spans;
-  }
-
-  if (config.title === undefined || !config.title instanceof String) {
-    config.title = 'Express Status';
-  }
+  config = validate(config);
 
   let renderedHtml =
     fs.readFileSync(path.join(__dirname, '/index.html'))

@@ -34,7 +34,7 @@
     "socket.io": "^1.4.8"
   },
   "scripts": {
-    "coverage": "istanbul cover _mocha test/index.spec.js",
+    "coverage": "istanbul cover _mocha test",
     "test": "mocha"
   },
   "devDependencies": {
