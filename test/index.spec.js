@@ -1,8 +1,9 @@
 const chai = require('chai');
 const sinon = require('sinon');
+
 chai.should();
 
-const expresStatusMonitor = require('../index.js');
+const expresStatusMonitor = require('../index');
 const defaultConfig = require('../helpers/default-config');
 
 describe('express-status-monitor', () => {
@@ -25,13 +26,13 @@ describe('express-status-monitor', () => {
 
       it(`and req.path === ${defaultConfig.path}, then res.send called`, () => {
         middleware(req, res, next);
-        sinon.assert.called(res.send)
+        sinon.assert.called(res.send);
       });
 
       it(`and req.path !== ${defaultConfig.path}, then res.send not called`, () => {
         req.path = '/another-path';
         middleware(req, res, next);
-        sinon.assert.notCalled(res.send)
+        sinon.assert.notCalled(res.send);
       });
     });
   });
