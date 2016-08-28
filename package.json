@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "istanbul": "^0.4.5",
     "mocha": "^3.0.2",
     "sinon": "^1.17.5"
   }
