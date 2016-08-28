@@ -1,48 +1,10 @@
 const fs = require('fs');
 const path = require('path');
-const os = require('os');
 const onHeaders = require('on-headers');
-const pidusage = require('pidusage');
 const validate = require('./helpers/validate');
+const gatherOsMetrics = require('./helpers/gather-os-metrics');
 
 let io;
-
-const gatherOsMetrics = (io, span) => {
-  const defaultResponse = {
-    '2': 0,
-    '3': 0,
-    '4': 0,
-    '5': 0,
-    count: 0,
-    mean: 0,
-    timestamp: Date.now()
-  };
-
-  pidusage.stat(process.pid, (err, stat) => {
-    const last = span.responses[span.responses.length - 1];
-    // Convert from B to MB
-    stat.memory = stat.memory / 1024 / 1024;
-    stat.load = os.loadavg();
-    stat.timestamp = Date.now();
-
-    span.os.push(stat);
-    if (!span.responses[0] || last.timestamp + (span.interval * 1000) < Date.now()) span.responses.push(defaultResponse);
-
-    if (span.os.length >= span.retention) span.os.shift();
-    if (span.responses[0] && span.responses.length > span.retention) span.responses.shift();
-
-    sendMetrics(io, span);
-  });
-};
-
-const sendMetrics = (io, span) => {
-  io.emit('stats', {
-    os: span.os[span.os.length - 2],
-    responses: span.responses[span.responses.length - 2],
-    interval: span.interval,
-    retention: span.retention
-  });
-};
 
 const middlewareWrapper = (config) => {
   config = validate(config);

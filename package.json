@@ -35,7 +35,7 @@
   },
   "scripts": {
     "coverage": "istanbul cover _mocha test",
-    "test": "mocha"
+    "test": "mocha --recursive"
   },
   "devDependencies": {
     "chai": "^3.5.0",
