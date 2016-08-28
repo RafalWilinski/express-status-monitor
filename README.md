@@ -15,9 +15,9 @@ More Node frameworks coming soon.
 
 ## Run examples
 
-1. Go to `examples/`
-2. Run `npm install`
-3. Run server `node index.js`
+1. Go to `cd examples/`
+2. Run `npm i`
+3. Run server `npm start`
 4. Go to `http://0.0.0.0:3000`
 
 ## Options
