@@ -104,7 +104,8 @@ const middlewareWrapper = (config) => {
       config.spans.forEach((span) => {
         span.os = [];
         span.responses = [];
-        setInterval(() => gatherOsMetrics(io, span), span.interval * 1000);
+        const interval = setInterval(() => gatherOsMetrics(io, span), span.interval * 1000);
+        interval.unref(); // don't keep node.js process up
       });
     }
 
