@@ -10,6 +10,9 @@
     "express",
     "charts"
   ],
+  "engines" : {
+    "node" : ">=4"
+  },
   "author": "Rafal Wilinski <raf.wilinski@gmail.com> (http://rwilinski.me)",
   "contributors": [
     {
