@@ -1,6 +1,6 @@
 {
   "name": "express-status-monitor",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Realtime Monitoring for Express-based Node applications",
   "main": "index.js",
   "keywords": [
@@ -24,6 +24,16 @@
       "name": "Ferdinand Mütsch",
       "email": "mail@ferdinand-muetsch.de",
       "url": "https://github.com/n1try/"
+    },
+    {
+      "name": "Mattia Richetto",
+      "email": "mattia.richetto@gmail.com",
+      "url": "https://github.com/mattiaerre"
+    },
+    {
+      "name": "Jiri Spac",
+      "email": "capajj@gmail.com",
+      "url": "https://github.com/capaj/"
     }
   ],
   "repository": {
