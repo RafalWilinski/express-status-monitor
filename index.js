@@ -3,6 +3,7 @@ const path = require('path');
 const onHeaders = require('on-headers');
 const validate = require('./helpers/validate');
 const gatherOsMetrics = require('./helpers/gather-os-metrics');
+const socketIo = require('socket.io');
 
 let io;
 
@@ -18,12 +19,11 @@ const middlewareWrapper = (config) => {
 
   return (req, res, next) => {
     if (io === null || io === undefined) {
-
-      io = require('socket.io')(req.socket.server);
+      io = socketIo(req.socket.server);
 
       io.on('connection', (socket) => {
         socket.emit('start', config.spans);
-        socket.on('change', function () {
+        socket.on('change', () => {
           socket.emit('start', config.spans);
         });
       });
@@ -54,13 +54,13 @@ const middlewareWrapper = (config) => {
             last.mean = last.mean + ((responseTime - last.mean) / last.count);
           } else {
             span.responses.push({
-              '2': category === 2 ? 1 : 0,
-              '3': category === 3 ? 1 : 0,
-              '4': category === 4 ? 1 : 0,
-              '5': category === 5 ? 1 : 0,
+              2: category === 2 ? 1 : 0,
+              3: category === 3 ? 1 : 0,
+              4: category === 4 ? 1 : 0,
+              5: category === 5 ? 1 : 0,
               count: 1,
               mean: responseTime,
-              timestamp: Date.now()
+              timestamp: Date.now(),
             });
           }
         });
