@@ -1,6 +1,6 @@
 {
   "name": "express-status-monitor-example",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Examples",
   "main": "index.js",
   "author": "Rafal Wilinski raf.wilinski@gmail.com",
@@ -14,8 +14,16 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.14.0",
+    "express-favicon-short-circuit": "^1.1.0",
     "on-headers": "^1.0.1",
     "pidusage": "^1.0.4",
     "socket.io": "^1.4.8"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RafalWilinski/express-status-monitor/tree/master/examples"
   }
 }

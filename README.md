@@ -15,9 +15,9 @@ More Node frameworks coming soon.
 
 ## Run examples
 
-1. Go to `examples/`
-2. Run `npm install`
-3. Run server `node index.js`
+1. Go to `cd examples/`
+2. Run `npm i`
+3. Run server `npm start`
 4. Go to `http://0.0.0.0:3000`
 
 ## Options
@@ -25,7 +25,7 @@ More Node frameworks coming soon.
 Monitor can be configured by passing options object into `expressMonitor` constructor.
 
 Default config:
-```
+```javascript
 title: 'Express Status',  // Default title
 path: '/status',
 spans: [{
@@ -44,13 +44,21 @@ spans: [{
 ## Securing endpoint
 
 Example using https://www.npmjs.com/package/connect-ensure-login
-```
+```javascript
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn()
 
 app.get('/status', ensureLoggedIn, require('express-status-monitor')())
 ```
 
 Credits to [@mattiaerre](https://github.com/mattiaerre)
+
+## Tests and coverage
+
+In order to run test and coverage use the following npm commands:
+```
+npm test
+npm run coverage
+```
 
 ## License
 

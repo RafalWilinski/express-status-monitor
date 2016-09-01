@@ -1,0 +1,17 @@
+{
+  "extends": "airbnb",
+  "globals": {
+    "describe": false,
+    "it": false,
+    "beforeEach": false
+  },
+  "rules": {
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "peerDependencies": true
+      }
+    ],
+    "no-param-reassign": "off"
+  }
+}
