@@ -9,11 +9,10 @@ const defaultConfig = require('../../helpers/default-config');
 describe('helpers', () => {
   describe('on-headers-listener', () => {
     describe('when invoked', () => {
-      let clock;
+      const clock = sinon.useFakeTimers();
       const spans = defaultConfig.spans;
 
       before(() => {
-        clock = sinon.useFakeTimers();
         spans.forEach((span) => {
           span.responses = [];
         });
