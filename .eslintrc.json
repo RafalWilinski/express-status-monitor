@@ -3,7 +3,9 @@
   "globals": {
     "describe": false,
     "it": false,
-    "beforeEach": false
+    "beforeEach": false,
+    "before": false,
+    "after": false
   },
   "rules": {
     "import/no-extraneous-dependencies": [
