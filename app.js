@@ -102,6 +102,19 @@ socket.on('start', function (data) {
   data[defaultSpan].responses.pop();
   data[defaultSpan].os.pop();
 
+  if(!data[defaultSpan].os[data[defaultSpan].os.length - 1]) {
+    data[defaultSpan].os[data[defaultSpan].os.length - 1]= {
+      cpu:0,
+      memory:0,
+      load: [0,0,0]
+    }
+  }
+  if(!data[defaultSpan].responses[data[defaultSpan].responses.length - 1]) {
+    data[defaultSpan].responses[data[defaultSpan].responses.length - 1]= {
+      mean:0
+    }
+  }
+  
   cpuStat.textContent = data[defaultSpan].os[data[defaultSpan].os.length - 1].cpu.toFixed(1) + '%';
   cpuChart.data.datasets[0].data = data[defaultSpan].os.map(function (point) {
     return point.cpu;
@@ -160,6 +173,19 @@ socket.on('start', function (data) {
 
 socket.on('stats', function (data) {
   if (data.retention === spans[defaultSpan].retention && data.interval === spans[defaultSpan].interval) {
+    if(!data.os) data.os = {};
+    if(!data.os.cpu) data.os.cpu=0;
+    if(!data.os.memory) data.os.memory=0;
+    if(!data.os.load) data.os.load=[0,0,0];
+    if(!data.responses) {
+      data.responses = {};
+    }    
+    if(!data.responses.timestamp) {
+      var ts = new Date();
+      data.responses.timestamp = ts.getTime()/1000;
+    }
+    if(!data.responses.mean) data.responses.mean = 0;
+    
     cpuStat.textContent = data.os.cpu.toFixed(1) + '%';
     cpuChart.data.datasets[0].data.push(data.os.cpu);
     cpuChart.data.labels.push(data.os.timestamp);
@@ -177,8 +203,12 @@ socket.on('stats', function (data) {
     responseTimeChart.data.labels.push(data.responses.timestamp);
 
     var deltaTime = data.responses.timestamp - rpsChart.data.labels[rpsChart.data.labels.length - 1];
-    rpsStat.textContent = (data.responses.count / deltaTime * 1000).toFixed(2);
-    rpsChart.data.datasets[0].data.push(data.responses.count / deltaTime * 1000);
+    var rpsTemp = (data.responses.count / deltaTime * 1000);
+    if(!isFinite(rpsTemp) || isNaN(rpsTemp)) {
+      rpsTemp=0;
+    }
+    rpsStat.textContent = rpsTemp.toFixed(2);
+    rpsChart.data.datasets[0].data.push(rpsTemp);
     rpsChart.data.labels.push(data.responses.timestamp);
 
     charts.forEach(function (chart) {
