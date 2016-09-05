@@ -32,6 +32,7 @@ module.exports = (io, span) => {
       span.responses.push(defaultResponse);
     }
 
+    // todo: I think this check should be moved somewhere else
     if (span.os.length >= span.retention) span.os.shift();
     if (span.responses[0] && span.responses.length > span.retention) span.responses.shift();
 
