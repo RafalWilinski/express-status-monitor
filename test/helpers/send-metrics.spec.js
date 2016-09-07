@@ -3,7 +3,7 @@ const sinon = require('sinon');
 
 chai.should();
 
-const sendMetrics = require('../../helpers/send-metrics');
+const sendMetrics = require('../../src/helpers/send-metrics');
 
 describe('helpers', () => {
   describe('send-metrics', () => {
