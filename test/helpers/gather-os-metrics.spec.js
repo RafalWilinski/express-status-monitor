@@ -2,7 +2,7 @@ const chai = require('chai');
 
 chai.should();
 
-const gatherOsMetrics = require('../../helpers/gather-os-metrics');
+const gatherOsMetrics = require('../../src/helpers/gather-os-metrics');
 
 describe('helpers', () => {
   describe('gather-os-metrics', () => {

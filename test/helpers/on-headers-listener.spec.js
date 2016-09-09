@@ -3,8 +3,8 @@ const sinon = require('sinon');
 
 chai.should();
 
-const onHeadersListener = require('../../helpers/on-headers-listener');
-const defaultConfig = require('../../helpers/default-config');
+const onHeadersListener = require('../../src/helpers/on-headers-listener');
+const defaultConfig = require('../../src/helpers/default-config');
 
 describe('helpers', () => {
   describe('on-headers-listener', () => {

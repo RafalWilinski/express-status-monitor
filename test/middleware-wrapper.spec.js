@@ -3,8 +3,8 @@ const sinon = require('sinon');
 
 chai.should();
 
-const expresStatusMonitor = require('../index');
-const defaultConfig = require('../helpers/default-config');
+const expresStatusMonitor = require('../src/middleware-wrapper');
+const defaultConfig = require('../src/helpers/default-config');
 
 describe('express-status-monitor', () => {
   describe('when initialised', () => {
