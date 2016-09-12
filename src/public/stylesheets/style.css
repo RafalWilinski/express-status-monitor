@@ -13,6 +13,10 @@ h5 {
     color: #888888;
 }
 
+h6 {
+    margin: 0;
+}
+
 p {
     font-size: 0.7em;
     color: #888888;
@@ -32,7 +36,7 @@ canvas {
 }
 
 .content {
-    width: 600px; 
+    width: 600px;
     margin: auto;
 }
 

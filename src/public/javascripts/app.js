@@ -211,8 +211,6 @@ socket.on('stats', function (data) {
     var os = data.os;
     var responses = data.responses;
 
-    console.log(responses);
-
     cpuStat.textContent = '0.0%';
     if (os) {
       cpuStat.textContent = os.cpu.toFixed(1) + '%';
