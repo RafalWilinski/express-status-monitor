@@ -2,8 +2,8 @@ const chai = require('chai');
 
 chai.should();
 
-const socketIoInit = require('../../helpers/socket-io-init');
-const defaultConfig = require('../../helpers/default-config');
+const socketIoInit = require('../../src/helpers/socket-io-init');
+const defaultConfig = require('../../src/helpers/default-config');
 
 describe('helpers', () => {
   describe('socket-io-init', () => {
