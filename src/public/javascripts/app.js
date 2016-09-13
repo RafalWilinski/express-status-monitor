@@ -175,6 +175,7 @@ socket.on('start', function (data) {
 
   if (data[defaultSpan].responses.length >= 2) {
     var deltaTime = lastResponseMetric.timestamp - data[defaultSpan].responses[data[defaultSpan].responses.length - 2].timestamp;
+    if (deltaTime < 1) deltaTime = 1000;
     rpsStat.textContent = (lastResponseMetric.count / deltaTime * 1000).toFixed(2);
     rpsChart.data.datasets[0].data = data[defaultSpan].responses.map(function (point) {
       return point.count / deltaTime * 1000;
