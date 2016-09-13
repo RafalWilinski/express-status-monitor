@@ -72,3 +72,19 @@ canvas {
 .span-controls {
     float: right;
 }
+
+.status-code-2xx {
+    color: #75D701;
+}
+
+.status-code-3xx {
+    color: #47b8e0;
+}
+
+.status-code-4xx {
+    color: #ffc952;
+}
+
+.status-code-5xx {
+    color: #E53A40;
+}
