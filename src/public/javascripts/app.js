@@ -44,13 +44,12 @@ var defaultOptions = {
   animation: false
 };
 
-var createChart = function (ctx, dataset, color) {
+var createChart = function (ctx, dataset) {
   return new Chart(ctx, {
     type: 'line',
     data: {
       labels: [],
       datasets: dataset,
-      color: color ? color : 'black',
     },
     options: defaultOptions
   });
