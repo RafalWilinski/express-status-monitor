@@ -1,4 +1,5 @@
 const request = require('request');
+
 const requestUrl = 'http://localhost:3000/return-status/';
 const interval = 50;
 
