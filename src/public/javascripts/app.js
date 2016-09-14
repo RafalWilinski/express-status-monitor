@@ -10,6 +10,7 @@ Chart.defaults.global.elements.line.borderWidth = 2;
 var socket = io(location.protocol + '//' + location.hostname + ':' + location.port);
 var defaultSpan = 0;
 var spans = [];
+var statusCodesColors = ['#75D701', '#47b8e0', '#ffc952', '#E53A40'];
 
 var defaultDataset = {
   label: '',
@@ -48,7 +49,7 @@ var createChart = function (ctx, dataset) {
     type: 'line',
     data: {
       labels: [],
-      datasets: dataset
+      datasets: dataset,
     },
     options: defaultOptions
   });
@@ -63,6 +64,7 @@ var memDataset = [Object.create(defaultDataset)];
 var loadDataset = [Object.create(defaultDataset)];
 var responseTimeDataset = [Object.create(defaultDataset)];
 var rpsDataset = [Object.create(defaultDataset)];
+var statusCodesDataset = [Object.create(defaultDataset)];
 
 var cpuStat = document.getElementById('cpuStat');
 var memStat = document.getElementById('memStat');
@@ -75,14 +77,32 @@ var memChartCtx = document.getElementById("memChart");
 var loadChartCtx = document.getElementById("loadChart");
 var responseTimeChartCtx = document.getElementById("responseTimeChart");
 var rpsChartCtx = document.getElementById("rpsChart");
+var statusCodesChartCtx = document.getElementById("statusCodesChart");
 
 var cpuChart = createChart(cpuChartCtx, cpuDataset);
 var memChart = createChart(memChartCtx, memDataset);
 var loadChart = createChart(loadChartCtx, loadDataset);
 var responseTimeChart = createChart(responseTimeChartCtx, responseTimeDataset);
 var rpsChart = createChart(rpsChartCtx, rpsDataset);
+var statusCodesChart = new Chart(statusCodesChartCtx, {
+  type: 'line',
+  data: {
+    labels: [],
+    datasets: [
+      Object.create(defaultDataset),
+      Object.create(defaultDataset),
+      Object.create(defaultDataset),
+      Object.create(defaultDataset)
+    ]
+  },
+  options: defaultOptions
+});
 
-var charts = [cpuChart, memChart, loadChart, responseTimeChart, rpsChart];
+statusCodesChart.data.datasets.forEach(function(dataset, index) {
+  dataset.borderColor = statusCodesColors[index];
+});
+
+var charts = [cpuChart, memChart, loadChart, responseTimeChart, rpsChart, statusCodesChart];
 
 var onSpanChange = function (e) {
   e.target.classList.add('active');
@@ -146,8 +166,16 @@ socket.on('start', function (data) {
   });
   responseTimeChart.data.labels = data[defaultSpan].responses.map(addTimestamp);
 
+  for(var i = 0; i < 4; i++) {
+    statusCodesChart.data.datasets[i].data = data[defaultSpan].responses.map(function (point) {
+      return point[i+2];
+    });
+  }
+  statusCodesChart.data.labels = data[defaultSpan].responses.map(addTimestamp);
+
   if (data[defaultSpan].responses.length >= 2) {
     var deltaTime = lastResponseMetric.timestamp - data[defaultSpan].responses[data[defaultSpan].responses.length - 2].timestamp;
+    if (deltaTime < 1) deltaTime = 1000;
     rpsStat.textContent = (lastResponseMetric.count / deltaTime * 1000).toFixed(2);
     rpsChart.data.datasets[0].data = data[defaultSpan].responses.map(function (point) {
       return point.count / deltaTime * 1000;
@@ -181,6 +209,7 @@ socket.on('start', function (data) {
 socket.on('stats', function (data) {
   if (data.retention === spans[defaultSpan].retention && data.interval === spans[defaultSpan].interval) {
     var os = data.os;
+    var responses = data.responses;
 
     cpuStat.textContent = '0.0%';
     if (os) {
@@ -203,8 +232,6 @@ socket.on('stats', function (data) {
       loadChart.data.labels.push(os.timestamp);
     }
 
-    var responses = data.responses;
-
     responseTimeStat.textContent = '0.00ms';
     if (responses) {
       responseTimeStat.textContent = responses.mean.toFixed(2) + 'ms';
@@ -214,17 +241,27 @@ socket.on('stats', function (data) {
 
     if (responses) {
       var deltaTime = responses.timestamp - rpsChart.data.labels[rpsChart.data.labels.length - 1];
+      if (deltaTime < 1) deltaTime = 1000;
       rpsStat.textContent = (responses.count / deltaTime * 1000).toFixed(2);
       rpsChart.data.datasets[0].data.push(responses.count / deltaTime * 1000);
       rpsChart.data.labels.push(responses.timestamp);
     }
 
+    if (responses) {
+       for(var i = 0; i < 4; i++) {
+        statusCodesChart.data.datasets[i].data.push(data.responses[i+2]);
+      }
+      statusCodesChart.data.labels.push(data.responses.timestamp);
+    }
+
     charts.forEach(function (chart) {
       if (spans[defaultSpan].retention < chart.data.labels.length) {
-        chart.data.datasets[0].data.shift();
+        chart.data.datasets.forEach(function(dataset) {
+          dataset.data.shift();
+        });
+
         chart.data.labels.shift();
       }
-
       chart.update();
     });
   }

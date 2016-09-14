@@ -14,10 +14,12 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.14.0",
-    "express-favicon-short-circuit": "^1.1.0"
+    "express-favicon-short-circuit": "^1.1.0",
+    "request": "^2.74.0"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "benchmark": "node tester.js"
   },
   "repository": {
     "type": "git",
