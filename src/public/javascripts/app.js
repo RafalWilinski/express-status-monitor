@@ -98,7 +98,7 @@ var statusCodesChart = new Chart(statusCodesChartCtx, {
   options: defaultOptions
 });
 
-statusCodesChart.data.datasets.forEach((dataset, index) => {
+statusCodesChart.data.datasets.forEach(function(dataset, index) {
   dataset.borderColor = statusCodesColors[index];
 });
 
@@ -256,7 +256,7 @@ socket.on('stats', function (data) {
 
     charts.forEach(function (chart) {
       if (spans[defaultSpan].retention < chart.data.labels.length) {
-        chart.data.datasets.forEach((dataset) => {
+        chart.data.datasets.forEach(function(dataset) {
           dataset.data.shift();
         });
 
