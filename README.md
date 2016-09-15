@@ -52,6 +52,16 @@ app.get('/status', ensureLoggedIn, require('express-status-monitor')())
 
 Credits to [@mattiaerre](https://github.com/mattiaerre)
 
+Example using [http-auth](https://www.npmjs.com/package/http-auth)
+```javascript
+const auth = require('http-auth');
+const basic = auth.basic({realm: 'Monitor Area'}, function(user, pass, callback) {
+  callback(user === 'username' && pass === 'password');
+});
+
+app.get('/status', auth.connect(basic), require('express-status-monitor')());
+```
+
 ## Tests and coverage
 
 In order to run test and coverage use the following npm commands:
