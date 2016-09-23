@@ -1,11 +1,12 @@
 # express-status-monitor
 Simple, self-hosted module based on Socket.io and Chart.js to report realtime server metrics for Express-based node servers. 
 
-[Koa.js version of this library](https://github.com/capaj/koa-monitor).
-
-More Node frameworks coming soon.
+[Koa.js version of this library](https://github.com/capaj/koa-monitor)
 
 ![Monitoring Page](http://i.imgur.com/AHizEWq.gif "Monitoring Page")
+
+## Demo
+[Demo available here](https://express-status-monitor-example-fjovaypblp.now.sh)
 
 ## Installation & setup
 1. Run `npm install express-status-monitor --save`
