@@ -44,16 +44,20 @@
   "dependencies": {
     "on-headers": "^1.0.1",
     "pidusage": "^1.0.8",
-    "socket.io": "^1.4.8"
+    "socket.io": "^1.4.8",
+    "snyk": "^1.19.1"
   },
   "scripts": {
     "coverage": "istanbul cover _mocha test --  --recursive",
-    "test": "mocha --recursive"
+    "test": "snyk test && mocha --recursive",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.0.2",
     "sinon": "^1.17.5"
-  }
+  },
+  "snyk": true
 }
