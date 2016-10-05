@@ -1,5 +1,7 @@
 # express-status-monitor
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/express-status-monitor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![express-status-monitor on npm](https://img.shields.io/npm/v/express-status-monitor.svg)](https://www.npmjs.com/gitter-sidecar)
+
 Simple, self-hosted module based on Socket.io and Chart.js to report realtime server metrics for Express-based node servers.
 
 ![Monitoring Page](http://i.imgur.com/AHizEWq.gif "Monitoring Page")
