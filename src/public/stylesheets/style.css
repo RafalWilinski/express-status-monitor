@@ -61,9 +61,7 @@ canvas {
 }
 
 .footer {
-  position: absolute;
   text-align: center;
-  width: 600px;
 }
 
 .span-controls {
