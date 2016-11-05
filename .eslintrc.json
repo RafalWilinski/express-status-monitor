@@ -5,12 +5,12 @@
     "it": false,
     "beforeEach": false,
     "before": false,
-    "after": false
+    "after": false,
+    "Chart": false
   },
   "rules": {
     "import/no-extraneous-dependencies": [
-      "error",
-      {
+      "error", {
         "peerDependencies": true
       }
     ],

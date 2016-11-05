@@ -23,7 +23,7 @@ const middlewareWrapper = (config) => {
     if (req.path === config.path) {
       res.send(renderedHtml);
     } else {
-      onHeaders(res, () => { onHeadersListener(res.statusCode, startTime, config.spans) });
+      onHeaders(res, () => { onHeadersListener(res.statusCode, startTime, config.spans); });
       next();
     }
   };

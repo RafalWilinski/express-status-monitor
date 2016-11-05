@@ -51,11 +51,17 @@
     "test": "mocha --recursive",
     "snyk-protect": "snyk protect",
     "prepublish": "npm run snyk-protect",
-    "example": "cd examples && npm start"
+    "example": "cd examples && npm start",
+    "eslint": "eslint . --fix"
   },
   "devDependencies": {
     "bithound": "^1.7.0",
     "chai": "^3.5.0",
+    "eslint": "^3.9.1",
+    "eslint-config-airbnb": "^12.0.0",
+    "eslint-plugin-import": "^1.16.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.5.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.0.2",
     "sinon": "^1.17.5",

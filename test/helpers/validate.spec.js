@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 const chai = require('chai');
 
 chai.should();
@@ -56,7 +57,7 @@ describe('helpers', () => {
     });
 
     describe('when config is valid', () => {
-      const customConfig = { title: 'Custom title', path: '/custom-path', spans: [{}, {}, {}], port: 9999, websocket: {} }
+      const customConfig = { title: 'Custom title', path: '/custom-path', spans: [{}, {}, {}], port: 9999, websocket: {} };
       const config = validate(customConfig);
 
       it(`then title === ${customConfig.title}`, () => {
