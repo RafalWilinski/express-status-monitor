@@ -1,6 +1,6 @@
 # express-status-monitor
 
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/express-status-monitor/Lobby/?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![express-status-monitor on npm](https://img.shields.io/npm/v/express-status-monitor.svg)](https://www.npmjs.com/express-status-monitor) [![bitHound Overall Score](https://www.bithound.io/github/RafalWilinski/express-status-monitor/badges/score.svg)](https://www.bithound.io/github/RafalWilinski/express-status-monitor)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/express-status-monitor/Lobby/?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![express-status-monitor on npm](https://img.shields.io/npm/v/express-status-monitor.svg)](https://www.npmjs.com/express-status-monitor) [![bitHound Overall Score](https://www.bithound.io/github/RafalWilinski/express-status-monitor/badges/score.svg)](https://www.bithound.io/github/RafalWilinski/express-status-monitor) [![CircleCI](https://circleci.com/gh/RafalWilinski/express-status-monitor.svg?style=svg)](https://circleci.com/gh/RafalWilinski/express-status-monitor)
 
 Simple, self-hosted module based on Socket.io and Chart.js to report realtime server metrics for Express-based node servers.
 
