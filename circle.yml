@@ -6,3 +6,5 @@ test:
     - nvm install 6.9.1 && nvm use 6.9.1 && npm test
     - nvm use node && npm test
     - snyk test
+  post:
+    - bithound check git@github.com:RafalWilinski/express-status-monitor.git
