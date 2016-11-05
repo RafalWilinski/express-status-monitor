@@ -15,4 +15,6 @@ module.exports = {
       retention: 60,
     },
   ],
+  port: null,
+  websocket: null,
 };

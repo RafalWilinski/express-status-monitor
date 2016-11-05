@@ -11,9 +11,9 @@ module.exports = (config) => {
 
   config.spans = (typeof config.spans === 'object') ? config.spans : defaultConfig.spans;
 
-  config.port = (typeof config.port === 'number') ? config.port : null;
+  config.port = (typeof config.port === 'number') ? config.port : defaultConfig.port;
 
-  config.websocket = (typeof config.websocket === 'object') ? config.websocket : null;
+  config.websocket = (typeof config.websocket === 'object') ? config.websocket : defaultConfig.websocket;
 
   return config;
 };

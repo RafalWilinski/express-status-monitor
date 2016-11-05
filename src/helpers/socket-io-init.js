@@ -8,7 +8,7 @@ let io;
 
 module.exports = (server, config) => {
   if (io === null || io === undefined) {
-    if (config.websocket !== undefined) {
+    if (config.websocket !== null) {
       io = config.websocket;
     } else {
       io = socketIo(server);
