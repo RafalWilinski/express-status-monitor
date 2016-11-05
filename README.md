@@ -37,6 +37,7 @@ Default config:
 ```javascript
 title: 'Express Status',  // Default title
 path: '/status',
+websocket: existingSocketIoInstance,
 spans: [{
   interval: 1,            // Every second
   retention: 60           // Keep 60 datapoints in memory
@@ -70,6 +71,10 @@ const basic = auth.basic({realm: 'Monitor Area'}, function(user, pass, callback)
 
 app.get('/status', auth.connect(basic), require('express-status-monitor')());
 ```
+
+## Using module with socket.io in project
+
+If you're having socket.io in project, this module could break your project because his module by default will spawn it's own socket.io instance. To mitigate that, fill `websocket` parameter with your main `socket.io` instance.
 
 ## Tests and coverage
 
