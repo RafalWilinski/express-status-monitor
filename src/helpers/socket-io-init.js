@@ -7,8 +7,6 @@ const gatherOsMetrics = require('./gather-os-metrics');
 let io;
 
 module.exports = (server, config) => {
-  const { spans } = config;
-
   if (io === null || io === undefined) {
     if (config.websocket !== null) {
       io = config.websocket;
@@ -17,13 +15,13 @@ module.exports = (server, config) => {
     }
 
     io.on('connection', (socket) => {
-      socket.emit('esm_start', spans);
+      socket.emit('esm_start', config.spans);
       socket.on('esm_change', () => {
-        socket.emit('esm_start', spans);
+        socket.emit('esm_start', config.spans);
       });
     });
 
-    spans.forEach((span) => {
+    config.spans.forEach((span) => {
       span.os = [];
       span.responses = [];
       const interval = setInterval(() => gatherOsMetrics(io, span), span.interval * 1000);
