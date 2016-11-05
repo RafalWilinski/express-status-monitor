@@ -11,9 +11,9 @@ module.exports = (server, spans) => {
     io = socketIo(server);
 
     io.on('connection', (socket) => {
-      socket.emit('start', spans);
-      socket.on('change', () => {
-        socket.emit('start', spans);
+      socket.emit('esm_start', spans);
+      socket.on('esm_change', () => {
+        socket.emit('esm_start', spans);
       });
     });
 

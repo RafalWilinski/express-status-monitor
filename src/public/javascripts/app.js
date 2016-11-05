@@ -113,10 +113,10 @@ var onSpanChange = function (e) {
     if (otherSpans[i] !== e.target) otherSpans[i].classList.remove('active');
   }
 
-  socket.emit('change');
+  socket.emit('esm_change');
 };
 
-socket.on('start', function (data) {
+socket.on('esm_start', function (data) {
   // Remove last element of Array because it contains malformed responses data.
   // To keep consistency we also remove os data.
   data[defaultSpan].responses.pop();
@@ -206,7 +206,7 @@ socket.on('start', function (data) {
   }
 });
 
-socket.on('stats', function (data) {
+socket.on('esm_stats', function (data) {
   if (data.retention === spans[defaultSpan].retention && data.interval === spans[defaultSpan].interval) {
     var os = data.os;
     var responses = data.responses;

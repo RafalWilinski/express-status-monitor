@@ -1,5 +1,5 @@
 module.exports = (io, span) => {
-  io.emit('stats', {
+  io.emit('esm_stats', {
     os: span.os[span.os.length - 2],
     responses: span.responses[span.responses.length - 2],
     interval: span.interval,
