@@ -11,5 +11,7 @@ module.exports = (config) => {
 
   config.spans = (typeof config.spans === 'object') ? config.spans : defaultConfig.spans;
 
+  config.websocket = (typeof config.websocket === 'object') ? config.websocket : null;
+
   return config;
 };
