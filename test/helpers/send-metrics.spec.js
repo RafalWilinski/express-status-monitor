@@ -14,7 +14,7 @@ describe('helpers', () => {
 
         sendMetrics(io, span);
 
-        sinon.assert.calledWith(io.emit, 'stats');
+        sinon.assert.calledWith(io.emit, 'esm_stats');
       });
     });
   });

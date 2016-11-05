@@ -8,20 +8,21 @@ let io;
 
 module.exports = (server, config) => {
   if (io === null || io === undefined) {
-    if (config.websocket !== null) {
+    if (config.websocket !== undefined) {
       io = config.websocket;
     } else {
       io = socketIo(server);
     }
 
-    io.on('connection', (socket) => {
+    io.on('connection', socket => {
       socket.emit('esm_start', config.spans);
       socket.on('esm_change', () => {
         socket.emit('esm_start', config.spans);
       });
     });
 
-    config.spans.forEach((span) => {
+
+    config.spans.forEach(span => {
       span.os = [];
       span.responses = [];
       const interval = setInterval(() => gatherOsMetrics(io, span), span.interval * 1000);

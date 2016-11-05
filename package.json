@@ -48,7 +48,7 @@
   },
   "scripts": {
     "coverage": "istanbul cover _mocha test --  --recursive",
-    "test": "snyk test && mocha --recursive",
+    "test": "mocha --recursive",
     "snyk-protect": "snyk protect",
     "prepublish": "npm run snyk-protect"
   },
