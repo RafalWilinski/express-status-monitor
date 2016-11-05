@@ -50,7 +50,8 @@
     "coverage": "istanbul cover _mocha test --  --recursive",
     "test": "mocha --recursive",
     "snyk-protect": "snyk protect",
-    "prepublish": "npm run snyk-protect"
+    "prepublish": "npm run snyk-protect",
+    "example": "cd examples && npm start"
   },
   "devDependencies": {
     "chai": "^3.5.0",
