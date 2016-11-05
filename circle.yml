@@ -3,6 +3,6 @@ machine:
     version: 4.0.0
 test:
   pre:
-    - nvm use --lts && npm test
+    - nvm use 6.9.1 && npm test
     - nvm use node && npm test
     - snyk test
