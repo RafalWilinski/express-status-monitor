@@ -16,7 +16,7 @@ const middlewareWrapper = (config) => {
       .replace(/{{style}}/g, fs.readFileSync(path.join(__dirname, '/public/stylesheets/style.css')));
 
   return (req, res, next) => {
-    socketIoInit(req.socket.server, config.spans);
+    socketIoInit(req.socket.server, config);
 
     const startTime = process.hrtime();
     if (req.path === config.path) {

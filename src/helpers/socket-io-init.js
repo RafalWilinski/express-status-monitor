@@ -6,9 +6,15 @@ const gatherOsMetrics = require('./gather-os-metrics');
 
 let io;
 
-module.exports = (server, spans) => {
+module.exports = (server, config) => {
+  const { spans } = config;
+
   if (io === null || io === undefined) {
-    io = socketIo(server);
+    if (config.websocket !== null) {
+      io = config.websocket;
+    } else {
+      io = socketIo(server);
+    }
 
     io.on('connection', (socket) => {
       socket.emit('esm_start', spans);
