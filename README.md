@@ -78,7 +78,7 @@ app.get('/status', auth.connect(basic), require('express-status-monitor')());
 
 ## Using module with socket.io in project
 
-If you're having socket.io in project, this module could break your project because this module by default will spawn it's own socket.io instance. To mitigate that, fill `websocket` parameter with your main `socket.io` instance as well as `port` parameter.
+If you're using socket.io in your project, this module could break your project because this module by default will spawn its own socket.io instance. To mitigate that, fill websocket parameter with your main socket.io instance as well as port parameter.
 
 ## Tests and coverage
 
