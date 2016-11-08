@@ -52,7 +52,7 @@
     "snyk-protect": "snyk protect",
     "prepublish": "npm run snyk-protect",
     "example": "cd examples && npm start",
-    "eslint": "eslint . --fix"
+    "eslint": "eslint ."
   },
   "devDependencies": {
     "bithound": "^1.7.0",

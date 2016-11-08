@@ -5,8 +5,7 @@
     "it": false,
     "beforeEach": false,
     "before": false,
-    "after": false,
-    "Chart": false
+    "after": false
   },
   "rules": {
     "import/no-extraneous-dependencies": [
