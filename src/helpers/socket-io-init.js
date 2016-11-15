@@ -22,7 +22,6 @@ module.exports = (server, config) => {
       });
     });
 
-
     config.spans.forEach((span) => {
       span.os = [];
       span.responses = [];
