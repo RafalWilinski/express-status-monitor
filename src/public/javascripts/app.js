@@ -1,13 +1,19 @@
+/*
+  eslint-disable no-plusplus, no-var, strict, vars-on-top, prefer-template,
+  func-names, prefer-arrow-callback, no-loop-func
+*/
+/* global Chart, location, document, port, parseInt, io */
+
 'use strict';
 
 Chart.defaults.global.defaultFontSize = 8;
 Chart.defaults.global.animation.duration = 500;
 Chart.defaults.global.legend.display = false;
-Chart.defaults.global.elements.line.backgroundColor = "rgba(0,0,0,0)";
-Chart.defaults.global.elements.line.borderColor = "rgba(0,0,0,0.9)";
+Chart.defaults.global.elements.line.backgroundColor = 'rgba(0,0,0,0)';
+Chart.defaults.global.elements.line.borderColor = 'rgba(0,0,0,0.9)';
 Chart.defaults.global.elements.line.borderWidth = 2;
 
-var socket = io(location.protocol + '//' + location.hostname + ':' + location.port);
+var socket = io(location.protocol + '//' + location.hostname + ':' + (port || location.port));
 var defaultSpan = 0;
 var spans = [];
 var statusCodesColors = ['#75D701', '#47b8e0', '#ffc952', '#E53A40'];
@@ -16,32 +22,32 @@ var defaultDataset = {
   label: '',
   data: [],
   lineTension: 0.2,
-  pointRadius: 0
+  pointRadius: 0,
 };
 
 var defaultOptions = {
   scales: {
     yAxes: [{
       ticks: {
-        beginAtZero: true
-      }
+        beginAtZero: true,
+      },
     }],
     xAxes: [{
       type: 'time',
       time: {
-        unitStepSize: 30
+        unitStepSize: 30,
       },
       gridLines: {
-        display: false
-      }
-    }]
+        display: false,
+      },
+    }],
   },
   tooltips: {
-    enabled: false
+    enabled: false,
   },
   responsive: true,
   maintainAspectRatio: false,
-  animation: false
+  animation: false,
 };
 
 var createChart = function (ctx, dataset) {
@@ -51,7 +57,7 @@ var createChart = function (ctx, dataset) {
       labels: [],
       datasets: dataset,
     },
-    options: defaultOptions
+    options: defaultOptions,
   });
 };
 
@@ -64,7 +70,6 @@ var memDataset = [Object.create(defaultDataset)];
 var loadDataset = [Object.create(defaultDataset)];
 var responseTimeDataset = [Object.create(defaultDataset)];
 var rpsDataset = [Object.create(defaultDataset)];
-var statusCodesDataset = [Object.create(defaultDataset)];
 
 var cpuStat = document.getElementById('cpuStat');
 var memStat = document.getElementById('memStat');
@@ -72,12 +77,12 @@ var loadStat = document.getElementById('loadStat');
 var responseTimeStat = document.getElementById('responseTimeStat');
 var rpsStat = document.getElementById('rpsStat');
 
-var cpuChartCtx = document.getElementById("cpuChart");
-var memChartCtx = document.getElementById("memChart");
-var loadChartCtx = document.getElementById("loadChart");
-var responseTimeChartCtx = document.getElementById("responseTimeChart");
-var rpsChartCtx = document.getElementById("rpsChart");
-var statusCodesChartCtx = document.getElementById("statusCodesChart");
+var cpuChartCtx = document.getElementById('cpuChart');
+var memChartCtx = document.getElementById('memChart');
+var loadChartCtx = document.getElementById('loadChart');
+var responseTimeChartCtx = document.getElementById('responseTimeChart');
+var rpsChartCtx = document.getElementById('rpsChart');
+var statusCodesChartCtx = document.getElementById('statusCodesChart');
 
 var cpuChart = createChart(cpuChartCtx, cpuDataset);
 var memChart = createChart(memChartCtx, memDataset);
@@ -92,13 +97,13 @@ var statusCodesChart = new Chart(statusCodesChartCtx, {
       Object.create(defaultDataset),
       Object.create(defaultDataset),
       Object.create(defaultDataset),
-      Object.create(defaultDataset)
-    ]
+      Object.create(defaultDataset),
+    ],
   },
-  options: defaultOptions
+  options: defaultOptions,
 });
 
-statusCodesChart.data.datasets.forEach(function(dataset, index) {
+statusCodesChart.data.datasets.forEach(function (dataset, index) {
   dataset.borderColor = statusCodesColors[index];
 });
 
@@ -106,17 +111,17 @@ var charts = [cpuChart, memChart, loadChart, responseTimeChart, rpsChart, status
 
 var onSpanChange = function (e) {
   e.target.classList.add('active');
-  defaultSpan = parseInt(e.target.id);
+  defaultSpan = parseInt(e.target.id, 10);
 
   var otherSpans = document.getElementsByTagName('span');
   for (var i = 0; i < otherSpans.length; i++) {
     if (otherSpans[i] !== e.target) otherSpans[i].classList.remove('active');
   }
 
-  socket.emit('change');
+  socket.emit('esm_change');
 };
 
-socket.on('start', function (data) {
+socket.on('esm_start', function (data) {
   // Remove last element of Array because it contains malformed responses data.
   // To keep consistency we also remove os data.
   data[defaultSpan].responses.pop();
@@ -166,19 +171,20 @@ socket.on('start', function (data) {
   });
   responseTimeChart.data.labels = data[defaultSpan].responses.map(addTimestamp);
 
-  for(var i = 0; i < 4; i++) {
+  for (var i = 0; i < 4; i++) {
     statusCodesChart.data.datasets[i].data = data[defaultSpan].responses.map(function (point) {
-      return point[i+2];
+      return point[i + 2];
     });
   }
   statusCodesChart.data.labels = data[defaultSpan].responses.map(addTimestamp);
 
   if (data[defaultSpan].responses.length >= 2) {
-    var deltaTime = lastResponseMetric.timestamp - data[defaultSpan].responses[data[defaultSpan].responses.length - 2].timestamp;
+    var deltaTime = lastResponseMetric.timestamp -
+      data[defaultSpan].responses[data[defaultSpan].responses.length - 2].timestamp;
     if (deltaTime < 1) deltaTime = 1000;
-    rpsStat.textContent = (lastResponseMetric.count / deltaTime * 1000).toFixed(2);
+    rpsStat.textContent = ((lastResponseMetric.count / deltaTime) * 1000).toFixed(2);
     rpsChart.data.datasets[0].data = data[defaultSpan].responses.map(function (point) {
-      return point.count / deltaTime * 1000;
+      return (point.count / deltaTime) * 1000;
     });
     rpsChart.data.labels = data[defaultSpan].responses.map(addTimestamp);
   }
@@ -192,11 +198,11 @@ socket.on('start', function (data) {
     data.forEach(function (span, index) {
       spans.push({
         retention: span.retention,
-        interval: span.interval
+        interval: span.interval,
       });
 
       var spanNode = document.createElement('span');
-      var textNode = document.createTextNode((span.retention * span.interval) / 60 + "M");
+      var textNode = document.createTextNode(((span.retention * span.interval) / 60) + 'M');
       spanNode.appendChild(textNode);
       spanNode.setAttribute('id', index);
       spanNode.onclick = onSpanChange;
@@ -206,8 +212,9 @@ socket.on('start', function (data) {
   }
 });
 
-socket.on('stats', function (data) {
-  if (data.retention === spans[defaultSpan].retention && data.interval === spans[defaultSpan].interval) {
+socket.on('esm_stats', function (data) {
+  if (data.retention === spans[defaultSpan].retention &&
+    data.interval === spans[defaultSpan].interval) {
     var os = data.os;
     var responses = data.responses;
 
@@ -242,21 +249,21 @@ socket.on('stats', function (data) {
     if (responses) {
       var deltaTime = responses.timestamp - rpsChart.data.labels[rpsChart.data.labels.length - 1];
       if (deltaTime < 1) deltaTime = 1000;
-      rpsStat.textContent = (responses.count / deltaTime * 1000).toFixed(2);
-      rpsChart.data.datasets[0].data.push(responses.count / deltaTime * 1000);
+      rpsStat.textContent = ((responses.count / deltaTime) * 1000).toFixed(2);
+      rpsChart.data.datasets[0].data.push((responses.count / deltaTime) * 1000);
       rpsChart.data.labels.push(responses.timestamp);
     }
 
     if (responses) {
-       for(var i = 0; i < 4; i++) {
-        statusCodesChart.data.datasets[i].data.push(data.responses[i+2]);
+      for (var i = 0; i < 4; i++) {
+        statusCodesChart.data.datasets[i].data.push(data.responses[i + 2]);
       }
       statusCodesChart.data.labels.push(data.responses.timestamp);
     }
 
     charts.forEach(function (chart) {
       if (spans[defaultSpan].retention < chart.data.labels.length) {
-        chart.data.datasets.forEach(function(dataset) {
+        chart.data.datasets.forEach(function (dataset) {
           dataset.data.shift();
         });
 

@@ -12,17 +12,18 @@ const middlewareWrapper = (config) => {
     fs.readFileSync(path.join(__dirname, '/public/index.html'))
       .toString()
       .replace(/{{title}}/g, config.title)
+      .replace(/{{port}}/g, config.port)
       .replace(/{{script}}/g, fs.readFileSync(path.join(__dirname, '/public/javascripts/app.js')))
       .replace(/{{style}}/g, fs.readFileSync(path.join(__dirname, '/public/stylesheets/style.css')));
 
   return (req, res, next) => {
-    socketIoInit(req.socket.server, config.spans);
+    socketIoInit(req.socket.server, config);
 
     const startTime = process.hrtime();
     if (req.path === config.path) {
       res.send(renderedHtml);
     } else {
-      onHeaders(res, () => { onHeadersListener(res.statusCode, startTime, config.spans) });
+      onHeaders(res, () => { onHeadersListener(res.statusCode, startTime, config.spans); });
       next();
     }
   };

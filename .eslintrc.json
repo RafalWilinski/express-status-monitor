@@ -9,8 +9,7 @@
   },
   "rules": {
     "import/no-extraneous-dependencies": [
-      "error",
-      {
+      "error", {
         "peerDependencies": true
       }
     ],

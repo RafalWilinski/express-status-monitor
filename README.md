@@ -1,6 +1,10 @@
 # express-status-monitor
 
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/express-status-monitor/Lobby/?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![express-status-monitor on npm](https://img.shields.io/npm/v/express-status-monitor.svg)](https://www.npmjs.com/express-status-monitor) [![bitHound Overall Score](https://www.bithound.io/github/RafalWilinski/express-status-monitor/badges/score.svg)](https://www.bithound.io/github/RafalWilinski/express-status-monitor)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/express-status-monitor/Lobby/?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![express-status-monitor on npm](https://img.shields.io/npm/v/express-status-monitor.svg)](https://www.npmjs.com/express-status-monitor)
+[![npm](https://img.shields.io/npm/dt/express-status-monitor.svg)](https://img.shields.io/npm/dt/express-status-monitor.svg)
+[![bitHound Overall Score](https://www.bithound.io/github/RafalWilinski/express-status-monitor/badges/score.svg)](https://www.bithound.io/github/RafalWilinski/express-status-monitor)
+[![CircleCI](https://img.shields.io/circleci/project/github/RafalWilinski/express-status-monitor/master.svg)](https://circleci.com/gh/RafalWilinski/express-status-monitor)
 
 Simple, self-hosted module based on Socket.io and Chart.js to report realtime server metrics for Express-based node servers.
 
@@ -37,6 +41,7 @@ Default config:
 ```javascript
 title: 'Express Status',  // Default title
 path: '/status',
+websocket: existingSocketIoInstance,
 spans: [{
   interval: 1,            // Every second
   retention: 60           // Keep 60 datapoints in memory
@@ -70,6 +75,10 @@ const basic = auth.basic({realm: 'Monitor Area'}, function(user, pass, callback)
 
 app.get('/status', auth.connect(basic), require('express-status-monitor')());
 ```
+
+## Using module with socket.io in project
+
+If you're using socket.io in your project, this module could break your project because this module by default will spawn its own socket.io instance. To mitigate that, fill websocket parameter with your main socket.io instance as well as port parameter.
 
 ## Tests and coverage
 

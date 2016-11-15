@@ -17,7 +17,7 @@ describe('helpers', () => {
           // span.should.not.have.property('responses');
         });
 
-        socketIoInit({}, spans);
+        socketIoInit({}, defaultConfig);
 
         spans.forEach((span) => {
           span.should.have.property('os');

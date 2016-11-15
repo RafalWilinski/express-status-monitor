@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 const chai = require('chai');
 
 chai.should();
@@ -21,10 +22,18 @@ describe('helpers', () => {
       it(`then spans === ${JSON.stringify(defaultConfig.spans)}`, () => {
         config.spans.should.equal(defaultConfig.spans);
       });
+
+      it('then port === null', () => {
+        chai.expect(config.port).to.be.null;
+      });
+
+      it('then websocket === null', () => {
+        chai.expect(config.websocket).to.be.null;
+      });
     });
 
     describe('when config is invalid', () => {
-      const config = validate({ title: true, path: false, spans: 'not-an-array' });
+      const config = validate({ title: true, path: false, spans: 'not-an-array', port: 'abc', websocket: false });
 
       it(`then title === ${defaultConfig.title}`, () => {
         config.title.should.equal(defaultConfig.title);
@@ -37,10 +46,18 @@ describe('helpers', () => {
       it(`then spans === ${JSON.stringify(defaultConfig.spans)}`, () => {
         config.spans.should.equal(defaultConfig.spans);
       });
+
+      it('then port === null', () => {
+        chai.expect(config.port).to.be.null;
+      });
+
+      it('then websocket === null', () => {
+        chai.expect(config.websocket).to.be.null;
+      });
     });
 
     describe('when config is valid', () => {
-      const customConfig = { title: 'Custom title', path: '/custom-path', spans: [{}, {}, {}] }
+      const customConfig = { title: 'Custom title', path: '/custom-path', spans: [{}, {}, {}], port: 9999, websocket: {} };
       const config = validate(customConfig);
 
       it(`then title === ${customConfig.title}`, () => {
@@ -53,6 +70,14 @@ describe('helpers', () => {
 
       it(`then spans === ${JSON.stringify(customConfig.spans)}`, () => {
         config.spans.should.equal(customConfig.spans);
+      });
+
+      it('then websocket === {}', () => {
+        config.websocket.should.deep.equal({});
+      });
+
+      it(`then port === ${customConfig.port}`, () => {
+        config.port.should.equal(customConfig.port);
       });
     });
   });

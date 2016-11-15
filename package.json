@@ -1,6 +1,6 @@
 {
   "name": "express-status-monitor",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Realtime Monitoring for Express-based Node applications",
   "main": "index.js",
   "keywords": [
@@ -44,20 +44,28 @@
   "dependencies": {
     "on-headers": "^1.0.1",
     "pidusage": "^1.1.0",
-    "socket.io": "^1.4.8",
-    "snyk": "^1.19.1"
+    "socket.io": "^1.5.1"
   },
   "scripts": {
     "coverage": "istanbul cover _mocha test --  --recursive",
-    "test": "snyk test && mocha --recursive",
+    "test": "mocha --recursive",
     "snyk-protect": "snyk protect",
-    "prepublish": "npm run snyk-protect"
+    "prepublish": "npm run snyk-protect",
+    "example": "cd examples && npm start",
+    "eslint": "eslint ."
   },
   "devDependencies": {
+    "bithound": "^1.7.0",
     "chai": "^3.5.0",
+    "eslint": "^3.9.1",
+    "eslint-config-airbnb": "^12.0.0",
+    "eslint-plugin-import": "^1.16.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.5.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.0.2",
-    "sinon": "^1.17.5"
+    "sinon": "^1.17.5",
+    "snyk": "^1.19.1"
   },
   "snyk": true
 }
