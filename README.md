@@ -57,11 +57,17 @@ spans: [{
 
 ## Securing endpoint
 
+The HTML page handler is exposed as a `pageRoute` property on the main
+middleware function.  So the middleware is mounted to intercept all requests
+while the HTML page handler will be authenticated.
+
 Example using https://www.npmjs.com/package/connect-ensure-login
 ```javascript
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn()
 
-app.get('/status', ensureLoggedIn, require('express-status-monitor')())
+const statusMonitor = require('express-status-monitor')();
+app.use(statusMonitor);
+app.get('/status', ensureLoggedIn, statusMonitor.pageRoute)
 ```
 
 Credits to [@mattiaerre](https://github.com/mattiaerre)
@@ -73,7 +79,9 @@ const basic = auth.basic({realm: 'Monitor Area'}, function(user, pass, callback)
   callback(user === 'username' && pass === 'password');
 });
 
-app.get('/status', auth.connect(basic), require('express-status-monitor')());
+const statusMonitor = require('express-status-monitor')();
+app.use(statusMonitor);
+app.get('/status', auth.connect(basic), statusMonitor.pageRoute)
 ```
 
 ## Using module with socket.io in project

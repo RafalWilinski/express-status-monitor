@@ -34,6 +34,14 @@ describe('express-status-monitor', () => {
         middleware(req, res, next);
         sinon.assert.notCalled(res.send);
       });
+
+      describe('and used as separate middlware and page handler', () => {
+        it('exposes a page handler', () => {
+          middleware.pageRoute.should.be.an.instanceof(Function);
+          middleware.pageRoute(req, res, next);
+          sinon.assert.called(res.send);
+        });
+      });
     });
   });
 });
