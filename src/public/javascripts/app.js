@@ -114,6 +114,7 @@ var onSpanChange = function (e) {
   defaultSpan = parseInt(e.target.id, 10);
 
   var otherSpans = document.getElementsByTagName('span');
+
   for (var i = 0; i < otherSpans.length; i++) {
     if (otherSpans[i] !== e.target) otherSpans[i].classList.remove('active');
   }
@@ -181,6 +182,7 @@ socket.on('esm_start', function (data) {
   if (data[defaultSpan].responses.length >= 2) {
     var deltaTime = lastResponseMetric.timestamp -
       data[defaultSpan].responses[data[defaultSpan].responses.length - 2].timestamp;
+
     if (deltaTime < 1) deltaTime = 1000;
     rpsStat.textContent = ((lastResponseMetric.count / deltaTime) * 1000).toFixed(2);
     rpsChart.data.datasets[0].data = data[defaultSpan].responses.map(function (point) {
@@ -194,6 +196,7 @@ socket.on('esm_start', function (data) {
   });
 
   var spanControls = document.getElementById('span-controls');
+
   if (data.length !== spans.length) {
     data.forEach(function (span, index) {
       spans.push({
@@ -203,6 +206,7 @@ socket.on('esm_start', function (data) {
 
       var spanNode = document.createElement('span');
       var textNode = document.createTextNode(((span.retention * span.interval) / 60) + 'M');
+
       spanNode.appendChild(textNode);
       spanNode.setAttribute('id', index);
       spanNode.onclick = onSpanChange;
@@ -248,6 +252,7 @@ socket.on('esm_stats', function (data) {
 
     if (responses) {
       var deltaTime = responses.timestamp - rpsChart.data.labels[rpsChart.data.labels.length - 1];
+
       if (deltaTime < 1) deltaTime = 1000;
       rpsStat.textContent = ((responses.count / deltaTime) * 1000).toFixed(2);
       rpsChart.data.datasets[0].data.push((responses.count / deltaTime) * 1000);

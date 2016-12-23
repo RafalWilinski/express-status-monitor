@@ -22,6 +22,7 @@ module.exports = (io, span) => {
     }
 
     const last = span.responses[span.responses.length - 1];
+
     // Convert from B to MB
     stat.memory = stat.memory / 1024 / 1024;
     stat.load = os.loadavg();

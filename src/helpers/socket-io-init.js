@@ -1,4 +1,4 @@
-/* eslint strict: "off" */
+/* eslint strict: "off", init-declarations: "off" */
 
 'use strict';
 
@@ -7,7 +7,7 @@ const gatherOsMetrics = require('./gather-os-metrics');
 
 let io;
 
-function addSocketEvents(socket, config) {
+const addSocketEvents = (socket, config) => {
   socket.emit('esm_start', config.spans);
   socket.on('esm_change', () => {
     socket.emit('esm_start', config.spans);
@@ -22,10 +22,10 @@ module.exports = (server, config) => {
       io = socketIo(server);
     }
 
-    io.on('connection', (socket) => {
+    io.on('connection', socket => {
       if (config.authorize) {
         config.authorize(socket)
-          .then((authorized) => {
+          .then(authorized => {
             if (!authorized) socket.disconnect('unauthorized');
             else addSocketEvents(socket, config);
           })
@@ -35,11 +35,13 @@ module.exports = (server, config) => {
       }
     });
 
-    config.spans.forEach((span) => {
+    config.spans.forEach(span => {
       span.os = [];
       span.responses = [];
       const interval = setInterval(() => gatherOsMetrics(io, span), span.interval * 1000);
-      interval.unref(); // don't keep node.js process up
+
+      // Don't keep node.js process up
+      interval.unref();
     });
   }
 };

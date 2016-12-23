@@ -1,6 +1,6 @@
 const defaultConfig = require('./default-config');
 
-module.exports = (config) => {
+module.exports = config => {
   if (!config) {
     return defaultConfig;
   }

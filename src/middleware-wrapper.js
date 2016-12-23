@@ -1,3 +1,5 @@
+/* eslint no-param-reassign: "off" */
+
 const fs = require('fs');
 const path = require('path');
 const onHeaders = require('on-headers');
@@ -5,7 +7,7 @@ const validate = require('./helpers/validate');
 const onHeadersListener = require('./helpers/on-headers-listener');
 const socketIoInit = require('./helpers/socket-io-init');
 
-const middlewareWrapper = (config) => {
+const middlewareWrapper = config => {
   config = validate(config);
 
   const renderedHtml =
@@ -20,10 +22,14 @@ const middlewareWrapper = (config) => {
     socketIoInit(req.socket.server, config);
 
     const startTime = process.hrtime();
+
     if (req.path === config.path) {
       res.send(renderedHtml);
     } else {
-      onHeaders(res, () => { onHeadersListener(res.statusCode, startTime, config.spans); });
+      onHeaders(res, () => {
+        onHeadersListener(res.statusCode, startTime, config.spans);
+      });
+
       next();
     }
   };
@@ -39,7 +45,9 @@ const middlewareWrapper = (config) => {
    * discussion: https://github.com/RafalWilinski/express-status-monitor/issues/63
    */
   middleware.middleware = middleware;
-  middleware.pageRoute = (req, res) => { res.send(renderedHtml); };
+  middleware.pageRoute = (req, res) => {
+    res.send(renderedHtml);
+  };
   return middleware;
 };
 
