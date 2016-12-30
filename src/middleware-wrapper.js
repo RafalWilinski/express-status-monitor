@@ -24,7 +24,7 @@ const middlewareWrapper = config => {
     const startTime = process.hrtime();
 
     if (req.path === config.path) {
-      if(config.iframe){
+      if (config.iframe) {
         res.remove(' X-Frame-Options');
       }
       res.send(renderedHtml);
