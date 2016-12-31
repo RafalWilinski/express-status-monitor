@@ -15,5 +15,7 @@ module.exports = config => {
 
   config.websocket = (typeof config.websocket === 'object') ? config.websocket : defaultConfig.websocket;
 
+  config.iframe = (typeof config.iframe === 'boolean') ? config.iframe : defaultConfig.iframe;
+
   return config;
 };
