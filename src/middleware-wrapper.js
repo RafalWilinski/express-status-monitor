@@ -25,7 +25,7 @@ const middlewareWrapper = config => {
 
     if (req.path === config.path) {
       if (config.iframe) {
-        res.remove(' X-Frame-Options');
+        res.removeHeader('X-Frame-Options');
       }
       res.send(renderedHtml);
     } else {
