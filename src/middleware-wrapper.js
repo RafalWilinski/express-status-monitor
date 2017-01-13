@@ -25,10 +25,10 @@ const middlewareWrapper = config => {
 
     if (req.path === config.path) {
       if (config.iframe) {
-        if(res.removeHeader){
+        if (res.removeHeader) {
           res.removeHeader('X-Frame-Options');
         }
-        if(res.remove){
+        if (res.remove) {
           res.remove('X-Frame-Options');
         }
 
