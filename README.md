@@ -79,9 +79,10 @@ const basic = auth.basic({realm: 'Monitor Area'}, function(user, pass, callback)
   callback(user === 'username' && pass === 'password');
 });
 
-const statusMonitor = require('express-status-monitor')();
-app.use(statusMonitor);
-app.get('/status', auth.connect(basic), statusMonitor.pageRoute)
+// Set '' to config path to avoid middleware serving the html page (path must be a string not equal to the wanted route)
+const statusMonitor = require('express-status-monitor')({ path: '' });
+app.use(statusMonitor.middleware); // use the "middleware only" property to manage websockets
+app.get('/status', auth.connect(basic), statusMonitor.pageRoute); // use the pageRoute property to serve the dashboard html page
 ```
 
 ## Using module with socket.io in project
