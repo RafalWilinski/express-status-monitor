@@ -44,7 +44,7 @@
   "dependencies": {
     "on-headers": "^1.0.1",
     "pidusage": "^1.1.0",
-    "socket.io": "^1.5.1"
+    "socket.io": "^2.0.2"
   },
   "scripts": {
     "coverage": "istanbul cover _mocha test --  --recursive",
