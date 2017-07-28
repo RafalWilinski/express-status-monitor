@@ -52,7 +52,7 @@
     "test": "mocha --recursive --watch",
     "snyk-protect": "snyk protect",
     "prepublish": "npm run snyk-protect",
-    "example": "cd examples && npm start",
+    "example": "cd examples && npm install && npm start",
     "eslint": "eslint ."
   },
   "devDependencies": {
