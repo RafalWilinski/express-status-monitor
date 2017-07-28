@@ -1,5 +1,3 @@
-/* eslint no-param-reassign: "off" */
-
 const fs = require('fs');
 const path = require('path');
 const onHeaders = require('on-headers');
@@ -8,23 +6,23 @@ const onHeadersListener = require('./helpers/on-headers-listener');
 const socketIoInit = require('./helpers/socket-io-init');
 
 const middlewareWrapper = config => {
-  config = validate(config);
+  const validatedConfig = validate(config);
 
   const renderedHtml =
     fs.readFileSync(path.join(__dirname, '/public/index.html'))
       .toString()
-      .replace(/{{title}}/g, config.title)
-      .replace(/{{port}}/g, config.port)
+      .replace(/{{title}}/g, validatedConfig.title)
+      .replace(/{{port}}/g, validatedConfig.port)
       .replace(/{{script}}/g, fs.readFileSync(path.join(__dirname, '/public/javascripts/app.js')))
       .replace(/{{style}}/g, fs.readFileSync(path.join(__dirname, '/public/stylesheets/style.css')));
 
   const middleware = (req, res, next) => {
-    socketIoInit(req.socket.server, config);
+    socketIoInit(req.socket.server, validatedConfig);
 
     const startTime = process.hrtime();
 
-    if (req.path === config.path) {
-      if (config.iframe) {
+    if (req.path === validatedConfig.path) {
+      if (validatedConfig.iframe) {
         if (res.removeHeader) {
           res.removeHeader('X-Frame-Options');
         }
@@ -36,7 +34,7 @@ const middlewareWrapper = config => {
       res.send(renderedHtml);
     } else {
       onHeaders(res, () => {
-        onHeadersListener(res.statusCode, startTime, config.spans);
+        onHeadersListener(res.statusCode, startTime, validatedConfig.spans);
       });
 
       next();
