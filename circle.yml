@@ -9,3 +9,10 @@ test:
     - nvm install 8.2.1 && nvm use 8.2.1 && npm test
   post:
     - bithound check git@github.com:RafalWilinski/express-status-monitor.git
+
+deployment:
+  npm:
+    branch: master
+    commands:
+      - echo -e "$NPM_USERNAME\nNPM_PASSWORD\nNPM_EMAIL" | npm login
+      - npm run publish

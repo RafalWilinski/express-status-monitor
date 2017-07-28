@@ -1,6 +1,6 @@
 {
   "name": "express-status-monitor",
-  "version": "0.2",
+  "version": "0.2.0",
   "description": "Realtime Monitoring for Express-based Node applications",
   "main": "index.js",
   "keywords": [
@@ -51,6 +51,7 @@
     "test-ci": "mocha --recursive",
     "test": "mocha --recursive --watch",
     "snyk-protect": "snyk protect",
+    "publish": "publish",
     "prepublish": "npm run snyk-protect",
     "example": "cd examples && npm install && npm start",
     "eslint": "eslint ."
@@ -61,6 +62,7 @@
     "eslint": "^4.3.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.4.2",
+    "publish": "^0.6.0",
     "sinon": "^2.4.1",
     "snyk": "^1.37.0"
   },
