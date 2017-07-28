@@ -2,7 +2,7 @@ machine:
   node:
     version: 4.0.0
 test:
-  pre:
+  override:
     - npm run eslint
     - npm run test-ci
     - nvm install 6.11.1 && nvm use 6.11.1 && npm run test-ci
