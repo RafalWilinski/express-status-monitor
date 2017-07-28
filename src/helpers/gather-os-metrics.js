@@ -1,5 +1,3 @@
-/* eslint no-console: "off" */
-
 const pidusage = require('pidusage');
 const os = require('os');
 const sendMetrics = require('./send-metrics');
@@ -17,7 +15,7 @@ module.exports = (io, span) => {
 
   pidusage.stat(process.pid, (err, stat) => {
     if (err) {
-      console.error(err);
+      console.error(err); // eslint-disable-line no-console
       return;
     }
 
