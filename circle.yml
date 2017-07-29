@@ -5,8 +5,8 @@ test:
   override:
     - npm run eslint
     - npm run test-ci
-    - nvm install 6.11.1 && nvm use 6.11.1 && npm run test-ci
-    - nvm install 8.2.1 && nvm use 8.2.1 && npm run test-ci
+    - nvm install 6.11.0 && nvm use 6.11.0 && npm run test-ci
+    - nvm install 8.2.0 && nvm use 8.2.0 && npm run test-ci
   post:
     - bithound check git@github.com:RafalWilinski/express-status-monitor.git
 
