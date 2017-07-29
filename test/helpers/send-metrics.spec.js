@@ -5,17 +5,15 @@ chai.should();
 
 const sendMetrics = require('../../src/helpers/send-metrics');
 
-describe('helpers', () => {
-  describe('send-metrics', () => {
-    describe('when invoked', () => {
-      it('then io.emit called', () => {
-        const io = { emit: sinon.stub() };
-        const span = { os: [], responses: [] };
+describe('send-metrics', () => {
+  describe('when invoked', () => {
+    it('then io.emit called', () => {
+      const io = { emit: sinon.stub() };
+      const span = { os: [], responses: [] };
 
-        sendMetrics(io, span);
+      sendMetrics(io, span);
 
-        sinon.assert.calledWith(io.emit, 'esm_stats');
-      });
+      sinon.assert.calledWith(io.emit, 'esm_stats');
     });
   });
 });
