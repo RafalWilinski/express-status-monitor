@@ -35,6 +35,24 @@ describe('express-status-monitor', () => {
         sinon.assert.notCalled(res.send);
       });
 
+      it('and res.removeHeader is present, then header is removed', () => {
+        const middlewareWithConfig = expresStatusMonitor({
+          iframe: true,
+        });
+        const resWithHeaders = Object.assign({}, res);
+        resWithHeaders.headers = {
+          'X-Frame-Options': 1,
+        };
+        resWithHeaders.removeHeader = sinon.stub();
+
+        middlewareWithConfig(req, resWithHeaders, next);
+        sinon.assert.called(resWithHeaders.removeHeader);
+
+        resWithHeaders.remove = sinon.stub();
+        middlewareWithConfig(req, resWithHeaders, next);
+        sinon.assert.called(resWithHeaders.remove);
+      });
+
       describe('and used as separate middlware and page handler', () => {
         it('exposes a page handler', () => {
           middleware.pageRoute.should.be.an.instanceof(Function);
