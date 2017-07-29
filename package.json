@@ -42,6 +42,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "debug": "^2.6.8",
     "on-headers": "^1.0.1",
     "pidusage": "^1.1.6",
     "socket.io": "^2.0.3"
