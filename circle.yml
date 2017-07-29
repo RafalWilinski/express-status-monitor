@@ -2,10 +2,17 @@ machine:
   node:
     version: 4.0.0
 test:
-  pre:
+  override:
     - npm run eslint
-    - npm test
-    - nvm install 6.9.1 && nvm use 6.9.1 && npm test
-    - nvm install 7.10.0 && nvm use 7.10.0 && npm test
+    - npm run test-ci
+    - nvm install 6 && nvm use 6 && npm run test-ci
+    - nvm install 8 && nvm use 8 && npm run test-ci
   post:
     - bithound check git@github.com:RafalWilinski/express-status-monitor.git
+
+deployment:
+  npm:
+    branch: master
+    commands:
+      - echo -e "$NPM_USERNAME\nNPM_PASSWORD\nNPM_EMAIL" | npm login
+      - npm run publish

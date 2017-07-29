@@ -40,7 +40,7 @@ module.exports = (server, config) => {
       span.responses = [];
       const interval = setInterval(() => gatherOsMetrics(io, span), span.interval * 1000);
 
-      // Don't keep node.js process up
+      // Don't keep Node.js process up
       interval.unref();
     });
   }

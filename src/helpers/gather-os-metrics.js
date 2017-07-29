@@ -1,8 +1,7 @@
-/* eslint no-console: "off" */
-
 const pidusage = require('pidusage');
 const os = require('os');
 const sendMetrics = require('./send-metrics');
+const debug = require('debug')('express-status-monitor');
 
 module.exports = (io, span) => {
   const defaultResponse = {
@@ -17,7 +16,7 @@ module.exports = (io, span) => {
 
   pidusage.stat(process.pid, (err, stat) => {
     if (err) {
-      console.error(err);
+      debug(err);
       return;
     }
 

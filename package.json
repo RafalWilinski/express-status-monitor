@@ -1,6 +1,6 @@
 {
   "name": "express-status-monitor",
-  "version": "0.1.9",
+  "version": "1.0.0",
   "description": "Realtime Monitoring for Express-based Node applications",
   "main": "index.js",
   "keywords": [
@@ -42,26 +42,30 @@
   },
   "license": "MIT",
   "dependencies": {
+    "debug": "^2.6.8",
     "on-headers": "^1.0.1",
-    "pidusage": "^1.1.0",
-    "socket.io": "^1.5.1"
+    "pidusage": "^1.1.6",
+    "socket.io": "^2.0.3"
   },
   "scripts": {
     "coverage": "istanbul cover _mocha test --  --recursive",
-    "test": "mocha --recursive",
+    "test-ci": "mocha --recursive",
+    "test": "mocha --recursive --watch",
     "snyk-protect": "snyk protect",
+    "publish": "publish",
     "prepublish": "npm run snyk-protect",
-    "example": "cd examples && npm start",
+    "example": "npm i && npm i --prefix examples && npm start --prefix examples",
     "eslint": "eslint ."
   },
   "devDependencies": {
     "bithound": "^1.7.0",
-    "chai": "^3.5.0",
-    "eslint": "^3.12.2",
+    "chai": "^4.1.0",
+    "eslint": "^4.3.0",
     "istanbul": "^0.4.5",
-    "mocha": "^3.0.2",
-    "sinon": "^1.17.5",
-    "snyk": "^1.19.1"
+    "mocha": "^3.4.2",
+    "publish": "^0.6.0",
+    "sinon": "^2.4.1",
+    "snyk": "^1.37.0"
   },
   "snyk": true
 }
