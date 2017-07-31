@@ -26,6 +26,8 @@ Simple, self-hosted module based on Socket.io and Chart.js to report realtime se
 `app.use(require('express-status-monitor')());`
 3. Run server and go to `/status`
 
+Note: This plugin works on Node versions > 4.x
+
 ## Run examples
 
 1. Go to `cd examples/`
