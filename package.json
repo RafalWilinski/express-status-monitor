@@ -1,6 +1,6 @@
 {
   "name": "express-status-monitor",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Realtime Monitoring for Express-based Node applications",
   "main": "index.js",
   "keywords": [
@@ -19,6 +19,11 @@
       "name": "Julien Breux",
       "email": "julien.breux@gmail.com",
       "url": "https://github.com/JulienBreux/"
+    },
+    {
+      "name": "Colin Cummings",
+      "email": "colinrcummings@gmail.com",
+      "url": "https://github.com/colinrcummings/"
     },
     {
       "name": "Ferdinand Mütsch",

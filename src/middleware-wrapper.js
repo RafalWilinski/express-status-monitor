@@ -8,13 +8,23 @@ const socketIoInit = require('./helpers/socket-io-init');
 const middlewareWrapper = config => {
   const validatedConfig = validate(config);
 
+  const getChartDisplay = chart => {
+    return validatedConfig.hiddenCharts.indexOf(chart) === -1 ? 'flex' : 'none';
+  };
+
   const renderedHtml =
     fs.readFileSync(path.join(__dirname, '/public/index.html'))
       .toString()
       .replace(/{{title}}/g, validatedConfig.title)
       .replace(/{{port}}/g, validatedConfig.port)
       .replace(/{{script}}/g, fs.readFileSync(path.join(__dirname, '/public/javascripts/app.js')))
-      .replace(/{{style}}/g, fs.readFileSync(path.join(__dirname, '/public/stylesheets/style.css')));
+      .replace(/{{style}}/g, fs.readFileSync(path.join(__dirname, '/public/stylesheets/style.css')))
+      .replace('cpuDisplay', getChartDisplay('cpu'))
+      .replace('memDisplay', getChartDisplay('mem'))
+      .replace('loadDisplay', getChartDisplay('load'))
+      .replace('responseTimeDisplay', getChartDisplay('responseTime'))
+      .replace('rpsDisplay', getChartDisplay('rps'))
+      .replace('statusCodesDisplay', getChartDisplay('statusCodes'));
 
   const middleware = (req, res, next) => {
     socketIoInit(req.socket.server, validatedConfig);
