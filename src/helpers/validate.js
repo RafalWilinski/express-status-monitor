@@ -11,7 +11,7 @@ module.exports = config => {
   config.port = (typeof config.port === 'number') ? config.port : defaultConfig.port;
   config.websocket = (typeof config.websocket === 'object') ? config.websocket : defaultConfig.websocket;
   config.iframe = (typeof config.iframe === 'boolean') ? config.iframe : defaultConfig.iframe;
-  config.hiddenCharts = (typeof config.hiddenCharts === 'object') ? config.hiddenCharts : defaultConfig.hiddenCharts;
+  config.chartVisibility = (typeof config.chartVisibility === 'object') ? config.chartVisibility : defaultConfig.chartVisibility;
 
   return config;
 };

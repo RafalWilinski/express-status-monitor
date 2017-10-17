@@ -8,14 +8,14 @@
     {{style}}
   </style>
 </head>
-<body>
+<body class="{{bodyClasses}}">
 <div class="content">
   <div class="header">
     <b>{{title}}</b>
     <div id="span-controls" class="span-controls">
     </div>
   </div>
-  <div class="container" style="display: cpuDisplay">
+  <div class="container" id="cpuContainer">
     <div class="stats-column">
       <h5>CPU Usage</h5>
       <h1 id="cpuStat">- %</h1>
@@ -24,7 +24,7 @@
       <canvas id="cpuChart" width="400" height="100"></canvas>
     </div>
   </div>
-  <div class="container" style="display: memDisplay">
+  <div class="container" id="memContainer">
     <div class="stats-column">
       <h5>Memory Usage</h5>
       <h1 id="memStat">- %</h1>
@@ -33,7 +33,7 @@
       <canvas id="memChart" width="200" height="100"></canvas>
     </div>
   </div>
-  <div class="container" style="display: loadDisplay">
+  <div class="container" id="loadContainer">
     <div class="stats-column">
       <h5>One Minute Load Avg</h5>
       <h1 id="loadStat">-</h1>
@@ -42,7 +42,7 @@
       <canvas id="loadChart" width="200" height="100"></canvas>
     </div>
   </div>
-  <div class="container" style="display: responseTimeDisplay">
+  <div class="container" id="responseTimeContainer">
     <div class="stats-column">
       <h5>Response Time</h5>
       <h1 id="responseTimeStat">-</h1>
@@ -51,7 +51,7 @@
       <canvas id="responseTimeChart" width="200" height="100"></canvas>
     </div>
   </div>
-  <div class="container" style="display: rpsDisplay">
+  <div class="container" id="rpsContainer">
     <div class="stats-column">
       <h5>Requests per Second</h5>
       <h1 id="rpsStat">-</h1>
@@ -60,7 +60,7 @@
       <canvas id="rpsChart" width="200" height="100"></canvas>
     </div>
   </div>
-  <div class="container" style="display: statusCodesDisplay">
+  <div class="container" id="statusCodesContainer">
     <div class="stats-column">
       <h5>Status Codes</h5>
       <h6 class="status-code status-code-2xx">2xx</h6>

@@ -18,5 +18,12 @@ module.exports = {
   port: null,
   websocket: null,
   iframe: false,
-  hiddenCharts: []
+  chartVisibility: {
+    cpu: true,
+    mem: true,
+    load: true,
+    responseTime: true,
+    rps: true,
+    statusCodes: true
+  }
 };

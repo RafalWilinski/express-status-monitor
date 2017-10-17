@@ -54,16 +54,14 @@ spans: [{
   interval: 15,           // Every 15 seconds
   retention: 60
 }],
-hiddenCharts: []
-
-```
-
-To hide a chart, add the name of the chart you'd like to hide to the `hiddenCharts` array (`'cpu'`, `'mem'`, `'load'`, `'responseTime'`, `'rps'` and/or `'statusCodes'`). For example, to hide the One Minute Load Average chart:
-
-```javascript
-hiddenCharts: [
-  'load'
-]
+chartVisibility: {
+  cpu: true,
+  mem: true,
+  load: true,
+  responseTime: true,
+  rps: true,
+  statusCodes: true
+}
 
 ```
 
