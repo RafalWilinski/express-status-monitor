@@ -8,9 +8,8 @@ const socketIoInit = require('./helpers/socket-io-init');
 const middlewareWrapper = config => {
   const validatedConfig = validate(config);
 
-  const getChartDisplay = chart => {
-    return validatedConfig.hiddenCharts.indexOf(chart) === -1 ? 'flex' : 'none';
-  };
+  const getChartDisplay = chart =>
+    validatedConfig.hiddenCharts.indexOf(chart) === -1 ? 'flex' : 'none';
 
   const renderedHtml =
     fs.readFileSync(path.join(__dirname, '/public/index.html'))
