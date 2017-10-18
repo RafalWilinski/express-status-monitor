@@ -2,12 +2,12 @@
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
-body.hide-cpu #cpuContainer,
-body.hide-mem #memContainer,
-body.hide-load #loadContainer,
-body.hide-responseTime #responseTimeContainer,
-body.hide-rps #rpsContainer,
-body.hide-statusCodes #statusCodesContainer {
+body.hide-cpu .container.cpu,
+body.hide-mem .container.mem,
+body.hide-load .container.load,
+body.hide-responseTime .container.responseTime,
+body.hide-rps .container.rps,
+body.hide-statusCodes .container.statusCodes {
   display: none;
 }
 
