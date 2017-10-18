@@ -53,7 +53,15 @@ spans: [{
 }, {
   interval: 15,           // Every 15 seconds
   retention: 60
-}]
+}],
+chartVisibility: {
+  cpu: true,
+  mem: true,
+  load: true,
+  responseTime: true,
+  rps: true,
+  statusCodes: true
+}
 
 ```
 

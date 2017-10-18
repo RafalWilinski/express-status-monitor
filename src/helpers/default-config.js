@@ -18,4 +18,12 @@ module.exports = {
   port: null,
   websocket: null,
   iframe: false,
+  chartVisibility: {
+    cpu: true,
+    mem: true,
+    load: true,
+    responseTime: true,
+    rps: true,
+    statusCodes: true
+  }
 };

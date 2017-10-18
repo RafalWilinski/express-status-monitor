@@ -2,6 +2,15 @@
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
+body.hide-cpu .container.cpu,
+body.hide-mem .container.mem,
+body.hide-load .container.load,
+body.hide-responseTime .container.responseTime,
+body.hide-rps .container.rps,
+body.hide-statusCodes .container.statusCodes {
+  display: none;
+}
+
 h1 {
   font-size: 3em;
   color: #222;
