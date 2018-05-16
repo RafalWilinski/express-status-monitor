@@ -15,7 +15,8 @@
   "dependencies": {
     "express": "^4.14.0",
     "express-favicon-short-circuit": "^1.1.0",
-    "request": "^2.74.0"
+    "request": "^2.74.0",
+    "socket.io": "^2.1.0"
   },
   "scripts": {
     "start": "node index.js",
