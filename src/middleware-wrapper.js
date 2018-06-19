@@ -9,7 +9,7 @@ const middlewareWrapper = config => {
   const validatedConfig = validate(config);
 
   const bodyClasses = Object.keys(validatedConfig.chartVisibility).reduce((accumulator, key) => {
-    if (config.chartVisibility[key] === false) {
+    if (validatedConfig.chartVisibility[key] === false) {
       accumulator.push(`hide-${key}`);
     }
     return accumulator;
