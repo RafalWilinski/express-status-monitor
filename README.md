@@ -3,7 +3,6 @@
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/express-status-monitor/Lobby/?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![express-status-monitor on npm](https://img.shields.io/npm/v/express-status-monitor.svg)](https://www.npmjs.com/express-status-monitor)
 [![npm](https://img.shields.io/npm/dt/express-status-monitor.svg)](https://img.shields.io/npm/dt/express-status-monitor.svg)
-[![bitHound Overall Score](https://www.bithound.io/github/RafalWilinski/express-status-monitor/badges/score.svg)](https://www.bithound.io/github/RafalWilinski/express-status-monitor)
 [![CircleCI](https://img.shields.io/circleci/project/github/RafalWilinski/express-status-monitor/master.svg)](https://circleci.com/gh/RafalWilinski/express-status-monitor)
 [![Open Source Helpers](https://www.codetriage.com/rafalwilinski/express-status-monitor/badges/users.svg)](https://www.codetriage.com/rafalwilinski/express-status-monitor)
 

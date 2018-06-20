@@ -7,8 +7,6 @@ test:
     - npm run test-ci
     - nvm install 6 && nvm use 6 && npm run test-ci
     - nvm install 8 && nvm use 8 && npm run test-ci
-  post:
-    - bithound check git@github.com:RafalWilinski/express-status-monitor.git
 
 deployment:
   npm:
