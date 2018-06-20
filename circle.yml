@@ -1,16 +1,47 @@
-machine:
-  node:
-    version: 4.0.0
-test:
-  override:
-    - npm run eslint
-    - npm run test-ci
-    - nvm install 6 && nvm use 6 && npm run test-ci
-    - nvm install 8 && nvm use 8 && npm run test-ci
+version: 2
 
-deployment:
-  npm:
-    branch: master
-    commands:
-      - echo -e "$NPM_USERNAME\n$NPM_PASSWORD\n$NPM_EMAIL" | npm login
-      - npm run publish
+defaults: &defaults
+  working_directory: ~/repo
+  docker:
+    - image: circleci/node:8.9.1
+
+jobs:
+  test:
+    <<: *defaults  
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-
+          - v1-dependencies-
+      - run: npm install
+      - run: npm run eslint
+      - run: npm run test-ci
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
+          
+  deploy:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Authenticate with registry
+          command: echo -e "$NPM_USERNAME\n$NPM_PASSWORD\n$NPM_EMAIL" | npm login
+      - run:
+          name: Publish package
+          command: npm publish
+
+workflows:
+  version: 2
+  test-deploy:
+    jobs:
+      - test:
+      - deploy:
+          requires:
+            - test
