@@ -32,7 +32,7 @@ jobs:
           at: ~/repo
       - run:
           name: Authenticate with registry
-          command: echo -e "$NPM_USERNAME\n$NPM_PASSWORD\n$NPM_EMAIL" | npm login
+          command: echo "//registry.npmjs.org/:_authToken=$npm_token" > ~/repo/.npmrc
       - run:
           name: Publish package
           command: npm publish
