@@ -25,11 +25,11 @@ const middlewareWrapper = config => {
     .replace(/{{bodyClasses}}/g, bodyClasses)
     .replace(
       /{{script}}/g,
-      fs.readFileSync(path.join(__dirname, '/public/javascripts/app.js')),
+      fs.readFileSync(path.join(__dirname, '/public/javascripts/app.js'))
     )
     .replace(
       /{{style}}/g,
-      fs.readFileSync(path.join(__dirname, '/public/stylesheets/style.css')),
+      fs.readFileSync(path.join(__dirname, '/public/stylesheets/style.css'))
     );
 
   const middleware = (req, res, next) => {
