@@ -24,6 +24,7 @@ module.exports = {
     load: true,
     responseTime: true,
     rps: true,
-    statusCodes: true
-  }
+    statusCodes: true,
+  },
+  ignoreStartsWith: '',
 };

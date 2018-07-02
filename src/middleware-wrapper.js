@@ -8,21 +8,29 @@ const socketIoInit = require('./helpers/socket-io-init');
 const middlewareWrapper = config => {
   const validatedConfig = validate(config);
 
-  const bodyClasses = Object.keys(validatedConfig.chartVisibility).reduce((accumulator, key) => {
-    if (validatedConfig.chartVisibility[key] === false) {
-      accumulator.push(`hide-${key}`);
-    }
-    return accumulator;
-  }, []).join(' ');
+  const bodyClasses = Object.keys(validatedConfig.chartVisibility)
+    .reduce((accumulator, key) => {
+      if (validatedConfig.chartVisibility[key] === false) {
+        accumulator.push(`hide-${key}`);
+      }
+      return accumulator;
+    }, [])
+    .join(' ');
 
-  const renderedHtml =
-    fs.readFileSync(path.join(__dirname, '/public/index.html'))
-      .toString()
-      .replace(/{{title}}/g, validatedConfig.title)
-      .replace(/{{port}}/g, validatedConfig.port)
-      .replace(/{{bodyClasses}}/g, bodyClasses)
-      .replace(/{{script}}/g, fs.readFileSync(path.join(__dirname, '/public/javascripts/app.js')))
-      .replace(/{{style}}/g, fs.readFileSync(path.join(__dirname, '/public/stylesheets/style.css')));
+  const renderedHtml = fs
+    .readFileSync(path.join(__dirname, '/public/index.html'))
+    .toString()
+    .replace(/{{title}}/g, validatedConfig.title)
+    .replace(/{{port}}/g, validatedConfig.port)
+    .replace(/{{bodyClasses}}/g, bodyClasses)
+    .replace(
+      /{{script}}/g,
+      fs.readFileSync(path.join(__dirname, '/public/javascripts/app.js')),
+    )
+    .replace(
+      /{{style}}/g,
+      fs.readFileSync(path.join(__dirname, '/public/stylesheets/style.css')),
+    );
 
   const middleware = (req, res, next) => {
     socketIoInit(req.socket.server, validatedConfig);
@@ -37,13 +45,14 @@ const middlewareWrapper = config => {
         if (res.remove) {
           res.remove('X-Frame-Options');
         }
-
       }
       res.send(renderedHtml);
     } else {
-      onHeaders(res, () => {
-        onHeadersListener(res.statusCode, startTime, validatedConfig.spans);
-      });
+      if (!req.path.startsWith(validatedConfig.ignoreStartsWith)) {
+        onHeaders(res, () => {
+          onHeadersListener(res.statusCode, startTime, validatedConfig.spans);
+        });
+      }
 
       next();
     }

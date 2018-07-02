@@ -61,7 +61,8 @@ chartVisibility: {
   responseTime: true,
   rps: true,
   statusCodes: true
-}
+},
+ignoreStartsWith: '/admin'
 
 ```
 
