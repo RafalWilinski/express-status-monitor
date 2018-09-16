@@ -36,6 +36,11 @@ module.exports = config => {
     typeof config.path === 'string'
       ? config.ignoreStartsWith
       : defaultConfig.ignoreStartsWith;
+  
+  config.healthChecks =
+    Array.isArray(config.healthChecks)
+      ? config.healthChecks
+      : defaultConfig.healthChecks
 
   return config;
 };

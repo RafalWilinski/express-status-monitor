@@ -69,6 +69,63 @@ canvas {
   height: 100px;
 }
 
+.container.healthChecks {
+  display: block;
+  height: auto;
+}
+
+.health-check-row {
+  align-items: center;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  display: flex;
+  margin: 0 0 10px 0;
+  width: 100%;
+}
+
+.health-check-title-column {
+  flex: 0 0 400px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.health-check-title-column h5 a {
+  color: #888;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.health-check-title-column h5 a:hover {
+  text-decoration: underline;
+}
+
+.health-check-status-container {
+  align-items: center;
+  border-radius: 0 4px 4px 0;
+  display: flex;
+  justify-content: center;
+  height: 2em;
+  text-align: center;
+  width: 200px;
+}
+
+.health-check-status-container.ok {
+  background: #75D701;
+}
+
+.health-check-status-container.failed {
+  background: #E53A40;
+}
+
+.health-check-status-container h1 {
+  line-height: 2em;
+  font-size: 1.5em;
+  color: #fff;
+  text-align: center;
+  text-transform: uppercase;
+}
+
 .footer {
   text-align: center;
 }
