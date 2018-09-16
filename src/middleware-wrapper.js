@@ -19,11 +19,6 @@ const middlewareWrapper = config => {
     }, [])
     .join(' ');
   
-  // healthChecker(validatedConfig.healthChecks).then((results) => {
-  //   console.log(results);
-  // });
-
-  
   const data = {
     title: validatedConfig.title,
     port: validatedConfig.port,
