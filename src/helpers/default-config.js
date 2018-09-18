@@ -26,5 +26,5 @@ module.exports = {
     rps: true,
     statusCodes: true,
   },
-  ignoreStartsWith: '',
+  ignoreStartsWith: '/admin',
 };
