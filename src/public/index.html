@@ -5,7 +5,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
   <style>
-    {{style}}
+    {{{style}}}
   </style>
 </head>
 <body class="{{bodyClasses}}">
@@ -72,13 +72,25 @@
       <canvas id="statusCodesChart" width="200" height="100"></canvas>
     </div>
   </div>
+  <div class="container healthChecks">
+    {{#each healthCheckResults}}
+    <div class="health-check-row">
+        <div class="health-check-title-column">
+            <h5><a href="{{path}}">{{path}}</a></h5>
+        </div>
+        <div class="health-check-status-container {{status}}">
+          <h1>{{status}}</h1>
+        </div>
+    </div>
+    {{/each}}
+  </div>
   <div class="footer">
     <p>Made with &#9829; with Socket.io & Chart.js</p>
   </div>
 </div>
 <script>
-  var port = {{port}};
-  {{script}}
+  var port = '{{port}}';
+  {{{script}}}
 </script>
 </body>
 </html>

@@ -1,9 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 const onHeaders = require('on-headers');
+const Handlebars = require('handlebars');
 const validate = require('./helpers/validate');
 const onHeadersListener = require('./helpers/on-headers-listener');
 const socketIoInit = require('./helpers/socket-io-init');
+const healthChecker = require('./helpers/health-checker');
 
 const middlewareWrapper = config => {
   const validatedConfig = validate(config);
@@ -16,21 +18,20 @@ const middlewareWrapper = config => {
       return accumulator;
     }, [])
     .join(' ');
+  
+  const data = {
+    title: validatedConfig.title,
+    port: validatedConfig.port,
+    bodyClasses: bodyClasses,
+    script: fs.readFileSync(path.join(__dirname, '/public/javascripts/app.js')),
+    style: fs.readFileSync(path.join(__dirname, '/public/stylesheets/style.css'))
+  };
 
-  const renderedHtml = fs
+  const htmlTmpl = fs
     .readFileSync(path.join(__dirname, '/public/index.html'))
-    .toString()
-    .replace(/{{title}}/g, validatedConfig.title)
-    .replace(/{{port}}/g, validatedConfig.port)
-    .replace(/{{bodyClasses}}/g, bodyClasses)
-    .replace(
-      /{{script}}/g,
-      fs.readFileSync(path.join(__dirname, '/public/javascripts/app.js'))
-    )
-    .replace(
-      /{{style}}/g,
-      fs.readFileSync(path.join(__dirname, '/public/stylesheets/style.css'))
-    );
+    .toString();
+
+  const render = Handlebars.compile(htmlTmpl);
 
   const middleware = (req, res, next) => {
     socketIoInit(req.socket.server, validatedConfig);
@@ -38,15 +39,20 @@ const middlewareWrapper = config => {
     const startTime = process.hrtime();
 
     if (req.path === validatedConfig.path) {
-      if (validatedConfig.iframe) {
-        if (res.removeHeader) {
-          res.removeHeader('X-Frame-Options');
+
+      healthChecker(validatedConfig.healthChecks).then((results) => {
+        data.healthCheckResults = results;
+        
+        if (validatedConfig.iframe) {
+          if (res.removeHeader) {
+            res.removeHeader('X-Frame-Options');
+          }
+          if (res.remove) {
+            res.remove('X-Frame-Options');
+          }
         }
-        if (res.remove) {
-          res.remove('X-Frame-Options');
-        }
-      }
-      res.send(renderedHtml);
+        res.send(render(data));
+      });
     } else {
       if (!req.path.startsWith(validatedConfig.ignoreStartsWith)) {
         onHeaders(res, () => {
@@ -70,7 +76,10 @@ const middlewareWrapper = config => {
    */
   middleware.middleware = middleware;
   middleware.pageRoute = (req, res) => {
-    res.send(renderedHtml);
+    healthChecker(validatedConfig.healthChecks).then((results) => {
+      data.healthCheckResults = results;
+      res.send(render(data));
+    });
   };
   return middleware;
 };

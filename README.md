@@ -62,9 +62,31 @@ chartVisibility: {
   rps: true,
   statusCodes: true
 },
+healthChecks: [],
 ignoreStartsWith: '/admin'
 
 ```
+
+## Health Checks
+
+You can add a series of health checks to the configuration that will appear below the other stats. The health check will be considered successful if the endpoint returns a 200 status code.
+
+```javascript
+// config
+healthChecks: [{
+  protocol: 'http',
+  host: 'localhost'
+  path: '/admin/health/ex1',
+  port: '3000'
+}, {
+  protocol: 'http',
+  host: 'localhost'
+  path: '/admin/health/ex2',
+  port: '3000'
+}]
+```
+
+![Health Checks](https://i.imgur.com/6tY4OhA.png "Health Checks")
 
 ## Securing endpoint
 
