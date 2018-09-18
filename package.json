@@ -53,6 +53,7 @@
   "license": "MIT",
   "dependencies": {
     "debug": "^2.6.8",
+    "handlebars": "~4.0.12",
     "on-headers": "^1.0.1",
     "pidusage": "^1.1.6",
     "request-promise-native": "^1.0.5",
