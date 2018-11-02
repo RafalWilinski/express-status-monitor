@@ -1,6 +1,6 @@
 'use strict';
 
-const request = require('request-promise-native');
+const axios = require('axios');
 
 module.exports = async (healthChecks) => {
   healthChecks = healthChecks || [];
@@ -9,15 +9,15 @@ module.exports = async (healthChecks) => {
 
   healthChecks.forEach(healthCheck => {
     let uri = `${healthCheck.protocol}://${healthCheck.host}`;
-    
+
     if (healthCheck.port) {
       uri += `:${healthCheck.port}`;
     }
 
     uri += healthCheck.path;
 
-    checkPromises.push(request({
-      uri: uri,
+    checkPromises.push(axios({
+      url: uri,
       method: 'GET'
     }));
   });
@@ -45,8 +45,11 @@ module.exports = async (healthChecks) => {
 
 function _allSettled(promises) {
   let wrappedPromises = promises.map(p => Promise.resolve(p)
-      .then(
-          val => ({ state: 'fulfilled', value: val }),
-          err => ({ state: 'rejected', reason: err })));
+    .then(
+      val => ({ state: 'fulfilled', value: val }),
+      err => ({ state: 'rejected', reason: err })
+    )
+  );
+
   return Promise.all(wrappedPromises);
 }
