@@ -24,7 +24,7 @@ const middlewareWrapper = config => {
     port: validatedConfig.port,
     bodyClasses: bodyClasses,
     script: fs.readFileSync(path.join(__dirname, '/public/javascripts/app.js')),
-    style: fs.readFileSync(path.join(__dirname, '/public/stylesheets/style.css'))
+    style: fs.readFileSync(path.join(__dirname, '/public/stylesheets/', validatedConfig.theme))
   };
 
   const htmlTmpl = fs

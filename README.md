@@ -42,6 +42,7 @@ Monitor can be configured by passing options object into `expressMonitor` constr
 Default config:
 ```javascript
 title: 'Express Status',  // Default title
+theme: 'default.css',     // Default styles
 path: '/status',
 websocket: existingSocketIoInstance,
 spans: [{
