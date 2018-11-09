@@ -1,5 +1,6 @@
 module.exports = {
   title: 'Express Status',
+  theme: 'default.css',
   path: '/status',
   spans: [
     {
