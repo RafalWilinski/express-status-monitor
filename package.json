@@ -57,6 +57,7 @@
     "handlebars": "~4.0.12",
     "on-headers": "^1.0.1",
     "pidusage": "^1.1.6",
+    "request": "^2.88.0",
     "socket.io": "^2.0.3"
   },
   "scripts": {
