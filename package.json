@@ -54,7 +54,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "debug": "^2.6.8",
-    "handlebars": "~4.0.12",
+    "handlebars": "~4.0.13",
     "on-headers": "^1.0.1",
     "pidusage": "^1.1.6",
     "request": "^2.88.0",
