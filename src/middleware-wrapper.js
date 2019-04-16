@@ -22,6 +22,7 @@ const middlewareWrapper = config => {
   const data = {
     title: validatedConfig.title,
     port: validatedConfig.port,
+    socketPath: validatedConfig.socketPath,
     bodyClasses: bodyClasses,
     script: fs.readFileSync(path.join(__dirname, '/public/javascripts/app.js')),
     style: fs.readFileSync(path.join(__dirname, '/public/stylesheets/', validatedConfig.theme))
