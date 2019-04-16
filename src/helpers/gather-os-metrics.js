@@ -14,7 +14,7 @@ module.exports = (io, span) => {
     timestamp: Date.now(),
   };
 
-  pidusage.stat(process.pid, (err, stat) => {
+  pidusage(process.pid, (err, stat) => {
     if (err) {
       debug(err);
       return;

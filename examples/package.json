@@ -13,10 +13,10 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "express": "^4.14.0",
-    "express-favicon-short-circuit": "^1.1.0",
-    "request": "^2.87.0",
-    "socket.io": "^2.1.0"
+    "express": "4.16.4",
+    "express-favicon-short-circuit": "1.1.1",
+    "request": "2.88.0",
+    "socket.io": "2.2.0"
   },
   "scripts": {
     "start": "node index.js",

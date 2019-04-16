@@ -52,33 +52,29 @@
   },
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.18.0",
-    "debug": "^2.6.8",
-    "handlebars": "~4.0.13",
-    "on-headers": "^1.0.1",
-    "pidusage": "^1.1.6",
-    "request": "^2.88.0",
-    "socket.io": "^2.0.3"
+    "axios": "0.18.0",
+    "debug": "4.1.1",
+    "handlebars": "4.1.2",
+    "on-headers": "1.0.2",
+    "pidusage": "2.0.17",
+    "request": "2.88.0",
+    "socket.io": "2.2.0"
   },
   "scripts": {
     "coverage": "istanbul cover _mocha test --  --recursive",
     "test-ci": "mocha --recursive",
     "test": "mocha --recursive --watch",
     "snyk-protect": "snyk protect",
-    "publish": "publish",
-    "prepublish": "npm run snyk-protect",
     "example": "npm i && npm i --prefix examples && npm start --prefix examples",
     "eslint": "eslint ."
   },
   "devDependencies": {
-    "bithound": "^1.7.0",
-    "chai": "^4.1.0",
-    "eslint": "^4.3.0",
-    "istanbul": "^0.4.5",
-    "mocha": "^3.4.2",
-    "publish": "^0.6.0",
-    "sinon": "^2.4.1",
-    "snyk": "^1.37.0"
+    "chai": "4.2.0",
+    "eslint": "5.16.0",
+    "istanbul": "0.4.5",
+    "mocha": "6.1.3",
+    "sinon": "7.3.1",
+    "snyk": "1.151.0"
   },
   "snyk": true
 }

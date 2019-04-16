@@ -9,7 +9,6 @@ const healthChecker = require('./helpers/health-checker');
 
 const middlewareWrapper = config => {
   const validatedConfig = validate(config);
-
   const bodyClasses = Object.keys(validatedConfig.chartVisibility)
     .reduce((accumulator, key) => {
       if (validatedConfig.chartVisibility[key] === false) {
@@ -22,7 +21,7 @@ const middlewareWrapper = config => {
   const data = {
     title: validatedConfig.title,
     port: validatedConfig.port,
-    bodyClasses: bodyClasses,
+    bodyClasses,
     script: fs.readFileSync(path.join(__dirname, '/public/javascripts/app.js')),
     style: fs.readFileSync(path.join(__dirname, '/public/stylesheets/', validatedConfig.theme))
   };
@@ -39,18 +38,19 @@ const middlewareWrapper = config => {
     const startTime = process.hrtime();
 
     if (req.path === validatedConfig.path) {
-
-      healthChecker(validatedConfig.healthChecks).then((results) => {
+      healthChecker(validatedConfig.healthChecks).then(results => {
         data.healthCheckResults = results;
         
         if (validatedConfig.iframe) {
           if (res.removeHeader) {
             res.removeHeader('X-Frame-Options');
           }
+
           if (res.remove) {
             res.remove('X-Frame-Options');
           }
         }
+
         res.send(render(data));
       });
     } else {
@@ -76,7 +76,7 @@ const middlewareWrapper = config => {
    */
   middleware.middleware = middleware;
   middleware.pageRoute = (req, res) => {
-    healthChecker(validatedConfig.healthChecks).then((results) => {
+    healthChecker(validatedConfig.healthChecks).then(results => {
       data.healthCheckResults = results;
       res.send(render(data));
     });

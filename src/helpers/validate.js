@@ -16,6 +16,8 @@ module.exports = config => {
 
   config.title =
     typeof config.title === 'string' ? config.title : defaultConfig.title;
+  config.theme =
+    typeof config.theme === 'string' ? config.theme : defaultConfig.theme;
   config.path =
     typeof config.path === 'string' ? config.path : defaultConfig.path;
   config.spans =
