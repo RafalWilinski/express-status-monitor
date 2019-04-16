@@ -3,6 +3,10 @@
         "node": true,
         "es6": true
     },
+    "parserOptions": {
+        "sourceType": "module",
+        "ecmaVersion": 8
+    },
     "extends": "eslint:recommended",
     "rules": {
         "accessor-pairs": "error",
@@ -61,10 +65,6 @@
         "func-call-spacing": "error",
         "func-name-matching": "error",
         "func-names": "error",
-        "func-style": [
-            "error",
-            "expression"
-        ],
         "generator-star-spacing": "error",
         "global-require": "error",
         "guard-for-in": "error",

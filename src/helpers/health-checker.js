@@ -2,12 +2,22 @@
 
 const axios = require('axios');
 
-module.exports = async (healthChecks) => {
-  healthChecks = healthChecks || [];
+function allSettled (promises) {
+  const wrappedPromises = promises.map(p => Promise.resolve(p)
+    .then(
+      val => ({ state: 'fulfilled', value: val }),
+      err => ({ state: 'rejected', reason: err })
+    )
+  );
 
+  return Promise.all(wrappedPromises);
+}
+
+
+module.exports = async healthChecks => {
   const checkPromises = [];
 
-  healthChecks.forEach(healthCheck => {
+  (healthChecks || []).forEach(healthCheck => {
     let uri = `${healthCheck.protocol}://${healthCheck.host}`;
 
     if (healthCheck.port) {
@@ -22,9 +32,9 @@ module.exports = async (healthChecks) => {
     }));
   });
 
-  let checkResults = [];
+  const checkResults = [];
 
-  return _allSettled(checkPromises).then((results) => {
+  return allSettled(checkPromises).then(results => {
     results.forEach((result, index) => {
       if (result.state === 'rejected') {
         checkResults.push({
@@ -42,14 +52,3 @@ module.exports = async (healthChecks) => {
     return checkResults;
   });
 };
-
-function _allSettled(promises) {
-  let wrappedPromises = promises.map(p => Promise.resolve(p)
-    .then(
-      val => ({ state: 'fulfilled', value: val }),
-      err => ({ state: 'rejected', reason: err })
-    )
-  );
-
-  return Promise.all(wrappedPromises);
-}

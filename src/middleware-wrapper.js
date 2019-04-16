@@ -17,7 +17,7 @@ const middlewareWrapper = config => {
       return accumulator;
     }, [])
     .join(' ');
-  
+
   const data = {
     title: validatedConfig.title,
     port: validatedConfig.port,
@@ -41,7 +41,6 @@ const middlewareWrapper = config => {
     if (req.path === validatedConfig.path) {
       healthChecker(validatedConfig.healthChecks).then(results => {
         data.healthCheckResults = results;
-        
         if (validatedConfig.iframe) {
           if (res.removeHeader) {
             res.removeHeader('X-Frame-Options');
