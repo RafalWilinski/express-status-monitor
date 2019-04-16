@@ -63,9 +63,6 @@ describe('middleware-wrapper', () => {
             done();
           });
         });
-        
-
-        
       });
 
       describe('and used as separate middleware and page handler', () => {

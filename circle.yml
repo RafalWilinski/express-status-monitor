@@ -3,7 +3,7 @@ version: 2
 defaults: &defaults
   working_directory: ~/repo
   docker:
-    - image: circleci/node:8.9.1
+    - image: circleci/node:8.10.0
 
 jobs:
   test:
@@ -47,7 +47,8 @@ workflows:
               only: /.*/
       - deploy:
           filters:
-            tags:
-              only: /.*/
+            branches:
+              only:
+                - master
           requires:
             - test
