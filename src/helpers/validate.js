@@ -20,6 +20,8 @@ module.exports = config => {
     typeof config.theme === 'string' ? config.theme : defaultConfig.theme;
   config.path =
     typeof config.path === 'string' ? config.path : defaultConfig.path;
+  config.socketPath =
+    typeof config.socketPath === 'string' ? config.socketPath : defaultConfig.socketPath;
   config.spans =
     typeof config.spans === 'object' ? config.spans : defaultConfig.spans;
   config.port =

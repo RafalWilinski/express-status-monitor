@@ -2,6 +2,7 @@ module.exports = {
   title: 'Express Status',
   theme: 'default.css',
   path: '/status',
+  socketPath: '/socket.io',
   spans: [
     {
       interval: 1,

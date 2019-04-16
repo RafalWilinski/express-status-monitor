@@ -44,6 +44,7 @@ Default config:
 title: 'Express Status',  // Default title
 theme: 'default.css',     // Default styles
 path: '/status',
+socketPath: '/socket.io', // In case you use a custom path
 websocket: existingSocketIoInstance,
 spans: [{
   interval: 1,            // Every second
