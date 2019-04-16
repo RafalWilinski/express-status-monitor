@@ -44,11 +44,6 @@
       "name": "Jiri Spac",
       "email": "capajj@gmail.com",
       "url": "https://github.com/capaj/"
-    },
-    {
-      "name": "Max Findel",
-      "email": "max@terminal.co",
-      "url": "https://github.com/maxfindel/"
     }
   ],
   "repository": {
@@ -59,7 +54,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "debug": "^2.6.8",
-    "handlebars": "~4.0.13",
+    "handlebars": "~4.0.14",
     "on-headers": "^1.0.1",
     "pidusage": "^1.1.6",
     "request": "^2.88.0",
