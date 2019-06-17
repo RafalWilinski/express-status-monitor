@@ -77,12 +77,12 @@ You can add a series of health checks to the configuration that will appear belo
 // config
 healthChecks: [{
   protocol: 'http',
-  host: 'localhost'
+  host: 'localhost',
   path: '/admin/health/ex1',
   port: '3000'
 }, {
   protocol: 'http',
-  host: 'localhost'
+  host: 'localhost',
   path: '/admin/health/ex2',
   port: '3000'
 }]
