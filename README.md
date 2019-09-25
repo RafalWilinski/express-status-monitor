@@ -12,7 +12,7 @@ Simple, self-hosted module based on Socket.io and Chart.js to report realtime se
 
 ## Demo
 
-[Demo available here](https://express-status-monitor-example-fjovaypblp.now.sh)
+[Demo available here](https://express-status-monitor-demo.herokuapp.com/)
 
 ## Support for other Node.js frameworks
 
