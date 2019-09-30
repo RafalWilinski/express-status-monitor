@@ -57,13 +57,13 @@
   },
   "license": "MIT",
   "dependencies": {
-    "axios": "0.19.0",
-    "debug": "4.1.1",
-    "handlebars": "4.1.2",
-    "on-headers": "1.0.2",
-    "pidusage": "2.0.17",
-    "request": "2.88.0",
-    "socket.io": "2.2.0"
+    "axios": "^0.19.0",
+    "debug": "^4.1.1",
+    "handlebars": "^4.4.0",
+    "on-headers": "^1.0.2",
+    "pidusage": "^2.0.17",
+    "request": "^2.88.0",
+    "socket.io": "^2.3.0"
   },
   "scripts": {
     "test-ci": "mocha --recursive",
@@ -73,11 +73,11 @@
     "eslint": "eslint ."
   },
   "devDependencies": {
-    "chai": "4.2.0",
-    "eslint": "5.16.0",
-    "mocha": "6.1.4",
-    "sinon": "7.3.2",
-    "snyk": "1.171.1"
+    "chai": "^4.2.0",
+    "eslint": "^6.5.0",
+    "mocha": "^6.2.1",
+    "sinon": "^7.5.0",
+    "snyk": "^1.228.5"
   },
   "snyk": true
 }
