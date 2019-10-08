@@ -1,5 +1,6 @@
 # express-status-monitor
 
+[![Dependency Status](https://david-dm.org/RafalWilinski/express-status-monitor/status.svg?style=flat)](https://david-dm.org/RafalWilinski/express-status-monitor) [![devDependencies Status](https://david-dm.org/RafalWilinski/express-status-monitor/dev-status.svg)](https://david-dm.org/RafalWilinski/express-status-monitor?type=dev)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/express-status-monitor/Lobby/?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![express-status-monitor on npm](https://img.shields.io/npm/v/express-status-monitor.svg)](https://www.npmjs.com/express-status-monitor)
 [![npm](https://img.shields.io/npm/dt/express-status-monitor.svg)](https://img.shields.io/npm/dt/express-status-monitor.svg)
