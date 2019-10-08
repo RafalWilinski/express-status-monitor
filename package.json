@@ -1,6 +1,6 @@
 {
   "name": "express-status-monitor",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "Realtime Monitoring for Express-based Node applications",
   "main": "index.js",
   "keywords": [
@@ -59,11 +59,11 @@
   "dependencies": {
     "axios": "0.19.0",
     "debug": "4.1.1",
-    "handlebars": "4.3.0",
+    "handlebars": "4.4.2",
     "on-headers": "1.0.2",
     "pidusage": "2.0.17",
     "request": "2.88.0",
-    "socket.io": "2.2.0"
+    "socket.io": "2.3.0"
   },
   "scripts": {
     "test-ci": "mocha --recursive",
@@ -77,7 +77,7 @@
     "eslint": "5.16.0",
     "mocha": "6.1.4",
     "sinon": "7.3.2",
-    "snyk": "1.171.1"
+    "snyk": "^1.232.0"
   },
   "snyk": true
 }
