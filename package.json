@@ -59,7 +59,7 @@
   "dependencies": {
     "axios": "0.19.0",
     "debug": "4.1.1",
-    "handlebars": "4.4.2",
+    "handlebars": "4.5.1",
     "on-headers": "1.0.2",
     "pidusage": "2.0.17",
     "request": "2.88.0",
@@ -74,10 +74,10 @@
   },
   "devDependencies": {
     "chai": "4.2.0",
-    "eslint": "5.16.0",
-    "mocha": "6.1.4",
-    "sinon": "7.3.2",
-    "snyk": "^1.232.0"
+    "eslint": "6.6.0",
+    "mocha": "6.2.2",
+    "sinon": "7.5.0",
+    "snyk": "^1.242.0"
   },
   "snyk": true
 }
