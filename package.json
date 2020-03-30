@@ -1,6 +1,6 @@
 {
   "name": "express-status-monitor",
-  "version": "1.2.9",
+  "version": "1.2.10",
   "description": "Realtime Monitoring for Express-based Node applications",
   "main": "index.js",
   "keywords": [
@@ -13,7 +13,7 @@
   "engines": {
     "node": ">=8"
   },
-  "author": "Rafal Wilinski <raf.wilinski@gmail.com> (http://rwilinski.me)",
+  "author": "Rafal Wilinski <raf.wilinski@gmail.com> (https://rwilinski.me)",
   "contributors": [
     {
       "name": "Julien Breux",
@@ -73,10 +73,10 @@
   },
   "devDependencies": {
     "chai": "4.2.0",
-    "eslint": "5.16.0",
-    "mocha": "7.1.0",
-    "sinon": "9.0.0",
-    "snyk": "1.297.3"
+    "eslint": "6.8.0",
+    "mocha": "7.1.1",
+    "sinon": "9.0.1",
+    "snyk": "1.305.0"
   },
   "snyk": true
 }

@@ -135,4 +135,4 @@ npm run coverage
 
 ## License
 
-[MIT License](https://opensource.org/licenses/MIT) © Rafal Wilinski
+[MIT License](https://opensource.org/licenses/MIT) © [Dynobase](https://dynobase.dev)
