@@ -13,7 +13,9 @@ Chart.defaults.global.elements.line.backgroundColor = 'rgba(0,0,0,0)';
 Chart.defaults.global.elements.line.borderColor = 'rgba(0,0,0,0.9)';
 Chart.defaults.global.elements.line.borderWidth = 2;
 
-var socket = io(location.protocol + '//' + location.hostname + ':' + (port || location.port), { path: socketPath });
+var socket = io(location.protocol + '//' + location.hostname + ':' + (port || location.port), {
+  path: socketPath,
+});
 var defaultSpan = 0;
 var spans = [];
 var statusCodesColors = ['#75D701', '#47b8e0', '#ffc952', '#E53A40'];
@@ -27,20 +29,24 @@ var defaultDataset = {
 
 var defaultOptions = {
   scales: {
-    yAxes: [{
-      ticks: {
-        beginAtZero: true,
+    yAxes: [
+      {
+        ticks: {
+          beginAtZero: true,
+        },
       },
-    }],
-    xAxes: [{
-      type: 'time',
-      time: {
-        unitStepSize: 30,
+    ],
+    xAxes: [
+      {
+        type: 'time',
+        time: {
+          unitStepSize: 30,
+        },
+        gridLines: {
+          display: false,
+        },
       },
-      gridLines: {
-        display: false,
-      },
-    }],
+    ],
   },
   tooltips: {
     enabled: false,
@@ -68,24 +74,32 @@ var addTimestamp = function (point) {
 var cpuDataset = [Object.create(defaultDataset)];
 var memDataset = [Object.create(defaultDataset)];
 var loadDataset = [Object.create(defaultDataset)];
+var heapDataset = [Object.create(defaultDataset)];
+var eventLoopDataset = [Object.create(defaultDataset)];
 var responseTimeDataset = [Object.create(defaultDataset)];
 var rpsDataset = [Object.create(defaultDataset)];
 
 var cpuStat = document.getElementById('cpuStat');
 var memStat = document.getElementById('memStat');
 var loadStat = document.getElementById('loadStat');
+var heapStat = document.getElementById('heapStat');
+var eventLoopStat = document.getElementById('eventLoopStat');
 var responseTimeStat = document.getElementById('responseTimeStat');
 var rpsStat = document.getElementById('rpsStat');
 
 var cpuChartCtx = document.getElementById('cpuChart');
 var memChartCtx = document.getElementById('memChart');
 var loadChartCtx = document.getElementById('loadChart');
+var heapChartCtx = document.getElementById('heapChart');
+var eventLoopChartCtx = document.getElementById('eventLoopChart');
 var responseTimeChartCtx = document.getElementById('responseTimeChart');
 var rpsChartCtx = document.getElementById('rpsChart');
 var statusCodesChartCtx = document.getElementById('statusCodesChart');
 
 var cpuChart = createChart(cpuChartCtx, cpuDataset);
 var memChart = createChart(memChartCtx, memDataset);
+var heapChart = createChart(heapChartCtx, heapDataset);
+var eventLoopChart = createChart(eventLoopChartCtx, eventLoopDataset);
 var loadChart = createChart(loadChartCtx, loadDataset);
 var responseTimeChart = createChart(responseTimeChartCtx, responseTimeDataset);
 var rpsChart = createChart(rpsChartCtx, rpsDataset);
@@ -107,7 +121,16 @@ statusCodesChart.data.datasets.forEach(function (dataset, index) {
   dataset.borderColor = statusCodesColors[index];
 });
 
-var charts = [cpuChart, memChart, loadChart, responseTimeChart, rpsChart, statusCodesChart];
+var charts = [
+  cpuChart,
+  memChart,
+  loadChart,
+  responseTimeChart,
+  rpsChart,
+  statusCodesChart,
+  heapChart,
+  eventLoopChart,
+];
 
 var onSpanChange = function (e) {
   e.target.classList.add('active');
@@ -160,6 +183,16 @@ socket.on('esm_start', function (data) {
   });
   loadChart.data.labels = data[defaultSpan].os.map(addTimestamp);
 
+  heapChart.data.datasets[0].data = data[defaultSpan].os.map(function (point) {
+    return point.heap.used_heap_size / 1024 / 1024;
+  });
+  heapChart.data.labels = data[defaultSpan].os.map(addTimestamp);
+
+  eventLoopChart.data.datasets[0].data = data[defaultSpan].os.map(function (point) {
+    return point.loop.sum;
+  });
+  eventLoopChart.data.labels = data[defaultSpan].os.map(addTimestamp);
+
   var lastResponseMetric = data[defaultSpan].responses[data[defaultSpan].responses.length - 1];
 
   responseTimeStat.textContent = '0.00ms';
@@ -180,7 +213,8 @@ socket.on('esm_start', function (data) {
   statusCodesChart.data.labels = data[defaultSpan].responses.map(addTimestamp);
 
   if (data[defaultSpan].responses.length >= 2) {
-    var deltaTime = lastResponseMetric.timestamp -
+    var deltaTime =
+      lastResponseMetric.timestamp -
       data[defaultSpan].responses[data[defaultSpan].responses.length - 2].timestamp;
 
     if (deltaTime < 1) deltaTime = 1000;
@@ -205,7 +239,7 @@ socket.on('esm_start', function (data) {
       });
 
       var spanNode = document.createElement('span');
-      var textNode = document.createTextNode(((span.retention * span.interval) / 60) + 'M');
+      var textNode = document.createTextNode((span.retention * span.interval) / 60 + 'M');
 
       spanNode.appendChild(textNode);
       spanNode.setAttribute('id', index);
@@ -217,8 +251,12 @@ socket.on('esm_start', function (data) {
 });
 
 socket.on('esm_stats', function (data) {
-  if (data.retention === spans[defaultSpan].retention &&
-    data.interval === spans[defaultSpan].interval) {
+  console.log(data);
+
+  if (
+    data.retention === spans[defaultSpan].retention &&
+    data.interval === spans[defaultSpan].interval
+  ) {
     var os = data.os;
     var responses = data.responses;
 
@@ -241,6 +279,20 @@ socket.on('esm_stats', function (data) {
       loadStat.textContent = os.load[0].toFixed(2);
       loadChart.data.datasets[0].data.push(os.load[0]);
       loadChart.data.labels.push(os.timestamp);
+    }
+
+    heapStat.textContent = '0';
+    if (os) {
+      heapStat.textContent = (os.heap.used_heap_size / 1024 / 1024).toFixed(1) + 'MB';
+      heapChart.data.datasets[0].data.push(os.heap.used_heap_size / 1024 / 1024);
+      heapChart.data.labels.push(os.timestamp);
+    }
+
+    eventLoopStat.textContent = '0';
+    if (os) {
+      eventLoopStat.textContent = os.loop.sum.toFixed(2) + 'ms';
+      eventLoopChart.data.datasets[0].data.push(os.loop.sum);
+      eventLoopChart.data.labels.push(os.timestamp);
     }
 
     responseTimeStat.textContent = '0.00ms';

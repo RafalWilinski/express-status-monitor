@@ -12,7 +12,7 @@ const addSocketEvents = (socket, config) => {
   socket.on('esm_change', () => {
     socket.emit('esm_start', config.spans);
   });
-}
+};
 
 module.exports = (server, config) => {
   if (io === null || io === undefined) {
@@ -22,10 +22,11 @@ module.exports = (server, config) => {
       io = socketIo(server);
     }
 
-    io.on('connection', socket => {
+    io.on('connection', (socket) => {
       if (config.authorize) {
-        config.authorize(socket)
-          .then(authorized => {
+        config
+          .authorize(socket)
+          .then((authorized) => {
             if (!authorized) socket.disconnect('unauthorized');
             else addSocketEvents(socket, config);
           })
@@ -35,7 +36,7 @@ module.exports = (server, config) => {
       }
     });
 
-    config.spans.forEach(span => {
+    config.spans.forEach((span) => {
       span.os = [];
       span.responses = [];
       const interval = setInterval(() => gatherOsMetrics(io, span), span.interval * 1000);

@@ -61,6 +61,8 @@ chartVisibility: {
   cpu: true,
   mem: true,
   load: true,
+  eventLoop: true,
+  heap: true,
   responseTime: true,
   rps: true,
   statusCodes: true

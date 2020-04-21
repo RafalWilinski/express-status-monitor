@@ -24,10 +24,12 @@ module.exports = {
     cpu: true,
     mem: true,
     load: true,
+    heap: true,
+    eventLoop: true,
     responseTime: true,
     rps: true,
     statusCodes: true,
   },
   ignoreStartsWith: '/admin',
-  healthChecks: []
+  healthChecks: [],
 };
