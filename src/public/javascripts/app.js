@@ -239,7 +239,7 @@ socket.on('esm_start', function (data) {
       });
 
       var spanNode = document.createElement('span');
-      var textNode = document.createTextNode((span.retention * span.interval) / 60 + 'M');
+      var textNode = document.createTextNode(((span.retention * span.interval) / 60) + 'M');
 
       spanNode.appendChild(textNode);
       spanNode.setAttribute('id', index);

@@ -32,7 +32,7 @@ module.exports = (io, span) => {
     stat.loop = eventLoopStats.sense();
 
     span.os.push(stat);
-    if (!span.responses[0] || last.timestamp + span.interval * 1000 < Date.now()) {
+    if (!span.responses[0] || (last.timestamp + span.interval) * 1000 < Date.now()) {
       span.responses.push(defaultResponse);
     }
 
