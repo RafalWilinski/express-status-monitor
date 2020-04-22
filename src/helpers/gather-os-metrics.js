@@ -1,9 +1,16 @@
 const pidusage = require('pidusage');
 const os = require('os');
 const v8 = require('v8');
-const eventLoopStats = require('event-loop-stats');
 const sendMetrics = require('./send-metrics');
 const debug = require('debug')('express-status-monitor');
+
+let eventLoopStats; // eslint-disable-line
+
+try {
+  eventLoopStats = require('event-loop-stats'); // eslint-disable-line
+} catch (error) {
+  console.warn('event-loop-stats not found, ignoring event loop metrics...');
+}
 
 module.exports = (io, span) => {
   const defaultResponse = {
@@ -29,7 +36,10 @@ module.exports = (io, span) => {
     stat.load = os.loadavg();
     stat.timestamp = Date.now();
     stat.heap = v8.getHeapStatistics();
-    stat.loop = eventLoopStats.sense();
+
+    if (eventLoopStats) {
+      stat.loop = eventLoopStats.sense();
+    }
 
     span.os.push(stat);
     if (!span.responses[0] || (last.timestamp + span.interval) * 1000 < Date.now()) {

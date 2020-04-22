@@ -1,6 +1,6 @@
 {
   "name": "express-status-monitor",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Realtime Monitoring for Express-based Node applications",
   "main": "index.js",
   "keywords": [
@@ -59,11 +59,13 @@
   "dependencies": {
     "axios": "0.19.2",
     "debug": "4.1.1",
-    "event-loop-stats": "1.2.0",
     "handlebars": "^4.7.6",
     "on-headers": "1.0.2",
     "pidusage": "2.0.18",
     "socket.io": "2.3.0"
+  },
+  "optionalDependencies": {
+    "event-loop-stats": "1.2.0"
   },
   "scripts": {
     "test-ci": "mocha --recursive",
