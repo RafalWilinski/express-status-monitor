@@ -4,10 +4,10 @@ const v8 = require('v8');
 const sendMetrics = require('./send-metrics');
 const debug = require('debug')('express-status-monitor');
 
-let eventLoopStats;
+let eventLoopStats; // eslint-disable-line
 
 try {
-  eventLoopStats = require('event-loop-stats');
+  eventLoopStats = require('event-loop-stats'); // eslint-disable-line
 } catch (error) {
   console.warn('event-loop-stats not found, ignoring event loop metrics...');
 }
