@@ -189,7 +189,10 @@ socket.on('esm_start', function (data) {
   heapChart.data.labels = data[defaultSpan].os.map(addTimestamp);
 
   eventLoopChart.data.datasets[0].data = data[defaultSpan].os.map(function (point) {
-    return point.loop.sum;
+    if (point.loop) {
+      return point.loop.sum;
+    }
+    return 0;
   });
   eventLoopChart.data.labels = data[defaultSpan].os.map(addTimestamp);
 
@@ -239,7 +242,7 @@ socket.on('esm_start', function (data) {
       });
 
       var spanNode = document.createElement('span');
-      var textNode = document.createTextNode(((span.retention * span.interval) / 60) + 'M');
+      var textNode = document.createTextNode((span.retention * span.interval) / 60 + 'M');
 
       spanNode.appendChild(textNode);
       spanNode.setAttribute('id', index);
@@ -289,7 +292,7 @@ socket.on('esm_stats', function (data) {
     }
 
     eventLoopStat.textContent = '0';
-    if (os) {
+    if (os && os.loop) {
       eventLoopStat.textContent = os.loop.sum.toFixed(2) + 'ms';
       eventLoopChart.data.datasets[0].data.push(os.loop.sum);
       eventLoopChart.data.labels.push(os.timestamp);
