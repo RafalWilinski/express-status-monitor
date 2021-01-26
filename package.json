@@ -57,12 +57,12 @@
   },
   "license": "MIT",
   "dependencies": {
-    "axios": "0.19.2",
+    "axios": "0.21.1",
     "debug": "4.1.1",
     "handlebars": "^4.7.6",
     "on-headers": "1.0.2",
     "pidusage": "2.0.18",
-    "socket.io": "2.3.0"
+    "socket.io": "2.4.0"
   },
   "optionalDependencies": {
     "event-loop-stats": "1.2.0"
