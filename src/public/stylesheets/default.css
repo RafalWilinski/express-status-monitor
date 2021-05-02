@@ -4,6 +4,7 @@
 
 body.hide-cpu .container.cpu,
 body.hide-mem .container.mem,
+body.hide-heap .container.heap,
 body.hide-load .container.load,
 body.hide-responseTime .container.responseTime,
 body.hide-rps .container.rps,
