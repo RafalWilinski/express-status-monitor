@@ -68,9 +68,58 @@ chartVisibility: {
   statusCodes: true
 },
 healthChecks: [],
+chartOrder: [           // the order to display the charts
+  'cpu',
+  'mem',
+  'heap',
+  'load',
+  'eventLoop',
+  'responseTime',
+  'rps',
+  'statusCodes'
+],
+customCharts: [],
 ignoreStartsWith: '/admin'
 
 ```
+
+## Chart Order
+You can pass an array with the id's of charts to display them in that order.
+```javascript
+// config
+chartOrder:[
+  'cpu',
+  'mem',
+  'heap',
+  'load',
+  'eventLoop',
+  'responseTime',
+  'rps',
+  'statusCodes'
+]
+```
+
+## Custom Charts
+
+You can add a series of custom charts to the configuration.
+A custom chart needs an id, a title and a callback, so the minimal configuration is:
+```javascript
+// config
+customCharts:[{
+	id:  'mychart',
+	title:  'My Chart',
+	callback: () => {
+		return  Math.random();
+	}
+}]
+```
+
+Additional you can pass the attributes:
+- `decimalFixed: number` - decimal points to display (default is 2)
+- `prefix: string` - a prefix for the stat (default is "")
+- `suffix: string` - a suffix for the stat (default is "")
+- `defaultValue: string` - a default value to display if there is no data (default is "-")
+- `customLabel: string` - HTML-Code to display for the chart label (default is ""), use id="{{chartId}}Stat" to set the innerText to the chartStat
 
 ## Health Checks
 

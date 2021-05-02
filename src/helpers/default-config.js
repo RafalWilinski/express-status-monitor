@@ -31,5 +31,16 @@ module.exports = {
     statusCodes: true,
   },
   ignoreStartsWith: '/admin',
+  chartOrder: [
+    'cpu',
+    'mem',
+    'heap',
+    'load',
+    'eventLoop',
+    'responseTime',
+    'rps',
+    'statusCodes'
+  ],
+  customCharts: [],
   healthChecks: [],
 };

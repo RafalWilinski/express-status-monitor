@@ -39,7 +39,7 @@ module.exports = (server, config) => {
     config.spans.forEach(span => {
       span.os = [];
       span.responses = [];
-      const interval = setInterval(() => gatherOsMetrics(io, span), span.interval * 1000);
+      const interval = setInterval(() => gatherOsMetrics(io, span, config), span.interval * 1000);
 
       // Don't keep Node.js process up
       interval.unref();
