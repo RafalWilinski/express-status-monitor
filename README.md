@@ -114,12 +114,12 @@ customCharts:[{
 }]
 ```
 
-Additional you can pass the attributes:
+Additionally you can pass the attributes:
 - `decimalFixed: number` - decimal points to display (default is 2)
 - `prefix: string` - a prefix for the stat (default is "")
 - `suffix: string` - a suffix for the stat (default is "")
-- `defaultValue: string` - a default value to display if there is no data (default is "-")
-- `customLabel: string` - HTML-Code to display for the chart label (default is ""), use id="{{chartId}}Stat" to set the innerText to the chartStat
+- `defaultValue: string` - a default value to display, if there is no data (default is "-")
+- `customLabel: string` - HTML-Code to display as the chart label (default is ""), use id="{{chartId}}Stat" to set the innerText to the chartStat
 
 ## Health Checks
 
