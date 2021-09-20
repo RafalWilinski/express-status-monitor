@@ -49,6 +49,11 @@
       "name": "Max Findel",
       "email": "max@terminal.co",
       "url": "https://github.com/maxfindel/"
+    },
+    {
+      "name": "Domenic Melcher",
+      "email": "domi.m@outlook.com",
+      "url": "https://github.com/LetsMelon"
     }
   ],
   "repository": {
@@ -79,7 +84,7 @@
     "eslint": "6.8.0",
     "mocha": "7.1.1",
     "sinon": "9.0.1",
-    "snyk": "1.305.0"
+    "snyk": "^1.717.0"
   },
   "snyk": true
 }
