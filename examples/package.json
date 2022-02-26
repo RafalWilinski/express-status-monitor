@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Examples",
   "main": "index.js",
-  "author": "Rafal Wilinski raf.wilinski@gmail.com",
+  "author": "Rafal Wilinski <raf.wilinski@gmail.com> (https://dynobase.com)",
   "contributors": [
     {
       "name": "Julien Breux",
@@ -13,10 +13,10 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "express": "4.16.4",
-    "express-favicon-short-circuit": "1.1.1",
-    "request": "2.88.0",
-    "socket.io": "2.4.0"
+    "express": "4.17.3",
+    "express-favicon-short-circuit": "1.2.0",
+    "request": "2.88.2",
+    "socket.io": "^4.4.1"
   },
   "scripts": {
     "start": "node index.js",
