@@ -18,12 +18,53 @@ const middlewareWrapper = config => {
     }, [])
     .join(' ');
 
+  const appJsTmpl = fs
+    .readFileSync(path.join(__dirname, '/public/javascripts/app.js'))
+    .toString();
+
+  const appJsScript = Handlebars
+    .compile(appJsTmpl)({
+      customCharts: JSON.stringify(validatedConfig.customCharts
+        .map(chart => {
+          return {
+            id: chart.id,
+            defaultValue: chart.defaultValue ? '' + chart.defaultValue : '-',
+            decimalFixed: typeof chart.decimalFixed === 'number' ? chart.decimalFixed : 2,
+            prefix: chart.prefix ? '' + chart.prefix : '',
+            suffix: chart.suffix ? '' + chart.suffix : ''
+          }
+        }))
+    });
+
+  const charts = [
+    { id: 'cpu', title: 'CPU Usage' },
+    { id: 'mem', title: 'Memory Usage' },
+    { id: 'heap', title: 'Heap Usage' },
+    { id: 'load', title: 'One Minute Load Avg' },
+    { id: 'eventLoop', title: 'Spent in Event Loop' },
+    { id: 'responseTime', title: 'Response Time' },
+    { id: 'rps', title: 'Requests per Second' },
+    {
+      id: 'statusCodes', title: 'Satus Codes',
+      customLabel: `<h5>Status Codes</h5>
+                    <h6 class="status-code status-code-2xx">2xx</h6>
+                    <h6 class="status-code status-code-3xx">3xx</h6>
+                    <h6 class="status-code status-code-4xx">4xx</h6>
+                    <h6 class="status-code status-code-5xx">5xx</h6>`
+    },
+  ].concat(validatedConfig.customCharts);
+
+  charts.sort((a, b) => {
+    return validatedConfig.chartOrder.indexOf(a.id) - validatedConfig.chartOrder.indexOf(b.id);
+  });
+
   const data = {
     title: validatedConfig.title,
     port: validatedConfig.port,
     socketPath: validatedConfig.socketPath,
     bodyClasses,
-    script: fs.readFileSync(path.join(__dirname, '/public/javascripts/app.js')),
+    charts,
+    script: appJsScript,
     style: fs.readFileSync(path.join(__dirname, '/public/stylesheets/', validatedConfig.theme))
   };
 

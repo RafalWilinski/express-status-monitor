@@ -44,7 +44,17 @@ module.exports = config => {
   config.healthChecks =
     Array.isArray(config.healthChecks)
       ? config.healthChecks
-      : defaultConfig.healthChecks
+      : defaultConfig.healthChecks;
+
+  config.customCharts =
+    Array.isArray(config.customCharts)
+      ? config.customCharts
+      : defaultConfig.customCharts;
+
+  config.chartOrder =
+    Array.isArray(config.chartOrder)
+      ? config.chartOrder
+      : defaultConfig.chartOrder;
 
   return config;
 };

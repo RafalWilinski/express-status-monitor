@@ -12,7 +12,7 @@ try {
   console.warn('event-loop-stats not found, ignoring event loop metrics...');
 }
 
-module.exports = (io, span) => {
+module.exports = (io, span, config) => {
   const defaultResponse = {
     2: 0,
     3: 0,
@@ -40,6 +40,14 @@ module.exports = (io, span) => {
     if (eventLoopStats) {
       stat.loop = eventLoopStats.sense();
     }
+
+    stat.customCharts = {};
+
+
+    config.customCharts
+      .forEach(chart => {
+        stat.customCharts[chart.id] = chart.callback();
+      });
 
     span.os.push(stat);
     if (!span.responses[0] || (last.timestamp + span.interval) * 1000 < Date.now()) {
