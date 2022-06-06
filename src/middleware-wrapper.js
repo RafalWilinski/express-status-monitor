@@ -33,26 +33,30 @@ const middlewareWrapper = config => {
 
   const render = Handlebars.compile(htmlTmpl);
 
+  const renderResults = res => {
+    healthChecker(validatedConfig.healthChecks).then(results => {
+      data.healthCheckResults = results;
+      if (validatedConfig.iframe) {
+        if (res.removeHeader) {
+          res.removeHeader('X-Frame-Options');
+        }
+
+        if (res.remove) {
+          res.remove('X-Frame-Options');
+        }
+      }
+
+      res.send(render(data));
+    });
+  };
+
   const middleware = (req, res, next) => {
     socketIoInit(req.socket.server, validatedConfig);
 
     const startTime = process.hrtime();
 
     if (req.path === validatedConfig.path) {
-      healthChecker(validatedConfig.healthChecks).then(results => {
-        data.healthCheckResults = results;
-        if (validatedConfig.iframe) {
-          if (res.removeHeader) {
-            res.removeHeader('X-Frame-Options');
-          }
-
-          if (res.remove) {
-            res.remove('X-Frame-Options');
-          }
-        }
-
-        res.send(render(data));
-      });
+      renderResults(res);
     } else {
       if (!req.path.startsWith(validatedConfig.ignoreStartsWith)) {
         onHeaders(res, () => {
@@ -76,20 +80,7 @@ const middlewareWrapper = config => {
    */
   middleware.middleware = middleware;
   middleware.pageRoute = (req, res) => {
-    healthChecker(validatedConfig.healthChecks).then(results => {
-      data.healthCheckResults = results;
-      if (validatedConfig.iframe) {
-        if (res.removeHeader) {
-          res.removeHeader('X-Frame-Options');
-        }
-
-        if (res.remove) {
-          res.remove('X-Frame-Options');
-        }
-      }
-
-      res.send(render(data));
-    });
+    renderResults(res);
   };
   return middleware;
 };
