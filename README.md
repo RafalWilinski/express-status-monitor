@@ -55,6 +55,7 @@ spans: [{
   interval: 15,           // Every 15 seconds
   retention: 60
 }],
+iframe: false,            // iframe=true will remove X-Frame-Options
 chartVisibility: {
   cpu: true,
   mem: true,
