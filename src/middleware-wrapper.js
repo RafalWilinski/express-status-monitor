@@ -78,6 +78,16 @@ const middlewareWrapper = config => {
   middleware.pageRoute = (req, res) => {
     healthChecker(validatedConfig.healthChecks).then(results => {
       data.healthCheckResults = results;
+      if (validatedConfig.iframe) {
+        if (res.removeHeader) {
+          res.removeHeader('X-Frame-Options');
+        }
+
+        if (res.remove) {
+          res.remove('X-Frame-Options');
+        }
+      }
+
       res.send(render(data));
     });
   };
