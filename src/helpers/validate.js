@@ -14,14 +14,29 @@ module.exports = config => {
     return defaultConfig.chartVisibility;
   };
 
+  const prependWithSlash = string => {
+    if (string && !string.startsWith('/')) {
+      return `/${string}`;
+    }
+    return string;
+  };
+
   config.title =
     typeof config.title === 'string' ? config.title : defaultConfig.title;
   config.theme =
     typeof config.theme === 'string' ? config.theme : defaultConfig.theme;
   config.path =
-    typeof config.path === 'string' ? config.path : defaultConfig.path;
+    prependWithSlash(
+      typeof config.path === 'string'
+        ? config.path
+        : defaultConfig.path
+    );
   config.socketPath =
-    typeof config.socketPath === 'string' ? config.socketPath : defaultConfig.socketPath;
+    prependWithSlash(
+      typeof config.socketPath === 'string'
+        ? config.socketPath
+        : defaultConfig.socketPath
+    );
   config.spans =
     typeof config.spans === 'object' ? config.spans : defaultConfig.spans;
   config.port =
@@ -37,14 +52,21 @@ module.exports = config => {
       ? mungeChartVisibility(config.chartVisibility)
       : defaultConfig.chartVisibility;
   config.ignoreStartsWith =
-    typeof config.ignoreStartsWith === 'string'
-      ? config.ignoreStartsWith
-      : defaultConfig.ignoreStartsWith;
+    prependWithSlash(
+      typeof config.ignoreStartsWith === 'string'
+        ? config.ignoreStartsWith
+        : defaultConfig.ignoreStartsWith
+    );
 
   config.healthChecks =
     Array.isArray(config.healthChecks)
       ? config.healthChecks
       : defaultConfig.healthChecks;
+  config.healthChecks.forEach(healthCheck => {
+    if (healthCheck.path) {
+      healthCheck.path = prependWithSlash(healthCheck.path);
+    }
+  });
 
   return config;
 };
