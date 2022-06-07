@@ -31,6 +31,12 @@ module.exports = config => {
         ? config.path
         : defaultConfig.path
     );
+  config.namespace =
+    prependWithSlash(
+      typeof config.namespace === 'string'
+        ? config.namespace
+        : defaultConfig.namespace
+    );
   config.socketPath =
     prependWithSlash(
       typeof config.socketPath === 'string'
