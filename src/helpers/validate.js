@@ -37,14 +37,14 @@ module.exports = config => {
       ? mungeChartVisibility(config.chartVisibility)
       : defaultConfig.chartVisibility;
   config.ignoreStartsWith =
-    typeof config.path === 'string'
+    typeof config.ignoreStartsWith === 'string'
       ? config.ignoreStartsWith
       : defaultConfig.ignoreStartsWith;
 
   config.healthChecks =
     Array.isArray(config.healthChecks)
       ? config.healthChecks
-      : defaultConfig.healthChecks
+      : defaultConfig.healthChecks;
 
   return config;
 };
