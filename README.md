@@ -45,6 +45,7 @@ theme: 'default.css',     // Default styles
 path: '/status',
 socketPath: '/socket.io', // In case you use a custom path
 namespace: '/',           // socket.io namespace
+port: null,               // socket.io port
 websocket: null,          // In case you use an existing socket.io instance
 spans: [{
   interval: 1,            // Every second
