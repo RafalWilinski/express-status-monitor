@@ -20,6 +20,7 @@ describe('middleware-wrapper', () => {
 
     describe('when invoked', () => {
       beforeEach(() => {
+        req.originalUrl = defaultConfig.path;
         req.path = defaultConfig.path;
         res.send.reset();
       });

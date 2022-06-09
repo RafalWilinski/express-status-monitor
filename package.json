@@ -55,6 +55,11 @@
       "name": "KRAIEM Taha Yassine",
       "email": "tahay@gmail.com",
       "url": "https://github.com/tahayk/"
+    },
+    {
+      "name": "Lam Wei Li",
+      "email": "peteriman@mail.com",
+      "url": "https://github.com/peteriman/"
     }
   ],
   "repository": {
@@ -68,6 +73,7 @@
     "handlebars": "^4.7.7",
     "on-headers": "1.0.2",
     "pidusage": "2.0.18",
+    "serve-static": "^1.15.0",
     "socket.io": "^4.4.1"
   },
   "optionalDependencies": {

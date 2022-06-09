@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const onHeaders = require('on-headers');
 const Handlebars = require('handlebars');
+const serveStatic = require('serve-static');
 const validate = require('./helpers/validate');
 const onHeadersListener = require('./helpers/on-headers-listener');
 const socketIoInit = require('./helpers/socket-io-init');
@@ -20,6 +21,7 @@ const middlewareWrapper = config => {
 
   const data = {
     title: validatedConfig.title,
+    path: validatedConfig.path,
     port: validatedConfig.port,
     socketPath: validatedConfig.socketPath,
     bodyClasses,
@@ -33,26 +35,41 @@ const middlewareWrapper = config => {
 
   const render = Handlebars.compile(htmlTmpl);
 
+  const renderResults = (req, res) => {
+    healthChecker(validatedConfig.healthChecks).then(results => {
+      data.path = req.originalUrl.replace(/\/$/, '');
+      data.healthCheckResults = results;
+      if (validatedConfig.iframe) {
+        if (res.removeHeader) {
+          res.removeHeader('X-Frame-Options');
+        }
+
+        if (res.remove) {
+          res.remove('X-Frame-Options');
+        }
+      }
+
+      res.send(render(data));
+    });
+  };
+
   const middleware = (req, res, next) => {
     socketIoInit(req.socket.server, validatedConfig);
 
     const startTime = process.hrtime();
 
-    if (req.path === validatedConfig.path) {
-      healthChecker(validatedConfig.healthChecks).then(results => {
-        data.healthCheckResults = results;
-        if (validatedConfig.iframe) {
-          if (res.removeHeader) {
-            res.removeHeader('X-Frame-Options');
-          }
+    const serve = serveStatic(path.join(__dirname, 'public/javascripts/libs'), {
+      setHeaders: resp => {
+        resp.setHeader('Cache-Control', 'public, max-age=31536000, s-maxage=31536000, immutable');
+      }
+    });
+    const staticCdnPath = path.join(data.path, 'javascripts/libs');
 
-          if (res.remove) {
-            res.remove('X-Frame-Options');
-          }
-        }
-
-        res.send(render(data));
-      });
+    if (req.path.replace(/\/$/, '') === validatedConfig.path.replace(/\/$/, '')) {
+      renderResults(req, res);
+    } else if (req.path.startsWith(staticCdnPath)) {
+      req.url = req.url.replace(staticCdnPath, '');
+      serve(req, res, next);
     } else {
       if (!req.path.startsWith(validatedConfig.ignoreStartsWith)) {
         onHeaders(res, () => {
@@ -76,10 +93,7 @@ const middlewareWrapper = config => {
    */
   middleware.middleware = middleware;
   middleware.pageRoute = (req, res) => {
-    healthChecker(validatedConfig.healthChecks).then(results => {
-      data.healthCheckResults = results;
-      res.send(render(data));
-    });
+    renderResults(req, res);
   };
   return middleware;
 };

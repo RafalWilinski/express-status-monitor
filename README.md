@@ -55,6 +55,7 @@ spans: [{
   interval: 15,           // Every 15 seconds
   retention: 60
 }],
+iframe: false,            // iframe=true will remove X-Frame-Options
 chartVisibility: {
   cpu: true,
   mem: true,
@@ -97,28 +98,46 @@ The HTML page handler is exposed as a `pageRoute` property on the main
 middleware function.  So the middleware is mounted to intercept all requests
 while the HTML page handler will be authenticated.
 
-Example using https://www.npmjs.com/package/connect-ensure-login
+Example using custom middleware  
+(Credits to [@peteriman](https://github.com/peteriman))
+```javascript
+// custom middleware to do own auth
+let alt = false
+const authFn = (req, res, next) => {
+  alt = !alt;            // alternating
+  if (alt) {
+    res.sendStatus(401); // unauthorized
+  } else {
+    next();              // proceed
+  }
+};
+
+const statusMonitor = require('express-status-monitor')({ path: '' }); // avoid serving HTML
+app.use(statusMonitor);
+app.get('/status', authFn, statusMonitor.pageRoute);                   // use pageRoute to serve HTML
+```
+
+Example using https://www.npmjs.com/package/connect-ensure-login  
+(Credits to [@mattiaerre](https://github.com/mattiaerre))
 ```javascript
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn()
 
-const statusMonitor = require('express-status-monitor')();
+const statusMonitor = require('express-status-monitor')({ path: '' }); // avoid serving HTML
 app.use(statusMonitor);
-app.get('/status', ensureLoggedIn, statusMonitor.pageRoute)
+app.get('/status', ensureLoggedIn, statusMonitor.pageRoute);           // use pageRoute to serve HTML
 ```
 
-Credits to [@mattiaerre](https://github.com/mattiaerre)
-
-Example using [http-auth](https://www.npmjs.com/package/http-auth)
+Example using [http-auth](https://www.npmjs.com/package/http-auth)  
+(Credits to [@cristianossd](https://github.com/cristianossd) and )
 ```javascript
 const auth = require('http-auth');
 const basic = auth.basic({realm: 'Monitor Area'}, function(user, pass, callback) {
   callback(user === 'username' && pass === 'password');
 });
 
-// Set '' to config path to avoid middleware serving the html page (path must be a string not equal to the wanted route)
-const statusMonitor = require('express-status-monitor')({ path: '' });
-app.use(statusMonitor.middleware); // use the "middleware only" property to manage websockets
-app.get('/status', basic.check(statusMonitor.pageRoute)); // use the pageRoute property to serve the dashboard html page
+const statusMonitor = require('express-status-monitor')({ path: '' }); // avoid serving HTML
+app.use(statusMonitor);
+app.get('/status', basic.check(statusMonitor.pageRoute));              // use pageRoute to serve HTML
 ```
 
 ## Using module with socket.io in project
