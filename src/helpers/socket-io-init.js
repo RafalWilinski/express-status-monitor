@@ -19,7 +19,10 @@ module.exports = (server, config) => {
     if (config.websocket !== null) {
       io = config.websocket;
     } else {
-      io = socketIo(server);
+      io = socketIo(server, { path: config.socketPath });
+    }
+    if (typeof io.of === 'function') {
+      io = io.of(config.namespace);
     }
 
     io.on('connection', socket => {

@@ -3,6 +3,9 @@ module.exports = {
   theme: 'default.css',
   path: '/status',
   socketPath: '/socket.io',
+  namespace: '/',
+  port: null,
+  websocket: null,
   spans: [
     {
       interval: 1,
@@ -17,8 +20,6 @@ module.exports = {
       retention: 60,
     },
   ],
-  port: null,
-  websocket: null,
   iframe: false,
   chartVisibility: {
     cpu: true,

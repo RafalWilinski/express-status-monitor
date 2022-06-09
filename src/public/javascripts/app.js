@@ -2,7 +2,7 @@
   eslint-disable no-plusplus, no-var, strict, vars-on-top, prefer-template,
   func-names, prefer-arrow-callback, no-loop-func
 */
-/* global Chart, location, document, port, socketPath, parseInt, io */
+/* global Chart, location, document, port, socketPath, namespace, parseInt, io */
 
 'use strict';
 
@@ -13,9 +13,9 @@ Chart.defaults.global.elements.line.backgroundColor = 'rgba(0,0,0,0)';
 Chart.defaults.global.elements.line.borderColor = 'rgba(0,0,0,0.9)';
 Chart.defaults.global.elements.line.borderWidth = 2;
 
-var socket = io(location.protocol + '//' + location.hostname + ':' + (port || location.port), {
+var socket = io(location.protocol + '//' + location.hostname + ':' + (port || location.port) + namespace, {
     path: socketPath,
-    transports: ["websocket"]
+    transports: ['websocket']
 });
 var defaultSpan = 0;
 var spans = [];

@@ -44,7 +44,9 @@ title: 'Express Status',  // Default title
 theme: 'default.css',     // Default styles
 path: '/status',
 socketPath: '/socket.io', // In case you use a custom path
-websocket: existingSocketIoInstance,
+namespace: '/',           // socket.io namespace
+port: null,               // socket.io port
+websocket: null,          // In case you use an existing socket.io instance
 spans: [{
   interval: 1,            // Every second
   retention: 60           // Keep 60 datapoints in memory
@@ -59,15 +61,14 @@ chartVisibility: {
   cpu: true,
   mem: true,
   load: true,
-  eventLoop: true,
   heap: true,
+  eventLoop: true,
   responseTime: true,
   rps: true,
   statusCodes: true
 },
-healthChecks: [],
-ignoreStartsWith: '/admin'
-
+ignoreStartsWith: '/admin',
+healthChecks: []
 ```
 
 ## Health Checks
