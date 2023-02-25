@@ -1,5 +1,22 @@
 * {
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: #fff;
+}
+
+div.header {
+  align-items: center;
+  display: flex;
+  margin-top: 35px;
+  margin-bottom: 35px;
+}
+
+div.header b {
+  color: #9b9b9b;
+  font-size: 2.5em;
 }
 
 body.hide-cpu .container.cpu,
@@ -12,7 +29,7 @@ body.hide-statusCodes .container.statusCodes {
 }
 
 h1 {
-  font-size: 3em;
+  font-size: 2.5em;
   color: #222;
   margin: 0;
 }
@@ -33,10 +50,10 @@ p {
 
 span {
   cursor: pointer;
-  font-size: 10px;
+  font-size: 15px;
   margin-left: 5px;
   border: 1px solid #DDD;
-  padding: 3px 10px 4px 10px;
+  padding: 9px 11px 9px 11px;
 }
 
 canvas {
@@ -61,12 +78,15 @@ canvas {
   display: flex;
   flex-direction: row;
   margin-top: 20px;
-  height: 100px;
+  height: 120px;
 }
 
 .chart-container {
   width: 400px;
-  height: 100px;
+  height: 115px;
+  padding: 5px;
+  border-radius: 10px;
+  background-color: #e4e4e4;
 }
 
 .container.healthChecks {
@@ -127,11 +147,13 @@ canvas {
 }
 
 .footer {
+  display: none;
   text-align: center;
 }
 
 .span-controls {
   float: right;
+  margin-left: auto;
 }
 
 .status-code {
@@ -161,4 +183,53 @@ canvas {
 
 .status-code-5xx:before {
   background-color: #E53A40;
+}
+
+
+@media (max-width:650px){
+  .content {
+    width: 100vw;
+  }
+  div.header {
+    width: calc(100vw - 16px);
+    display: flex;
+    margin-top: 35px;
+    align-items: center;
+    margin-bottom: 35px;
+    flex-direction: column;
+  }
+  .container {
+    margin-top: 20px;
+    height: 210px;
+    display: block;
+  }
+  h5 {
+    font-size: 1.3em;
+  }
+  h1 {
+    font-size: 2em;
+    color: #222;
+    margin: 5px 0 10px 0;
+  }
+  .span-controls {
+    margin-top: 25px;
+    margin-left: unset;
+  }
+  .statusCodes .stats-column {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .status-code:before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 8px;
+    margin-right: 5px;
+    margin-left: 6px;
+  }
+  .statusCodes .stats-column h6:first-of-type {
+    margin-left: 10px;
+  }
 }
