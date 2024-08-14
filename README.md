@@ -27,6 +27,87 @@ Simple, self-hosted module based on Socket.io and Chart.js to report realtime se
 
 Note: This plugin works on Node versions > 4.x
 
+## Database Setup
+
+This package now includes database logging using Prisma with SQL Server. Follow these steps to set up:
+
+1. In your main project, create a `.env` file in the root directory if it doesn't exist already. Add the following line, replacing the placeholders with your actual database details:
+
+   ```
+   DATABASE_URL="sqlserver://localhost:1433;database=your_database;user=your_username;password=your_password;trustServerCertificate=true"
+   ```
+
+Replace username, password, localhost, and your_database_name with your actual database credentials.
+
+2. In your main project's root directory, create a `prisma` folder if it doesn't exist. Inside this folder, create a `schema.prisma` file with the following content:
+
+   ```prisma
+   datasource db {
+     provider = "sqlserver"
+     url      = env("DATABASE_URL")
+   }
+
+   generator client {
+     provider = "prisma-client-js"
+   }
+
+   model StatusLog {
+     id        Int      @id @default(autoincrement())
+     timestamp DateTime
+     cpuCount  Int
+     memory    Float
+     pid       Int
+     ppid      Int
+     ctime     BigInt
+     elapsed   Float
+     load1     Float
+     load5     Float
+     load15    Float
+     heapTotal BigInt
+     heapUsed  BigInt
+     response2xx Int
+     response3xx Int
+     response4xx Int
+     response5xx Int
+     responseMean Float
+     createdAt DateTime @default(now())
+   }
+   ```
+
+3. In your main project's root directory, run the following commands:
+
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   ```
+
+   This will generate the Prisma client and create the necessary table in your database.
+
+## Usage
+
+In your main project, initialize the middleware in your Express app:
+
+```javascript
+const express = require('express');
+const statusMonitor = require('express-status-monitor');
+
+const app = express();
+
+app.use(statusMonitor({
+  path: '/status',
+  databaseLoggingInterval: 60 // Log to database every 60 seconds
+}));
+
+// ... rest of your Express app setup
+```
+
+Make sure your SQL Server instance is running and accessible before starting your application.
+
+## Viewing Status
+
+Once your app is running, you can view the status page by navigating to the path you specified (e.g., `http://localhost:3000/status`).
+
+
 ## Run examples
 
 1. Go to `cd examples/`
