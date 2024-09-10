@@ -26,7 +26,7 @@ module.exports = (io, span, config) => {
       return;
     }
 
-    const last = span.responses[span.responses.length - 1];
+    const last = span.responses[span.responses.length - 1] || defaultResponse;
 
     // Convert from B to MB
     stat.memory = stat.memory / 1024 / 1024;
@@ -70,6 +70,8 @@ module.exports = (io, span, config) => {
     if (span.os.length >= span.retention) span.os.shift();
     if (span.responses[0] && span.responses.length > span.retention) span.responses.shift();
 
-    sendMetrics(io, span);
+    if (io) {
+      sendMetrics(io, span);
+    }
   });
 };

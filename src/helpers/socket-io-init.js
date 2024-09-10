@@ -12,25 +12,27 @@ const addSocketEvents = (socket, config) => {
 
 module.exports = (server, config) => {
   if (io === null || io === undefined) {
-    if (config.websocket !== null) {
-      io = config.websocket;
-    } else {
-      io = socketIo(server);
-    }
-
-    io.on('connection', socket => {
-      if (config.authorize) {
-        config
-          .authorize(socket)
-          .then(authorized => {
-            if (!authorized) socket.disconnect('unauthorized');
-            else addSocketEvents(socket, config);
-          })
-          .catch(() => socket.disconnect('unauthorized'));
+    if (server) {
+      if (config.websocket !== null) {
+        io = config.websocket;
       } else {
-        addSocketEvents(socket, config);
+        io = socketIo(server);
       }
-    });
+
+      io.on('connection', socket => {
+        if (config.authorize) {
+          config
+            .authorize(socket)
+            .then(authorized => {
+              if (!authorized) socket.disconnect('unauthorized');
+              else addSocketEvents(socket, config);
+            })
+            .catch(() => socket.disconnect('unauthorized'));
+        } else {
+          addSocketEvents(socket, config);
+        }
+      });
+    }
 
     config.spans.forEach(span => {
       span.os = [];
@@ -40,5 +42,8 @@ module.exports = (server, config) => {
       // Don't keep Node.js process up
       interval.unref();
     });
+
+    // Start gathering metrics immediately
+    gatherOsMetrics(io, config.spans[0], config);
   }
 };
