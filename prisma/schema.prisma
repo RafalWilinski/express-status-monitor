@@ -1,0 +1,30 @@
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model StatusLog {
+  id        Int      @id @default(autoincrement())
+  timestamp DateTime
+  cpuCount  Int
+  memory    Float
+  pid       Int
+  ppid      Int
+  ctime     BigInt
+  elapsed   Float
+  load1     Float
+  load5     Float
+  load15    Float
+  heapTotal BigInt
+  heapUsed  BigInt
+  response2xx Int
+  response3xx Int
+  response4xx Int
+  response5xx Int
+  responseMean Float
+  createdAt DateTime @default(now())
+}

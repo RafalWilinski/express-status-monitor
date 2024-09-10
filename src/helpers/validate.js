@@ -46,5 +46,10 @@ module.exports = config => {
       ? config.healthChecks
       : defaultConfig.healthChecks
 
+  config.databaseLoggingInterval =
+    typeof config.databaseLoggingInterval === 'number'
+      ? config.databaseLoggingInterval
+      : defaultConfig.databaseLoggingInterval;
+
   return config;
 };

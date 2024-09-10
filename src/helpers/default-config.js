@@ -32,4 +32,5 @@ module.exports = {
   },
   ignoreStartsWith: '/admin',
   healthChecks: [],
+  databaseLoggingInterval: 60, // New option for database logging interval
 };
