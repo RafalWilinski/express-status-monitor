@@ -39,7 +39,7 @@ This package now includes database logging using Prisma with SQL Server. Follow 
 
 Replace username, password, localhost, and your_database_name with your actual database credentials.
 
-2. In your main project's root directory, create a `prisma` folder if it doesn't exist. Inside this folder, create a `schema.prisma` file if it doesn't exist and add the following content:
+2. In your main project's root directory, create a `prisma` folder if it doesn't exist. Inside this folder, create a `schema.prisma` file with the following content:
 
    ```prisma
    datasource db {
